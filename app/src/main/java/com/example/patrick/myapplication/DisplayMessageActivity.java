@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,18 +23,17 @@ import java.io.InputStreamReader;
 public class DisplayMessageActivity extends AppCompatActivity {
 
     RelativeLayout layout;
+    MaterialCalendarView calendarView;
     TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        //setContentView(R.layout.content_display_message);
         layout=(RelativeLayout)findViewById(R.id.second_row);
         int prevTextViewId =0;
         for(int i = 0; i < 3; i++)
