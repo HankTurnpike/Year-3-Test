@@ -4,4 +4,29 @@
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="title_activity_display_message">My Message</string>
+
+    <!-- Database screen strings -->
+    <string name="title_database_entry">Daily Entry</string>
+    <string name="message_entry"       >Enter Three things</string>
+    <string name="hint_entry_one"      >Entry one...</string>
+    <string name="hint_entry_two"      >Entry two...</string>
+    <string name="hint_entry_three"    >Entry three...</string>
+    <string name="title_notes"         >Notes:</string>
+    <string name="hint_notes"          >Enter notes...</string>
+    <string name="title_rating"        >Rating: </string>
+    <string name="hint_rating"         >Enter Rating...</string>
+    <string name="button_insert"       >Insert</string>
+
+    <array name="img_id_arr">
+        <item>@drawable/rating_1</item>
+        <item>@drawable/rating_2</item>
+        <item>@drawable/rating_3</item>
+        <item>@drawable/rating_4</item>
+        <item>@drawable/rating_5</item>
+        <item>@drawable/rating_6</item>
+        <item>@drawable/rating_7</item>
+        <item>@drawable/rating_8</item>
+        <item>@drawable/rating_9</item>
+        <item>@drawable/rating_10</item>
+    </array>
 </resources>
