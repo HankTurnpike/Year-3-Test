@@ -7,7 +7,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -19,60 +19,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="50sp"
-        android:text="Notes"
+        android:text="@string/notes"
         android:layout_marginRight="52dp"
         android:layout_marginEnd="52dp"
         android:layout_marginTop="33dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/textView" />
+        android:id="@+id/title" />
     <ImageView
         android:layout_height="175dp"
         android:layout_width="117dp"
-        android:contentDescription="User image"
+        android:contentDescription="@string/user_image"
         android:padding="2dp"
         android:background="#4fa5d5"
         android:layout_marginTop="-10dp"
         android:src="@drawable/beach"
         android:id="@+id/image"
-        android:layout_alignTop="@+id/textView2"
+        android:layout_alignTop="@+id/notes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Heykhvyvyuvuyvuyvyugvuvuygvyuv"
         android:background="@drawable/text_box"
         android:layout_marginTop="41dp"
         android:minHeight="150dp"
         android:minWidth="150dp"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:id="@+id/notes"
+        android:layout_below="@+id/title"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignStart="@+id/title" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Good Things"
         android:layout_marginTop="30dp"
-        android:textSize="21dp"
+        android:textSize="21sp"
         android:layout_below="@+id/image"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView4" />
+        android:id="@+id/title2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1. dsfhsjb  dsfkjsd k jkdsfb kjb \n 2. sdfjisdn fjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic \n 3. iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  dfjisdnfjidsjsn ijnic  iijcn ijcn  cxi cjxn jindsfi ijcxn ijdsfni n"
         android:background="@drawable/text_box"
         android:layout_marginTop="27dp"
-        android:minHeight="150dp"
+        android:minHeight="100dp"
         android:minWidth="150dp"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView4"
+        android:id="@+id/good_things"
+        android:layout_below="@+id/title2"
         android:layout_alignRight="@+id/image"
         android:layout_alignEnd="@+id/image" />
 
