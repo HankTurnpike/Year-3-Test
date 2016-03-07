@@ -16,6 +16,9 @@
     <string name="title_rating"        >Rating: </string>
     <string name="hint_rating"         >Enter Rating...</string>
     <string name="button_insert"       >Insert</string>
+    <string name="day">Day</string>
+    <string name="calendar">Calendar</string>
+    <string name="database">Database</string>
 
     <array name="img_id_arr">
         <item>@drawable/rating_1</item>

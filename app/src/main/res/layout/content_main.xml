@@ -7,22 +7,30 @@
     android:orientation="horizontal"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    style="?android:attr/buttonBarStyle"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="20dp">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Day"
-        android:onClick="goToDate"/>
+        android:text="@string/day"
+        android:onClick="goToDate"
+        style="?android:attr/buttonBarButtonStyle"
+        android:background="@drawable/text_box"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calendar"
-        android:onClick="goToCalendar"/>
+        android:text="@string/calendar"
+        android:onClick="goToCalendar"
+        style="?android:attr/buttonBarButtonStyle"
+        android:background="@drawable/text_box"/>
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Database"
+        android:text="@string/database"
         android:onClick="goToDatabaseScreen"
-        />
+        style="?android:attr/buttonBarButtonStyle"
+        android:background="@drawable/text_box"/>
 </LinearLayout>
