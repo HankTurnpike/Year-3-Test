@@ -2,10 +2,8 @@ package com.example.patrick.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -40,13 +38,6 @@ public class DataBaseActivity extends AppCompatActivity {
     }
 
     public void getImage(View view){
-        //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        //Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        //intent.setType("image/*");
-        //intent.setAction(Intent.ACTION_GET_CONTENT);
-        //startActivityForResult(intent, REQUEST_IMAGE_GET);
-        //startActivityForResult(intent.createChooser(intent, "Select Picture"), REQUEST_IMAGE_GET);
-
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
@@ -56,23 +47,18 @@ public class DataBaseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
+            //Uri uri = data.getData();
             //imagePath = uri.getPath();
+            //Get system path to image
             imagePath = data.getDataString();
             makeToast(imagePath);
             displayImage();
 
-
-
-            //save image to app folder, i.e copy the image
-            //imagePath = copyFile();
+            //Gets the display name for the image, might be useful?
             //Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             //int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             //cursor.moveToFirst();
             //String testPath = cursor.getString(nameIndex);
-            //Save image locally in app.
-            //File stored outside causes a security exception
-            //imagePath = saveLocalImage(data.getData());
         }
     }
 
@@ -115,10 +101,10 @@ public class DataBaseActivity extends AppCompatActivity {
     }
 
     private void displayImage(){
-        if(imagePath == null)
-            return;
-        Uri uri = Uri.parse(imagePath);
-        imageView.setImageURI(uri);
+        if(imagePath != null) {
+            Uri uri = Uri.parse(imagePath);
+            imageView.setImageURI(uri);
+        }
     }
 
     private void makeToast(String text) {

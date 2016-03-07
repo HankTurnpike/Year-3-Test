@@ -89,9 +89,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // If count is zero no row was returned
         if(cursor.getCount() == 0)
             return null;
-        //Get year, month, day
         cursor.moveToFirst();
-        Day    day        = new Day(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
+        //Get year, month, day
+        int year  = cursor.getInt(0);
+        int month = cursor.getInt(1);
+        int day   = cursor.getInt(2);
         int    rating     = cursor.getInt(3);
         String notes      = cursor.getString(4);
         String entryOne   = cursor.getString(5);
@@ -99,7 +101,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String entryThree = cursor.getString(7);
         String imagePath  = cursor.getString(8);
         cursor.close();
-        return new Rating(day, rating, notes, entryOne, entryTwo, entryThree, imagePath);
+        return new Rating(year, month, day, rating, notes, entryOne, entryTwo, entryThree,
+                imagePath);
         //return null;
     }
 

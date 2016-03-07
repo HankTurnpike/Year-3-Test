@@ -1,12 +1,14 @@
 package com.example.patrick.myapplication;
 
 public class Rating {
-    private Day day;
-    private int rating;
+    private int year, month, day, rating;
     private String  notes, entryOne, entryTwo, entryThree, imagePath;
 
-    Rating(Day day0, int rating0, String notes0, String entryOne0, String entryTwo0,
+    Rating(int year0, int month0, int day0, int rating0, String notes0, String entryOne0, String
+            entryTwo0,
            String entryThree0, String imagePath0){
+        year       = year0;
+        month      = month0;
         day        = day0;
         rating     = rating0;
         entryOne   = entryOne0;
@@ -17,10 +19,18 @@ public class Rating {
     }
 
     public String dateString() {
-        return day.toString();
+        return "" + day + "_" + month + "_" + year;
     }
 
-    public Day getDay() {
+    public int getYear() {
+        return year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
         return day;
     }
 
