@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DataBaseActivity.class);
         startActivity(intent);
     }
+    public void goToGraph(View view) {
+        Intent intent = new Intent(this, GraphActivity.class);
+        startActivity(intent);
+    }
 }
 /*
 package com.example.patrick.myapplication;

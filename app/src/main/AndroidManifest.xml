@@ -32,9 +32,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.patrick.myapplication.MainActivity" />
         </activity>
-        <activity android:name=".DateScreen"><meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.patrick.myapplication.MainActivity" /></activity>
+        <activity android:name=".DateScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.patrick.myapplication.MainActivity" />
+        </activity>
         <activity
             android:name=".DataBaseActivity"
             android:label="@string/title_database_entry"
@@ -44,6 +46,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.patrick.myapplication.MainActivity" />
         </activity>
+        <activity android:name=".GraphActivity"></activity>
     </application>
 
 </manifest>
