@@ -7,60 +7,41 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-        public class GraphActivity extends AppCompatActivity {
+public class GraphActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.graph_activity);
+        LineChart lineChart = (LineChart) findViewById(R.id.chart);
+        DataBaseHelper dbh = new DataBaseHelper(this);
+        ArrayList<Entry> entries = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
 
-
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-
-                super.onCreate(savedInstanceState);
-                setContentView(R.layout.graph_activity);
-                LineChart lineChart = (LineChart) findViewById(R.id.chart);
-                ArrayList<Entry> entries = new ArrayList<>();
-                entries.add(new Entry(4f, 0));
-                entries.add(new Entry(8f, 1));
-                entries.add(new Entry(6f, 2));
-                entries.add(new Entry(2f, 3));
-                entries.add(new Entry(18f, 4));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                entries.add(new Entry(9f, 5));
-                LineDataSet dataset = new LineDataSet(entries, "# of Calls");
-                ArrayList<String> labels = new ArrayList<String>();
-                labels.add("January");
-                labels.add("February");
-                labels.add("March");
-                labels.add("April");
-                labels.add("May");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-                labels.add("June");
-
-                LineData data = new LineData(labels, dataset);
-                lineChart.setData(data); // set the data and list of lables into chart
-                lineChart.setDescription("Description");  // set the description
-                dataset.setDrawCubic(true);
-                dataset.setDrawFilled(true);
+        Calendar cal = Calendar.getInstance();
+        CalendarDay day;
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        int myMonth=cal.get(Calendar.MONTH);
+        int i = 0;
+        while (myMonth == cal.get(Calendar.MONTH)) {
+            Rating rating = dbh.getRow(cal);
+            if (rating != null) {
+                entries.add(new Entry(rating.getRating(), i));
+                labels.add(rating.dateString());
+                i++;
+            }
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        LineDataSet dataset = new LineDataSet(entries, "# of Calls");
+        LineData data = new LineData(labels, dataset);
+        lineChart.setData(data); // set the data and list of lables into chart
+        lineChart.setDescription("Description");  // set the description
+        dataset.setDrawCubic(true);
+        dataset.setDrawFilled(true);
+        lineChart.invalidate();
     }
 }

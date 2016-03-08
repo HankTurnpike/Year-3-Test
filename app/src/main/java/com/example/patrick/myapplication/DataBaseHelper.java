@@ -27,7 +27,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         //SQLiteDatabase db = this.getWritableDatabase(); // test the database is correctly created using
-                                                          // Sqlite manager add-on in Firefox
+        // Sqlite manager add-on in Firefox
     }
 
     @Override
@@ -50,14 +50,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //Inserts into the database if record not in database
     //Otherwise the record is updated
-    public boolean insert(int rating, String notes, String entryOne,
+    public boolean insert(int year, int month, int day, int rating, String notes, String entryOne,
                           String entryTwo, String entryThree, String imagePath){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        Calendar c   = Calendar.getInstance();
-        String year  = "" + c.get(Calendar.YEAR);
-        String month = "" + c.get(Calendar.MONTH);
-        String day   = "" + c.get(Calendar.DAY_OF_MONTH);
         contentValues.put(YEAR, year);
         contentValues.put(MONTH, month);
         contentValues.put(DAY, day);
@@ -69,21 +65,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if(imagePath == null)
             imagePath = "";
         contentValues.put(IMAGE_PATH, imagePath);
-        if (getRow(c) == null) // -1 return means a failed insert
+        if (getRow(year, month, day) == null) // -1 return means a failed insert
             return db.insert(TABLE_NAME, null, contentValues) != -1;
         else { //Update failed if zero is returned
             String condition = YEAR  + " == " + year  + " AND " +
-                               MONTH + " == " + month + " AND " +
-                               DAY   + " == " + day;
+                    MONTH + " == " + month + " AND " +
+                    DAY   + " == " + day;
             return db.update(TABLE_NAME, contentValues, condition, null) > 0;
         }
     }
 
-    public Rating getRow(Calendar date) {
+    public boolean insertToday(int rating, String notes, String entryOne,
+                               String entryTwo, String entryThree, String imagePath){
+        Calendar c   = Calendar.getInstance();
+        int year     = c.get(Calendar.YEAR);
+        int month    = c.get(Calendar.MONTH);
+        int day      = c.get(Calendar.DAY_OF_MONTH);
+        return insert(year, month, day, rating, notes, entryOne, entryTwo, entryThree, imagePath);
+    }
+
+    public Rating getRow(int year, int month, int day) {
         String select = "SELECT * FROM " + TABLE_NAME +
-                        " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
-                                  MONTH  + " == " + date.get(Calendar.MONTH) + " AND " +
-                                  DAY    + " == " + date.get(Calendar.DAY_OF_MONTH);
+                " WHERE "+ YEAR   + " == " + year  + " AND " +
+                MONTH  + " == " + month + " AND " +
+                DAY    + " == " + day;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor     = db.rawQuery(select, null);
         // If count is zero no row was returned
@@ -91,9 +96,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return null;
         cursor.moveToFirst();
         //Get year, month, day
-        int year  = cursor.getInt(0);
-        int month = cursor.getInt(1);
-        int day   = cursor.getInt(2);
+        int y = cursor.getInt(0);
+        int m = cursor.getInt(1);
+        int d = cursor.getInt(2);
         int    rating     = cursor.getInt(3);
         String notes      = cursor.getString(4);
         String entryOne   = cursor.getString(5);
@@ -101,23 +106,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String entryThree = cursor.getString(7);
         String imagePath  = cursor.getString(8);
         cursor.close();
-        return new Rating(year, month, day, rating, notes, entryOne, entryTwo, entryThree,
+        return new Rating(y, m, d, rating, notes, entryOne, entryTwo, entryThree,
                 imagePath);
-        //return null;
     }
 
-    public String getImagePath(Calendar date){
-        String select = "SELECT " + IMAGE_PATH + " FROM " + TABLE_NAME +
-                        " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
-                        MONTH  + " == " + date.get(Calendar.MONTH) + " AND " +
-                        DAY    + " == " + date.get(Calendar.DAY_OF_MONTH);;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor     = db.rawQuery(select, null);
-        // If count is zero no row was returned
-        if(cursor.getCount() == 0)
-            return null;
-        cursor.moveToFirst();
-        return cursor.getString(0);
+    public Rating getRow(Calendar date) {
+        return getRow(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override

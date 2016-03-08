@@ -19,7 +19,8 @@ import java.util.Date;
 
 public class DataBaseActivity extends AppCompatActivity {
     private DataBaseHelper   dbh;
-    private EditText         editEntryOne, editEntryTwo, editEntryThree, editRating, editNotes;
+    private EditText         editEntryOne, editEntryTwo, editEntryThree, editRating, editNotes,
+            editMonth, editDay;
     private ImageView        imageView;
     private static final int REQUEST_IMAGE = 1;
     private String           imagePath = "";
@@ -37,6 +38,10 @@ public class DataBaseActivity extends AppCompatActivity {
         editEntryOne   = (EditText) findViewById(R.id.entry_one);
         editEntryTwo   = (EditText) findViewById(R.id.entry_two);
         editEntryThree = (EditText) findViewById(R.id.entry_three);
+
+        editMonth      = (EditText) findViewById(R.id.editText_month);
+        editDay        = (EditText) findViewById(R.id.editText_day);;
+
         imageView      = (ImageView) findViewById(R.id.image_view_database);
         //Set fields for current day if in database
         setContent();
@@ -55,6 +60,7 @@ public class DataBaseActivity extends AppCompatActivity {
             else
                 imagePath = "";
         }
+        //Open a file explorer
     /*    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
@@ -64,16 +70,15 @@ public class DataBaseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
-            deleteOldImage(Calendar.getInstance());
             displayImage();
-        //Gets the display name for the image, might be useful?
+            //Gets the display name for the image, might be useful?
             //Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             //int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             //cursor.moveToFirst();
             //String testPath = cursor.getString(nameIndex);
         }
         else
-            makeToast("No image captured!");
+            makeToast("No image captured.\nMemory may be full.");
     }
 
     public void insertRow(View view) {
@@ -82,12 +87,17 @@ public class DataBaseActivity extends AppCompatActivity {
         if(positiveInteger(rateStr)) { //check the rating is a positive integer
             int rating = Integer.parseInt(rateStr);
             if (rating > 0 && rating < 11) { //Test the range of the rating
-                String entryOne   = editEntryOne.getText().toString();
-                String entryTwo   = editEntryTwo.getText().toString();
-                String entryThree = editEntryThree.getText().toString();
-                String notes      = editNotes.getText().toString();
+                String entryOne   = editEntryOne.getText().toString().trim();
+                String entryTwo   = editEntryTwo.getText().toString().trim();
+                String entryThree = editEntryThree.getText().toString().trim();
+                String notes      = editNotes.getText().toString().trim();
                 //Insert the data to database
-                boolean success = dbh.insert(rating, notes, entryOne, entryTwo, entryThree, imagePath);
+                //boolean success = dbh.insertToday(rating, notes, entryOne, entryTwo, entryThree,
+                //        imagePath);
+                int month = Integer.parseInt(editMonth.getText().toString());
+                int day   = Integer.parseInt(editDay.getText().toString());
+                boolean success = dbh.insert(2016, month, day, rating, notes, entryOne, entryTwo,
+                        entryThree, imagePath);
                 if (success)
                     text = "Entry successfully made ";
                 else
@@ -97,24 +107,12 @@ public class DataBaseActivity extends AppCompatActivity {
         makeToast(text);
     }
 
-    private void deleteOldImage(Calendar date) {
-        String path = dbh.getImagePath(date);
-        if(path != null) {
-            File file = new File(path);
-            if(file.exists()){
-                makeToast("Deleted: " + path);
-                file.delete();
-            }
-        }
-    }
-
     private File createImageFile() {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fileName  = "JPEG_" + timeStamp + "_";
-        File dir         = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image = new File(dir, fileName + ".jpg");
-        return image;
+        String fileName = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
+        //Saves to external memory if present, otherwise internal memory is used.
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        return new File(dir, "MindDiary_" + fileName + ".jpg");
     }
 
     // Queries the database
