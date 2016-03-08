@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -20,6 +19,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class CalendarScreen extends AppCompatActivity {
@@ -33,7 +33,7 @@ public class CalendarScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        Log.d("test", "tesstset");
+        DataBaseHelper dbh = new DataBaseHelper(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
@@ -49,31 +49,25 @@ public class CalendarScreen extends AppCompatActivity {
         final MaterialCalendarView calendarView = (MaterialCalendarView) layout.findViewById(R.id.calendarView);
         //Calendar calendar = Calendar.getInstance();
         //CalendarDay day2 = CalendarDay.from(calendar);
+        Calendar cal = Calendar.getInstance();
+        CalendarDay day;
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        int myMonth=cal.get(Calendar.MONTH);
 
-        CalendarDay day = CalendarDay.from(2016, 2, 14);
-        calendarView.addDecorators(new OneDayDecorator(day, ContextCompat.getDrawable(this, resIds[5])));
-        day = CalendarDay.from(2016,2,15);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[3])));
-        day = CalendarDay.from(2016,2,16);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[7])));
-        day = CalendarDay.from(2016,2,17);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[4])));
-        day = CalendarDay.from(2016,2,18);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[0])));
-        day = CalendarDay.from(2016,2,19);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[2])));
-        day = CalendarDay.from(2016,2,20);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[1])));
-        day = CalendarDay.from(2016,2,21);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[9])));
-        day = CalendarDay.from(2016,2,22);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[8])));
-        day = CalendarDay.from(2016,2,23);
-        calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[6])));
+        while (myMonth==cal.get(Calendar.MONTH)) {
+            Rating rating = dbh.getRow(cal);
+            if(rating!=null) {
+                day = CalendarDay.from(cal);
+                calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[rating.getRating()])));
+            }
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
+            //day = CalendarDay.from(2016,2,23);
+            //calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[6])));
 
 
 
-    }
+}
 
     public class OneDayDecorator implements DayViewDecorator {
 
