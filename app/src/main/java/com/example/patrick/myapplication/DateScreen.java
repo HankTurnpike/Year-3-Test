@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import java.util.Calendar;
 
@@ -37,7 +38,9 @@ public class DateScreen extends AppCompatActivity {
             final RelativeLayout.LayoutParams params =
                     new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextView notes= (TextView) findViewById(R.id.notes);
+            ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.note_switcher);
+            switcher.showNext(); //or switcher.showPrevious();
+            TextView notes = (TextView) switcher.findViewById(R.id.notes);
             notes.setText(data.getNotes());
             TextView goodThings= (TextView) findViewById(R.id.good_things);
             goodThings.setText("1. "+ data.getEntryOne()+"\n2. "+data.getEntryTwo()+"\n3. "+data.getEntryThree());
