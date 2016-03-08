@@ -58,7 +58,8 @@ public class CalendarScreen extends AppCompatActivity {
             Rating rating = dbh.getRow(cal);
             if(rating!=null) {
                 day = CalendarDay.from(cal);
-                calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[rating.getRating()])));
+                calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable
+                        (this,resIds[rating.getRating()-1])));
             }
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
