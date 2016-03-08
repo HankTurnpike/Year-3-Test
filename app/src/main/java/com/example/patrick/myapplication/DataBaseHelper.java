@@ -81,11 +81,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Rating getRow(Calendar date) {
         String select = "SELECT * FROM " + TABLE_NAME +
-                       " WHERE "+ YEAR   + " == " + date.get(Calendar.YEAR)  + " AND " +
+                        " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
                                   MONTH  + " == " + date.get(Calendar.MONTH) + " AND " +
                                   DAY    + " == " + date.get(Calendar.DAY_OF_MONTH);
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(select, null);
+        Cursor cursor     = db.rawQuery(select, null);
         // If count is zero no row was returned
         if(cursor.getCount() == 0)
             return null;
@@ -104,6 +104,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return new Rating(year, month, day, rating, notes, entryOne, entryTwo, entryThree,
                 imagePath);
         //return null;
+    }
+
+    public String getImagePath(Calendar date){
+        String select = "SELECT " + IMAGE_PATH + " FROM " + TABLE_NAME +
+                        " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
+                        MONTH  + " == " + date.get(Calendar.MONTH) + " AND " +
+                        DAY    + " == " + date.get(Calendar.DAY_OF_MONTH);;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor     = db.rawQuery(select, null);
+        // If count is zero no row was returned
+        if(cursor.getCount() == 0)
+            return null;
+        cursor.moveToFirst();
+        return cursor.getString(0);
     }
 
     @Override

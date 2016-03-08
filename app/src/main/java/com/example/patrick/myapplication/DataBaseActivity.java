@@ -4,19 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DataBaseActivity extends AppCompatActivity {
     private DataBaseHelper   dbh;
     private EditText         editEntryOne, editEntryTwo, editEntryThree, editRating, editNotes;
     private ImageView        imageView;
-    private static final int REQUEST_IMAGE_GET = 1;
+    private static final int REQUEST_IMAGE = 1;
     private String           imagePath = "";
 
     @Override
@@ -38,28 +43,37 @@ public class DataBaseActivity extends AppCompatActivity {
     }
 
     public void getImage(View view){
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            File image = createImageFile();
+            imagePath = image.getAbsolutePath();
+            // Continue only if the File was successfully created
+            if (image != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(image));
+                startActivityForResult(intent, REQUEST_IMAGE);
+            }
+            else
+                imagePath = "";
+        }
+    /*    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_IMAGE_GET);
+        startActivityForResult(intent, REQUEST_IMAGE_GET);*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {
-            //Uri uri = data.getData();
-            //imagePath = uri.getPath();
-            //Get system path to image
-            imagePath = data.getDataString();
-            makeToast(imagePath);
+        if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
+            deleteOldImage(Calendar.getInstance());
             displayImage();
-
-            //Gets the display name for the image, might be useful?
+        //Gets the display name for the image, might be useful?
             //Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             //int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             //cursor.moveToFirst();
             //String testPath = cursor.getString(nameIndex);
         }
+        else
+            makeToast("No image captured!");
     }
 
     public void insertRow(View view) {
@@ -81,6 +95,26 @@ public class DataBaseActivity extends AppCompatActivity {
             }
         }
         makeToast(text);
+    }
+
+    private void deleteOldImage(Calendar date) {
+        String path = dbh.getImagePath(date);
+        if(path != null) {
+            File file = new File(path);
+            if(file.exists()){
+                makeToast("Deleted: " + path);
+                file.delete();
+            }
+        }
+    }
+
+    private File createImageFile() {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String fileName  = "JPEG_" + timeStamp + "_";
+        File dir         = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = new File(dir, fileName + ".jpg");
+        return image;
     }
 
     // Queries the database
