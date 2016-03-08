@@ -25,7 +25,7 @@ public class GraphActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         CalendarDay day;
         cal.set(Calendar.DAY_OF_MONTH, 1);
-        int myMonth=cal.get(Calendar.MONTH);
+        int myMonth = cal.get(Calendar.MONTH);
         int i = 0;
         while (myMonth == cal.get(Calendar.MONTH)) {
             Rating rating = dbh.getRow(cal);
