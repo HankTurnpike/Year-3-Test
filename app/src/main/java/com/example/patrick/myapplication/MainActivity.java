@@ -7,13 +7,43 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
+    private SeekBar ratingSlider = null;
+    private int rating = 0;
+    private TextView text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ratingSlider = (SeekBar) findViewById(R.id.seekBar);
+        text = (TextView) findViewById(R.id.slider_rating);
+        ratingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChanged = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+                progressChanged = progress/10;
+                text.setText("Rating: "+progressChanged);
+
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(MainActivity.this, "seek bar progress:" + progressChanged,
+                        Toast.LENGTH_SHORT).show();
+                rating = progressChanged;
+                Toast.makeText(MainActivity.this, "rating:" + rating,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }

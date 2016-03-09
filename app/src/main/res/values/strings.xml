@@ -24,6 +24,7 @@
     <string name="graph">Graph</string>
     <string name="note_hint">Write notes here.</string>
     <string name="good_things">Good Things</string>
+    <string name="rating">Rating: 0</string>
 
     <array name="img_id_arr">
         <item>@drawable/rating_1</item>
