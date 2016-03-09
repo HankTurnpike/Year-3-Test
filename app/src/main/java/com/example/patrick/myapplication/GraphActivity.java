@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Adapter;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -24,6 +22,7 @@ import java.util.Calendar;
 
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
+    int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,36 +30,45 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.graph_activity);
         //========================Draw graph=====================================
         drawLineGraph();
+        lineChart.post(new Runnable() {
+            @Override
+            public void run() {
+                height = lineChart.getHeight();
+                setGradient();
+                makeToast("" + height);
+            }
+        });
     }
 
     private void drawLineGraph() {
         setupLineChart();
         setupLineChartData();
         setGradient();
-        lineChart.invalidate();
     }
 
     private void setGradient() {
         // Get the paint renderer to create the line shading.
         Paint paint = lineChart.getRenderer().getPaintRender();
-        int [] colours = {Color.rgb(20, 74, 129), //Blue
-                Color.rgb(0, 72, 255),
-                Color.rgb(0, 144, 255),
-                Color.rgb(0, 208, 255), //Blue-ish
-                Color.rgb(0, 240, 255),
-                Color.rgb(255, 145, 0), //Orange
-                Color.rgb(255, 162, 0),
-                Color.rgb(255, 179, 0),
-                Color.rgb(255, 196, 0),
-                Color.rgb(255, 255, 0)};//Yellow
+
+        int [] colours = {Color.rgb(255, 255, 0),//Yellow
+                          Color.rgb(255, 196, 0),
+                          Color.rgb(255, 179, 0),
+                          Color.rgb(255, 162, 0),
+                          Color.rgb(255, 145, 0), //Orange
+                          Color.rgb(0, 240, 255), //Blue-ish
+                          Color.rgb(0, 208, 255),
+                          Color.rgb(0, 144, 255),
+                          Color.rgb(0, 72, 255),
+                          Color.rgb(20, 74, 129)};
         //float [] positions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        LinearGradient linGrad = new LinearGradient(0, 0, 0, 350, colours,
-                null, Shader.TileMode.MIRROR);
+        LinearGradient linGrad = new LinearGradient(0, 0, 0, height, colours,
+                null, Shader.TileMode.REPEAT);
         //LinearGradient linGrad = new LinearGradient(0, 0, 0, 325, Color.rgb(20, 74, 129),
         //        Color.rgb(255, 145, 0), Shader.TileMode.MIRROR);
         paint.setShader(linGrad);
 
         // refresh the graph
+        lineChart.invalidate();
     }
 
     private void setupLineChart() {
