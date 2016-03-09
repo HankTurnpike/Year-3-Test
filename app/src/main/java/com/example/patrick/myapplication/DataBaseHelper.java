@@ -69,8 +69,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return db.insert(TABLE_NAME, null, contentValues) != -1;
         else { //Update failed if zero is returned
             String condition = YEAR  + " == " + year  + " AND " +
-                    MONTH + " == " + month + " AND " +
-                    DAY   + " == " + day;
+                               MONTH + " == " + month + " AND " +
+                               DAY   + " == " + day;
             return db.update(TABLE_NAME, contentValues, condition, null) > 0;
         }
     }
@@ -86,9 +86,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Rating getRow(int year, int month, int day) {
         String select = "SELECT * FROM " + TABLE_NAME +
-                " WHERE "+ YEAR   + " == " + year  + " AND " +
-                MONTH  + " == " + month + " AND " +
-                DAY    + " == " + day;
+                        " WHERE "+ YEAR  + " == " + year  + " AND " +
+                                   MONTH + " == " + month + " AND " +
+                                   DAY   + " == " + day;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor     = db.rawQuery(select, null);
         // If count is zero no row was returned
@@ -112,6 +112,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Rating getRow(Calendar date) {
         return getRow(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
+    }
+
+    //returns -1 for a date without a rating
+    public int getRating(Calendar date) {
+        String select = "SELECT " + RATING + " FROM " + TABLE_NAME +
+                        " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
+                                   MONTH + " == " + date.get(Calendar.MONTH) + " AND " +
+                                   DAY   + " == " + date.get(Calendar.DAY_OF_MONTH);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor     = db.rawQuery(select, null);
+        // If count is zero no row was returned
+        if(cursor.getCount() == 0)
+            return -1;
+        cursor.moveToFirst();
+        int rating = cursor.getInt(0);
+        cursor.close();
+        return rating;
     }
 
     @Override
