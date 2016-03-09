@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -33,7 +35,12 @@ public class GraphActivity extends AppCompatActivity {
 
     private void drawLineGraph() {
         setupLineChart();
+        setupLineChartData();
+        setGradient();
+        lineChart.invalidate();
+    }
 
+    private void setGradient() {
         // Get the paint renderer to create the line shading.
         Paint paint = lineChart.getRenderer().getPaintRender();
         int [] colours = {Color.rgb(20, 74, 129), //Blue
@@ -47,16 +54,13 @@ public class GraphActivity extends AppCompatActivity {
                 Color.rgb(255, 196, 0),
                 Color.rgb(255, 255, 0)};//Yellow
         //float [] positions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        LinearGradient linGrad = new LinearGradient(0, 0, 50, 400, colours, null,
-                Shader.TileMode.MIRROR);
+        LinearGradient linGrad = new LinearGradient(0, 0, 0, 350, colours,
+                null, Shader.TileMode.MIRROR);
         //LinearGradient linGrad = new LinearGradient(0, 0, 0, 325, Color.rgb(20, 74, 129),
         //        Color.rgb(255, 145, 0), Shader.TileMode.MIRROR);
         paint.setShader(linGrad);
 
-        setupLineChartData();
-
         // refresh the graph
-        lineChart.invalidate();
     }
 
     private void setupLineChart() {
@@ -82,6 +86,7 @@ public class GraphActivity extends AppCompatActivity {
         yAxisLeft.setAxisMaxValue(11);
         //Remove y-axis on the right
         lineChart.getAxisRight().setEnabled(false);
+        lineChart.setScaleYEnabled(false);
     }
 
     private void setupLineChartData() {
@@ -107,7 +112,7 @@ public class GraphActivity extends AppCompatActivity {
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.MONTH, 0);
         int i = 0;
-        //boolean hasData = false;
+        boolean hasData = false;
         while (!cal.equals(tomorrow)) {
             int rating = dbh.getRating(cal);
             String date = "" + cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) +
@@ -115,17 +120,18 @@ public class GraphActivity extends AppCompatActivity {
             if (rating != -1) {
                 entries.add(new Entry(rating, i));
                 labels.add(date);
-                //hasData = true;
+                hasData = true;
                 i++;
             }
-        /*    else if(hasData == true) { //No entry
-                entries.add(new Entry(-1, i));
+            //Only consider missing entries after first valid entry
+            else if(hasData == true) {
+                //Add a label for missing entries
                 labels.add(date);
                 i++;
-            }*/
-
+            }
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
+        //Add the valid entries to the graph
         LineDataSet dataset = new LineDataSet(entries, "");
         dataset.setLineWidth(5f);
         dataset.setCubicIntensity(0.1f);
@@ -135,7 +141,7 @@ public class GraphActivity extends AppCompatActivity {
         LineData data = new LineData(labels, dataset);
         lineChart.setData(data); // set the data and list of lables into chart
         dataset.setDrawCubic(true);
-        //dataset.setDrawFilled(true);
+        //dataset.setDrawFilled(true); //Causes the crash
     }
 
     private void makeToast(String text) {
