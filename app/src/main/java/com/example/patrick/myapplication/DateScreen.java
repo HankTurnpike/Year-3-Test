@@ -1,5 +1,6 @@
 package com.example.patrick.myapplication;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -19,12 +20,16 @@ public class DateScreen extends AppCompatActivity {
     private DataBaseHelper dbh;
     private String imagePath ="";
     private ImageView imageView;
+    public final static String EXTRA_MESSAGE = "com.example.patrick.CalendarScreen";
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_screen);
+        Bundle extras = getIntent().getExtras();
+        int[] dateNums = extras.getIntArray("com.example.patrick.DATE");
         dbh            = new DataBaseHelper(this);
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
@@ -32,7 +37,11 @@ public class DateScreen extends AppCompatActivity {
         for (int i = 0; i < len; i++)
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
-        Rating data = dbh.getRow(Calendar.getInstance());
+        Calendar cal = Calendar.getInstance();
+        if (dateNums != null) {
+            cal.set(dateNums[0],dateNums[1],dateNums[2]);
+        }
+        Rating data = dbh.getRow(cal);
         layout=(RelativeLayout)findViewById(R.id.layout);
         if(data != null) {
             final RelativeLayout.LayoutParams params =

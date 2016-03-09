@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,19 +14,27 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class CalendarScreen extends AppCompatActivity {
-
+public class CalendarScreen extends AppCompatActivity implements OnDateSelectedListener {
+    public final static String DATE = "com.example.patrick.DATE";
     RelativeLayout layout;
-   // MaterialCalendarView calendarView;
+    @Bind(R.id.calendarView)
+    MaterialCalendarView calendarView;
+    private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
+    private DataBaseHelper dbh;
     //TextView textView;
 
 
@@ -33,7 +42,10 @@ public class CalendarScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        DataBaseHelper dbh = new DataBaseHelper(this);
+        ButterKnife.bind(this);
+
+        dbh = new DataBaseHelper(this);
+        calendarView.setOnDateChangedListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
@@ -44,11 +56,11 @@ public class CalendarScreen extends AppCompatActivity {
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
 
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         layout=(RelativeLayout)findViewById(R.id.second_row);
         final MaterialCalendarView calendarView = (MaterialCalendarView) layout.findViewById(R.id.calendarView);
         //Calendar calendar = Calendar.getInstance();
         //CalendarDay day2 = CalendarDay.from(calendar);
+
         //***********************************************//
         //                                               //
         //                                               //
@@ -77,9 +89,6 @@ public class CalendarScreen extends AppCompatActivity {
             }
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
-            //day = CalendarDay.from(2016,2,23);
-            //calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable(this,resIds[6])));
-
 
 
 }
@@ -88,6 +97,10 @@ public class CalendarScreen extends AppCompatActivity {
 
         private CalendarDay date;
         private Drawable d;
+
+        public OneDayDecorator() {
+            date = CalendarDay.today();
+        }
 
         public OneDayDecorator(CalendarDay day, Drawable d) {
             date = day;
@@ -108,14 +121,25 @@ public class CalendarScreen extends AppCompatActivity {
             view.addSpan(new ForegroundColorSpan(Color.WHITE));
 
         }
-
-        /**
-         * We're changing the internals, so make sure to call {@linkplain MaterialCalendarView#invalidateDecorators()}
-         */
-        public void setDate(Date date) {
+        public  void setDate(Date date) {
             this.date = CalendarDay.from(date);
         }
     }
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        CalendarDay current = CalendarDay.from(Calendar.getInstance());
+        if((current.equals(date)||current.isAfter(date))&&dataExists(date)) {
+            Intent intent = new Intent(this, DateScreen.class);
+            int[] temp = {date.getYear(), date.getMonth(), date.getDay()};
+            intent.putExtra(DATE, temp);
+            startActivity(intent);
+        }
+    }
+    public boolean dataExists(CalendarDay date){
+        Calendar temp = Calendar.getInstance();
+        temp.set(date.getYear(),date.getMonth(),date.getDay());
+        return(dbh.getRating(temp)!=-1);
+    }
+
     /*public class EventDecorator implements DayViewDecorator {
 
         private final int colour;
