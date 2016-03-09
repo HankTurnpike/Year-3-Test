@@ -25,7 +25,7 @@ import java.util.Date;
 public class CalendarScreen extends AppCompatActivity {
 
     RelativeLayout layout;
-    MaterialCalendarView calendarView;
+   // MaterialCalendarView calendarView;
     //TextView textView;
 
 
@@ -49,17 +49,31 @@ public class CalendarScreen extends AppCompatActivity {
         final MaterialCalendarView calendarView = (MaterialCalendarView) layout.findViewById(R.id.calendarView);
         //Calendar calendar = Calendar.getInstance();
         //CalendarDay day2 = CalendarDay.from(calendar);
-        Calendar cal = Calendar.getInstance();
-        CalendarDay day;
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        int myMonth=cal.get(Calendar.MONTH);
+        //***********************************************//
+        //                                               //
+        //                                               //
+        // Get start date of app from shared preferences //
+        //                                               //
+        //                                               //
+        //***********************************************//
 
-        while (myMonth==cal.get(Calendar.MONTH)) {
-            Rating rating = dbh.getRow(cal);
-            if(rating!=null) {
+        Calendar cal = Calendar.getInstance();
+        //Get the current day, days after should not have a rating
+        //Clone is necessary, as times may be slightly different otherwise
+        //   and therefore can never be equal, (for the while loop condition)
+        Calendar tomorrow = (Calendar) cal.clone();
+        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.MONTH, 0);
+
+        CalendarDay day;
+        while (!cal.equals(tomorrow)) {
+            int rating = dbh.getRating(cal);
+            if(rating != -1) {
                 day = CalendarDay.from(cal);
-                calendarView.addDecorators(new OneDayDecorator(day,ContextCompat.getDrawable
-                        (this,resIds[rating.getRating()-1])));
+                calendarView.addDecorators(new OneDayDecorator(day,
+                        ContextCompat.getDrawable(this,resIds[rating - 1])));
             }
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }

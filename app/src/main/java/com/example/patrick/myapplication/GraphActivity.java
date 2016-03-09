@@ -33,20 +33,29 @@ public class GraphActivity extends AppCompatActivity {
         //Get the current day, days after should not have a rating
         //Clone is necessary, as times may be slightly different otherwise
         //   and therefore can never be equal, (for the while loop condition)
-        Calendar currentDay = (Calendar) cal.clone();
+        Calendar tomorrow = (Calendar) cal.clone();
+        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.MONTH, 0);
 
         int i = 0;
-        while (!cal.equals(currentDay)) {
+        while (!cal.equals(tomorrow)) {
             int rating = dbh.getRating(cal);
+            //String date = "" + cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get
+            //        (Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
             if (rating != -1) {
                 entries.add(new Entry(rating, i));
                 labels.add(cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get
                         (Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR));
                 i++;
             }
+            else {
+                //No entry
+                //entries.add(new Entry(-1, i));
+            }
+            //labels.add(date);
+            //i++;
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
         LineDataSet dataset = new LineDataSet(entries, "# of Calls");
