@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,7 +55,22 @@ public class DateScreen extends AppCompatActivity {
             TextView notes = (TextView) switcher.findViewById(R.id.notes);
             notes.setText(data.getNotes());
             TextView goodThings= (TextView) findViewById(R.id.good_things);
-            goodThings.setText("1. "+ data.getEntryOne()+"\n2. "+data.getEntryTwo()+"\n3. "+data.getEntryThree());
+            String goodText ="1. ";
+            if(!data.getEntryOne().equals("")) {
+                goodText = goodText+data.getEntryOne();
+                if(!data.getEntryTwo().equals("")){
+                    goodText = "2. "+goodText+data.getEntryOne();
+                    if(!data.getEntryThree().equals("")){
+                        goodText = "3. "+goodText+data.getEntryTwo();
+                    }
+                }
+            }
+            else {
+                goodThings.setVisibility(View.GONE);
+                TextView goodTitle = (TextView) findViewById(R.id.title2);
+                goodTitle.setVisibility(View.GONE);
+            }
+            goodThings.setText(goodText);
             imageView = (ImageView) findViewById(R.id.image);
             imagePath = data.getImagePath();
             displayImage();

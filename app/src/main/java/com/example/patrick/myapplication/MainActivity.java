@@ -16,15 +16,19 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
-    private SeekBar ratingSlider = null;
+    private SeekBar ratingSlider;
     private int rating = 0;
     private TextView text;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ratingSlider = (SeekBar) findViewById(R.id.seekBar);
+        ratingSlider.setScaleY(1.2f);
+        ratingSlider.setScaleX(1.2f);
+
         text = (TextView) findViewById(R.id.slider_rating);
         ratingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChanged = 0;
