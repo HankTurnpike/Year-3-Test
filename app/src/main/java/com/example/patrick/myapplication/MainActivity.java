@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void goToDatabaseScreen(View view) {
-        Intent intent = new Intent(this, DataBaseActivity.class);
+        Intent intent = new Intent(this, InputScreen.class);
         startActivity(intent);
     }
     public void goToGraph(View view) {

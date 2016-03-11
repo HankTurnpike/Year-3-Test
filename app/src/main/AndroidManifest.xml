@@ -38,7 +38,7 @@
                 android:value="com.example.patrick.myapplication.MainActivity" />
         </activity>
         <activity
-            android:name=".DataBaseActivity"
+            android:name=".InputScreen"
             android:label="@string/title_database_entry"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
