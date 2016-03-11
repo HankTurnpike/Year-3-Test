@@ -9,50 +9,53 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.Calendar;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-    private static final int    DB_VERSION   = 1;
-    private static final String DB_NAME      = "Ratings.db";
-    private static final String TABLE_NAME   = "Ratings";
+    private static final int    DB_VERSION    = 1;
+    private static final String DB_NAME       = "Ratings.db";
+    // Table
+    private static final String TABLE_RATINGS = "Ratings";
     // Columns
-    private static final String COLUMN_ID    = "ID";          // Integer
-    private static final String YEAR         = "Year";        // Integer
-    private static final String MONTH        = "Month";       // Integer
-    private static final String DAY          = "Day";         // Integer
-    private static final String RATING       = "Rating";      // Integer
-    private static final String NOTES        = "Notes";       // Text
-    private static final String ENTRY_ONE    = "Entry_one";   // Text
-    private static final String ENTRY_TWO    = "Entry_two";   // Text
-    private static final String ENTRY_THREE  = "Entry_three"; // Text
-    private static final String IMAGE_PATH   = "Image_path";  // Text (the path to the image)
+    private static final String YEAR          = "Year";        // Integer
+    private static final String MONTH         = "Month";       // Integer
+    private static final String DAY           = "Day";         // Integer
+    private static final String RATING        = "Rating";      // Integer
+    private static final String NOTES         = "Notes";       // Text
+    private static final String ENTRY_ONE     = "Entry_one";   // Text
+    private static final String ENTRY_TWO     = "Entry_two";   // Text
+    private static final String ENTRY_THREE   = "Entry_three"; // Text
+    private static final String IMAGE_PATH    = "Image_path";  // Text (the path to the image)
 
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        //SQLiteDatabase db = this.getWritableDatabase(); // test the database is correctly created using
-        // Sqlite manager add-on in Firefox
     }
 
+    //Creates the database, the first time the app is run
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE =
                 "CREATE TABLE "        +
-                        TABLE_NAME     + " ("                                   +
-                        YEAR           + " INTEGER, "                           +
-                        MONTH          + " INTEGER, "                           +
-                        DAY            + " INTEGER, "                           +
-                        RATING         + " INTEGER, "                           +
-                        NOTES          + " TEXT, "                              +
-                        ENTRY_ONE      + " TEXT, "                              +
-                        ENTRY_TWO      + " TEXT, "                              +
-                        ENTRY_THREE    + " TEXT, "                              +
+                        TABLE_RATINGS  + " ("         +
+                        YEAR           + " INTEGER, " +
+                        MONTH          + " INTEGER, " +
+                        DAY            + " INTEGER, " +
+                        RATING         + " INTEGER, " +
+                        NOTES          + " TEXT, "    +
+                        ENTRY_ONE      + " TEXT, "    +
+                        ENTRY_TWO      + " TEXT, "    +
+                        ENTRY_THREE    + " TEXT, "    +
                         IMAGE_PATH     + " TEXT);";
 
         db.execSQL(CREATE_TABLE);
     }
 
-    //Inserts into the database if record not in database
-    //Otherwise the record is updated
+    /*
+      Inserts into the database if record not in database
+      Otherwise the record is updated
+      Returns whether or not the insert was successful
+    */
     public boolean insert(int year, int month, int day, int rating, String notes, String entryOne,
                           String entryTwo, String entryThree, String imagePath){
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase(); //Get access to the database
+        //Add entries to the appropriate columns
         ContentValues contentValues = new ContentValues();
         contentValues.put(YEAR, year);
         contentValues.put(MONTH, month);
@@ -65,69 +68,79 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if(imagePath == null)
             imagePath = "";
         contentValues.put(IMAGE_PATH, imagePath);
-        if (getRow(year, month, day) == null) // -1 return means a failed insert
-            return db.insert(TABLE_NAME, null, contentValues) != -1;
-        else { //Update failed if zero is returned
+
+        //Check is there already an entry
+        if (getRow(year, month, day) == null)
+            //If not insert the entry
+            return db.insert(TABLE_RATINGS, null, contentValues) != -1;
+        //There is an entry, so update it
+        else {
+            //Make sure to update the correct entry
             String condition = YEAR  + " == " + year  + " AND " +
                                MONTH + " == " + month + " AND " +
                                DAY   + " == " + day;
-            return db.update(TABLE_NAME, contentValues, condition, null) > 0;
+            return db.update(TABLE_RATINGS, contentValues, condition, null) > 0;
         }
     }
 
+    //Inserts the entry on the current date into the database
     public boolean insertToday(int rating, String notes, String entryOne,
                                String entryTwo, String entryThree, String imagePath){
-        Calendar c   = Calendar.getInstance();
-        int year     = c.get(Calendar.YEAR);
-        int month    = c.get(Calendar.MONTH);
-        int day      = c.get(Calendar.DAY_OF_MONTH);
+        //Get the current date
+        Calendar c = Calendar.getInstance();
+        int year   = c.get(Calendar.YEAR);
+        int month  = c.get(Calendar.MONTH);
+        int day    = c.get(Calendar.DAY_OF_MONTH);
         return insert(year, month, day, rating, notes, entryOne, entryTwo, entryThree, imagePath);
     }
 
+    //Get all data associated to a particular daily entry
     public Rating getRow(int year, int month, int day) {
-        String select = "SELECT * FROM " + TABLE_NAME +
-                        " WHERE "+ YEAR  + " == " + year  + " AND " +
-                                   MONTH + " == " + month + " AND " +
-                                   DAY   + " == " + day;
+        String select = "SELECT " + RATING + "," + NOTES + "," + ENTRY_ONE + "," + ENTRY_TWO + "," +
+                                    ENTRY_THREE  + "," + IMAGE_PATH + " FROM " + TABLE_RATINGS +
+                        " WHERE " + YEAR   + " == " + year  + " AND " +
+                                    MONTH  + " == " + month + " AND " +
+                                    DAY    + " == " + day;
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor     = db.rawQuery(select, null);
+        Cursor cursor     = db.rawQuery(select, null); //Run select statement on database
         // If count is zero no row was returned
         if(cursor.getCount() == 0)
             return null;
         cursor.moveToFirst();
-        //Get year, month, day
-        int y = cursor.getInt(0);
-        int m = cursor.getInt(1);
-        int d = cursor.getInt(2);
-        int    rating     = cursor.getInt(3);
-        String notes      = cursor.getString(4);
-        String entryOne   = cursor.getString(5);
-        String entryTwo   = cursor.getString(6);
-        String entryThree = cursor.getString(7);
-        String imagePath  = cursor.getString(8);
+        int    rating     = cursor.getInt(0);
+        String notes      = cursor.getString(1);
+        String entryOne   = cursor.getString(2);
+        String entryTwo   = cursor.getString(3);
+        String entryThree = cursor.getString(4);
+        String imagePath  = cursor.getString(5);
         cursor.close();
-        return new Rating(y, m, d, rating, notes, entryOne, entryTwo, entryThree,
+        return new Rating(year, month, day, rating, notes, entryOne, entryTwo, entryThree,
                 imagePath);
     }
 
+    //Get all data associated to a particular daily entry, based on a calendar object
     public Rating getRow(Calendar date) {
         return getRow(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
     }
 
-    //returns -1 for a date without a rating
+    /*
+        This method returns the rating for a particular day.
+        It can also be used to check for an entry on a particular date
+        returns -1 for a date without a rating
+    */
     public int getRating(Calendar date) {
-        String select = "SELECT " + RATING + " FROM " + TABLE_NAME +
+        String select = "SELECT " + RATING + " FROM " + TABLE_RATINGS +
                         " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
                                    MONTH + " == " + date.get(Calendar.MONTH) + " AND " +
                                    DAY   + " == " + date.get(Calendar.DAY_OF_MONTH);
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor     = db.rawQuery(select, null);
+        SQLiteDatabase db = this.getReadableDatabase(); //Get access to the database
+        Cursor cursor     = db.rawQuery(select, null);  //Run the select statement on the database
         // If count is zero no row was returned
         if(cursor.getCount() == 0)
             return -1;
         cursor.moveToFirst();
         int rating = cursor.getInt(0);
-        cursor.close();
+        cursor.close(); //Close the cursor, prevents memory leak
         return rating;
     }
 

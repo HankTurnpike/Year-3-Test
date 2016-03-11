@@ -1,6 +1,5 @@
 package com.example.patrick.myapplication;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -9,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -35,26 +33,32 @@ public class GraphActivity extends AppCompatActivity {
 
         //========================Draw graph=====================================
         drawLineGraph();
+
+        //Used to detect the height of the linechart
+        //The linechart must be drawn for the linear gradient applied to the graph
         lineChart.post(new Runnable() {
             @Override
             public void run() {
                 height = lineChart.getHeight();
+                //Set up the gradient for the graph when the height of the linechart is detected
                 setGradient();
-                makeToast("" + height);
             }
         });
     }
 
+    //Sets up the appearance
+    //Loads the data and draws the linechart
     private void drawLineGraph() {
         setupLineChart();
         setupLineChartData();
-        setGradient();
     }
 
+    //Allows for vertical fade between colours across the graph
     private void setGradient() {
         // Get the paint renderer to create the line shading.
         Paint paint = lineChart.getRenderer().getPaintRender();
 
+        //Array of colour to be applied in the gradient
         int [] colours = {Color.rgb(255, 255, 0),//Yellow
                           Color.rgb(255, 196, 0),
                           Color.rgb(255, 179, 0),
@@ -76,6 +80,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.invalidate();
     }
 
+    //Sets up the the styling for the linechart
     private void setupLineChart() {
         lineChart = (LineChart) findViewById(R.id.chart);
         // disable the description
@@ -152,19 +157,15 @@ public class GraphActivity extends AppCompatActivity {
         dataset.setDrawHorizontalHighlightIndicator(false);
         dataset.setCircleRadius(5f);
 
+        //Set background below the graph graph with a linear gradient, must be set on the dataset
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.graph_background);
         dataset.setFillDrawable(drawable);
-        //Both lines together are the problem
         dataset.setDrawFilled(true);
-        //dataset.setDrawCubic(true);
+
         LineData data = new LineData(labels, dataset);
         lineChart.setData(data); // set the data and list of lables into chart
-    }
 
-    private void makeToast(String text) {
-        Context context  = getApplicationContext();
-        int     duration = Toast.LENGTH_LONG;
-        Toast   toast    = Toast.makeText(context, text, duration);
-        toast.show();
+        // refresh the graph, ensures that the graph is drawn
+        lineChart.invalidate();
     }
 }
