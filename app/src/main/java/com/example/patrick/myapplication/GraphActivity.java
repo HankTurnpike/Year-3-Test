@@ -1,5 +1,7 @@
 package com.example.patrick.myapplication;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -8,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -16,6 +19,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +28,7 @@ import java.util.Calendar;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int height;
+    ArrayList<String> labels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +36,7 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.graph_activity);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Graph");
-
+        final Intent intent = new Intent(this, DateScreen.class);
         //========================Draw graph=====================================
         drawLineGraph();
 
@@ -44,6 +50,26 @@ public class GraphActivity extends AppCompatActivity {
                 setGradient();
             }
         });
+
+        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry entry, int dataSetIndex, Highlight highlight) {
+                int labelIndex = highlight.getXIndex();
+                String[] dateString = labels.get(labelIndex).split("/");
+                int[] temp = {Integer.parseInt(dateString[2]),
+                              (Integer.parseInt(dateString[1]) - 1),
+                              Integer.parseInt(dateString[0])};
+                intent.putExtra(CalendarScreen.DATE, temp);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        //lineChart.setOnChartValueSelectedListener();
     }
 
     //Sets up the appearance
@@ -88,6 +114,7 @@ public class GraphActivity extends AppCompatActivity {
         //Disable background grid
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getXAxis().setDrawGridLines(false);
+
         //lineChart.animateXY(1500, 1500);
         // disable the legend
         Legend legend = lineChart.getLegend();
@@ -104,13 +131,15 @@ public class GraphActivity extends AppCompatActivity {
         yAxisLeft.setAxisMaxValue(11);
         //Remove y-axis on the right
         lineChart.getAxisRight().setEnabled(false);
-        lineChart.setScaleYEnabled(false);
+        //lineChart.setScaleYEnabled(false);
+        //Enable on tap highlight of graph
+        //lineChart.setHighlightPerTapEnabled(true);
     }
 
     private void setupLineChartData() {
         DataBaseHelper dbh = new DataBaseHelper(this);
         ArrayList<Entry> entries = new ArrayList<>();
-        ArrayList<String> labels = new ArrayList<>();
+        labels = new ArrayList<>();
 
         //***********************************************//
         //                                               //
@@ -152,10 +181,10 @@ public class GraphActivity extends AppCompatActivity {
         //Add the valid entries to the graph
         LineDataSet dataset = new LineDataSet(entries, "");
         dataset.setLineWidth(5f);
-        dataset.setCubicIntensity(0.1f);
 
         dataset.setDrawHorizontalHighlightIndicator(false);
-        dataset.setCircleRadius(5f);
+        dataset.setCircleRadius(7f);
+        //dataset.
 
         //Set background below the graph graph with a linear gradient, must be set on the dataset
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.graph_background);
@@ -167,5 +196,12 @@ public class GraphActivity extends AppCompatActivity {
 
         // refresh the graph, ensures that the graph is drawn
         lineChart.invalidate();
+    }
+
+    private void makeToast(String text) {
+        Context context  = getApplicationContext();
+        int     duration = Toast.LENGTH_LONG;
+        Toast   toast    = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }
