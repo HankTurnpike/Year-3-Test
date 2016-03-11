@@ -112,7 +112,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart = (LineChart) findViewById(R.id.chart);
         // disable the description
         lineChart.setDescription("");
-        //Disable background grid
+        //Disable background grid-lines
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getXAxis().setDrawGridLines(false);
 
@@ -128,13 +128,14 @@ public class GraphActivity extends AppCompatActivity {
         //Set up y-axis on the left
         YAxis yAxisLeft = lineChart.getAxisLeft();
         yAxisLeft.setEnabled(true);
+        //Set the min and max values for the graph
         yAxisLeft.setAxisMinValue(0);
         yAxisLeft.setAxisMaxValue(11);
         //Remove y-axis on the right
         lineChart.getAxisRight().setEnabled(false);
-        //lineChart.setScaleYEnabled(false);
+        lineChart.setScaleYEnabled(false);
         //Enable on tap highlight of graph
-        //lineChart.setHighlightPerTapEnabled(true);
+        lineChart.setHighlightPerTapEnabled(true);
     }
 
     private void setupLineChartData() {
@@ -159,7 +160,7 @@ public class GraphActivity extends AppCompatActivity {
 
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.MONTH, 0);
-        int i = 0;
+        int i = 0; //Index to add a particular entry
         boolean hasData = false;
         while (!cal.equals(tomorrow)) {
             int rating = dbh.getRating(cal);
