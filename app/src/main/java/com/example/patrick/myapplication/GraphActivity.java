@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -51,15 +50,18 @@ public class GraphActivity extends AppCompatActivity {
             }
         });
 
+        //Listen for clicks on the graph, launches a Date screen activity for the particular entry
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry entry, int dataSetIndex, Highlight highlight) {
+                //Get the label to calculate what page to display
                 int labelIndex = highlight.getXIndex();
-                String[] dateString = labels.get(labelIndex).split("/");
-                int[] temp = {Integer.parseInt(dateString[2]),
-                              (Integer.parseInt(dateString[1]) - 1),
-                              Integer.parseInt(dateString[0])};
-                intent.putExtra(CalendarScreen.DATE, temp);
+                String[] temp = labels.get(labelIndex).split("/");
+                //Reverse the order of the date to year, month, day
+                int[] date = {Integer.parseInt(temp[2]),
+                              (Integer.parseInt(temp[1]) - 1),
+                              Integer.parseInt(temp[0])};
+                intent.putExtra(CalendarScreen.DATE, date);
                 startActivity(intent);
             }
 
@@ -184,7 +186,6 @@ public class GraphActivity extends AppCompatActivity {
 
         dataset.setDrawHorizontalHighlightIndicator(false);
         dataset.setCircleRadius(7f);
-        //dataset.
 
         //Set background below the graph graph with a linear gradient, must be set on the dataset
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.graph_background);
@@ -196,12 +197,5 @@ public class GraphActivity extends AppCompatActivity {
 
         // refresh the graph, ensures that the graph is drawn
         lineChart.invalidate();
-    }
-
-    private void makeToast(String text) {
-        Context context  = getApplicationContext();
-        int     duration = Toast.LENGTH_LONG;
-        Toast   toast    = Toast.makeText(context, text, duration);
-        toast.show();
     }
 }
