@@ -48,6 +48,9 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         calendarView.setOnDateChangedListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle("Calendar");
+
         Intent intent = getIntent();
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
@@ -139,52 +142,4 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         temp.set(date.getYear(),date.getMonth(),date.getDay());
         return(dbh.getRating(temp)!=-1);
     }
-
-    /*public class EventDecorator implements DayViewDecorator {
-
-        private final int colour;
-        private final HashSet<CalendarDay> dates;
-        private final Drawable d;
-
-
-        public EventDecorator(int colour, Collection<CalendarDay> dates,Drawable d) {
-            this.colour = colour;
-            this.dates = new HashSet<>(dates);
-            this.d = d;
-        }
-
-        @Override
-        public boolean shouldDecorate(CalendarDay day) {
-            if(dates.contains(day)){
-                Log.d("Yup","Exists");
-            }
-            return dates.contains(day);
-        }
-
-        @Override
-        public void decorate(DayViewFacade view) {
-            Log.d("Decorate", "Did it");
-            view.addSpan(new DotSpan(colour));
-        }
-    }*/
 }
-
-/*
-        int prevTextViewId =0;
-        for(int i = 0; i < 3; i++)
-        {
-            final TextView textView = new TextView(this);
-            textView.setTextSize(22);
-            textView.setText(message);
-            int curTextViewId = prevTextViewId + 1;
-            textView.setId(curTextViewId);
-            final RelativeLayout.LayoutParams params =
-                    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-            params.addRule(RelativeLayout.RIGHT_OF, prevTextViewId);
-            params.setMargins(30, 0, 0, 0);
-            textView.setLayoutParams(params);
-            prevTextViewId = curTextViewId;
-            layout.addView(textView, params);
-        }*/

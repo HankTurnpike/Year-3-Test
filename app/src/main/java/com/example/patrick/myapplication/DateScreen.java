@@ -1,6 +1,5 @@
 package com.example.patrick.myapplication;
 
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -8,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,7 +27,10 @@ public class DateScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_date_screen);
+        setContentView(R.layout.content_date_screen);
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle("Calendar");
+
         Bundle extras = getIntent().getExtras();
         int[] dateNums = extras.getIntArray("com.example.patrick.DATE");
         dbh            = new DataBaseHelper(this);

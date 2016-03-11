@@ -11,6 +11,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
     private SeekBar ratingSlider = null;
@@ -26,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
         ratingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChanged = 0;
 
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-                progressChanged = progress/10;
-                text.setText("Rating: "+progressChanged);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress / 10;
+                text.setText("Rating: " + progressChanged);
 
             }
 
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle("");
     }
 
     @Override
@@ -70,13 +74,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
-    public void goToDate (View view) {
+    public void goToDate (MenuItem item) {
         Intent intent = new Intent(this, DateScreen.class);
-        int[] temp = {2016,2,3};
+        Calendar calendar = Calendar.getInstance();
+        int[] temp = {calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)};
         intent.putExtra("com.example.patrick.DATE",temp);
         startActivity(intent);
     }
-    public void goToCalendar (View view) {
+
+    public void goToCalendar (MenuItem item) {
         Intent intent = new Intent(this, CalendarScreen.class);
         startActivity(intent);
     }
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, InputScreen.class);
         startActivity(intent);
     }
-    public void goToGraph(View view) {
+    public void goToGraph(MenuItem item) {
         Intent intent = new Intent(this, GraphActivity.class);
         startActivity(intent);
     }

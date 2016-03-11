@@ -1,96 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.patrick.myapplication.MainActivity">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:title="Help"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:id="@+id/layout"
-            tools:context="com.example.patrick.myapplication.DateScreen">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="50sp"
-                android:text="@string/notes"
-                android:layout_marginRight="52dp"
-                android:layout_marginEnd="52dp"
-                android:layout_marginTop="33dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/title" />
+    </android.support.design.widget.AppBarLayout>
 
-            <ImageView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:maxHeight="175dp"
-                android:maxWidth="117dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/user_image"
-                android:padding="2dp"
-                android:background="#4fa5d5"
-                android:id="@+id/image"
-                android:layout_alignBottom="@+id/note_switcher"
-                android:layout_alignRight="@+id/title2"
-                android:layout_alignEnd="@+id/title2" />
+    <include layout="@layout/content_main" />
 
-            <ViewSwitcher
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/note_switcher"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/title"
-                android:layout_alignLeft="@+id/title"
-                android:layout_alignStart="@+id/title" >
 
-                <EditText
-                    android:id="@+id/note_edit"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/note_hint" >
-                </EditText>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/text_box"
-                    android:layout_marginTop="41dp"
-                    android:minHeight="150dp"
-                    android:minWidth="150dp"
-                    android:id="@+id/notes"
-                    />
-            </ViewSwitcher>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/good_things"
-                android:layout_marginTop="30dp"
-                android:textSize="21sp"
-                android:layout_below="@+id/image"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/title2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/text_box"
-                android:layout_marginTop="27dp"
-                android:minHeight="100dp"
-                android:minWidth="150dp"
-                android:id="@+id/good_things"
-                android:layout_below="@+id/title2"
-                android:layout_alignRight="@+id/image"
-                android:layout_alignEnd="@+id/image" />
-
-        </RelativeLayout>
-    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

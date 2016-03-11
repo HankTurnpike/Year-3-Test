@@ -18,20 +18,7 @@
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:id="@+id/linear1">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/day"
-        android:onClick="goToDate"
-        style="?android:attr/buttonBarButtonStyle"
-        android:background="@drawable/text_box"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/calendar"
-        android:onClick="goToCalendar"
-        style="?android:attr/buttonBarButtonStyle"
-        android:background="@drawable/text_box"/>
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -40,14 +27,7 @@
         android:onClick="goToDatabaseScreen"
         style="?android:attr/buttonBarButtonStyle"
         android:background="@drawable/text_box"/>
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/graph"
-        android:onClick="goToGraph"
-        style="?android:attr/buttonBarButtonStyle"
-        android:background="@drawable/text_box"/>
+
 </LinearLayout>
 
     <LinearLayout

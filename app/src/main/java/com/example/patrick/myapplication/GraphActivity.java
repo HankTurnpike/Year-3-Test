@@ -30,6 +30,9 @@ public class GraphActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graph_activity);
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle("Graph");
+
         //========================Draw graph=====================================
         drawLineGraph();
         lineChart.post(new Runnable() {
@@ -134,7 +137,7 @@ public class GraphActivity extends AppCompatActivity {
                 i++;
             }
             //Only consider missing entries after first valid entry
-            else if(hasData == true) {
+            else if(hasData) {
                 //Add a label for missing entries
                 labels.add(date);
                 i++;

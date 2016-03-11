@@ -5,6 +5,22 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/calendar"
+        app:showAsAction="never"
+        android:onClick="goToCalendar"
+        />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/graph"
+        android:onClick="goToGraph"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/day"
+        android:onClick="goToDate"
+        app:showAsAction="never"
+        />
 </menu>
