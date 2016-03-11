@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -143,13 +145,17 @@ public class GraphActivity extends AppCompatActivity {
         LineDataSet dataset = new LineDataSet(entries, "");
         dataset.setLineWidth(5f);
         dataset.setCubicIntensity(0.1f);
+
         dataset.setDrawHorizontalHighlightIndicator(false);
         dataset.setCircleRadius(5f);
 
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.graph_background);
+        dataset.setFillDrawable(drawable);
+        //Both lines together are the problem
+        dataset.setDrawFilled(true);
+        //dataset.setDrawCubic(true);
         LineData data = new LineData(labels, dataset);
         lineChart.setData(data); // set the data and list of lables into chart
-        dataset.setDrawCubic(true);
-        //dataset.setDrawFilled(true); //Causes the crash
     }
 
     private void makeToast(String text) {
