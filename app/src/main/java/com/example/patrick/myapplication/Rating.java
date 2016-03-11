@@ -1,12 +1,20 @@
 package com.example.patrick.myapplication;
+/*
+Placeholder class for storing data associated to a daily entry
+Useful for getting the information back from the database.
+
+No error checks are carried out by this class, as the dependency
+does not fall on it.
+Dates (represented by year, month and day) are guaranteed to be valid, by the Calendar class
+ */
 
 public class Rating {
-    private int year, month, day, rating;
+    private int year, month, day; //Represents the date the entry was made
+    private int rating;           //The rating entered by the user
     private String  notes, entryOne, entryTwo, entryThree, imagePath;
 
     Rating(int year0, int month0, int day0, int rating0, String notes0, String entryOne0, String
-            entryTwo0,
-           String entryThree0, String imagePath0){
+            entryTwo0, String entryThree0, String imagePath0){
         year       = year0;
         month      = month0;
         day        = day0;
@@ -22,6 +30,8 @@ public class Rating {
         return "" + day + "_" + month + "_" + year;
     }
 
+
+//======= Getter methods =========
     public int getYear() {
         return year;
     }
