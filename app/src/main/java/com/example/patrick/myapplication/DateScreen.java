@@ -28,11 +28,12 @@ public class DateScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_date_screen);
-        //noinspection ConstantConditions
-        getSupportActionBar().setTitle("Calendar");
 
         Bundle extras = getIntent().getExtras();
         int[] dateNums = extras.getIntArray("com.example.patrick.DATE");
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle(dateNums[2]+"/"+dateNums[1]+"/"+dateNums[0]);
+
         dbh            = new DataBaseHelper(this);
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
@@ -41,9 +42,7 @@ public class DateScreen extends AppCompatActivity {
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
         Calendar cal = Calendar.getInstance();
-        if (dateNums != null) {
-            cal.set(dateNums[0],dateNums[1],dateNums[2]);
-        }
+        cal.set(dateNums[0],dateNums[1],dateNums[2]);
         Rating data = dbh.getRow(cal);
         layout=(RelativeLayout)findViewById(R.id.layout);
         if(data != null) {
