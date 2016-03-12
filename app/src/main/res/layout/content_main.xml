@@ -75,7 +75,7 @@
     <EditText
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/notes"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:minHeight="50dp"
@@ -87,13 +87,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="3 Good Things"
         android:id="@+id/title2"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/notes"
         android:layout_centerHorizontal="true"
         android:paddingTop="30dp"/>
     <EditText
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
+        android:id="@+id/good"
         android:layout_below="@+id/title2"
         android:layout_centerHorizontal="true"
         android:minHeight="20dp"
@@ -107,9 +107,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="1."
         android:layout_marginBottom="20dp"
-        android:layout_alignBottom="@+id/editText2"
-        android:layout_toLeftOf="@+id/editText2"
-        android:layout_toStartOf="@+id/editText2" />
+        android:layout_alignBottom="@+id/good"
+        android:layout_toLeftOf="@+id/good"
+        android:layout_toStartOf="@+id/good" />
 
     <EditText
         android:layout_width="300dp"
@@ -117,9 +117,9 @@
         android:id="@+id/good2"
         android:background="@drawable/text_box"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/editText2"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignStart="@+id/editText2" />
+        android:layout_below="@+id/good"
+        android:layout_alignLeft="@+id/good"
+        android:layout_alignStart="@+id/good" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -152,6 +152,42 @@
         android:layout_alignTop="@+id/good3"
         android:layout_toLeftOf="@+id/good3"
         android:layout_toStartOf="@+id/good3" />
+
+    <!-- Image Entry -->
+    <Button
+        android:id="@+id/image_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_image"
+        android:onClick="getImage"
+        android:layout_alignTop="@+id/image_view_database"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp" />
+    <ImageView
+        android:id="@+id/image_view_database"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/good3"
+        android:layout_marginTop="30dp"
+        android:padding="2dp"
+        android:background="#4fa5d5"
+        android:layout_alignLeft="@+id/linear1"
+        android:layout_alignStart="@+id/linear1"
+        android:contentDescription="@string/user" />
+
+    <!--Submit to database -->
+    <Button
+        android:id="@+id/insert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_insert"
+        android:layout_below="@id/image_view_database"
+        android:layout_marginTop="30dp"
+        android:onClick="insertRow"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
 
 
 </RelativeLayout>
