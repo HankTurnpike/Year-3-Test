@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,11 +31,13 @@ import java.util.Calendar;
 public class GraphActivity extends AppCompatActivity {
     TextView dateTitle, notesTitle, notesSummary, goodThingsTitle, goodThingsSummary;
     ImageView imageView;
-    DataBaseHelper dbh;
+    Button button;
 
+    DataBaseHelper dbh;
     LineChart lineChart;
     int height;
     ArrayList<String> labels;
+    int year, month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +51,8 @@ public class GraphActivity extends AppCompatActivity {
         goodThingsTitle = (TextView) findViewById(R.id.textView_good_things_graph_title);
         goodThingsSummary = (TextView) findViewById(R.id.textView_good_things_graph);
         imageView = (ImageView) findViewById(R.id.imageView_graph);
-
+        button = (Button) findViewById(R.id.button_graph);
         dbh = new DataBaseHelper(this);
-        final Intent intent = new Intent(this, DateScreen.class);
         hideSummary();
         //========================Draw graph=====================================
         drawLineGraph();
@@ -72,15 +74,13 @@ public class GraphActivity extends AppCompatActivity {
                 //Get the label to calculate what page to display
                 int labelIndex = highlight.getXIndex();
                 String[] temp = labels.get(labelIndex).split("/");
-                //Reverse the order of the date to year, month, day
-                int[] date = {Integer.parseInt(temp[2]),
-                              (Integer.parseInt(temp[1]) - 1),
-                              Integer.parseInt(temp[0])};
+                //Reverse the order of the date to year, month, day and parse
+                // to integer
+                year  = Integer.parseInt(temp[2]);
+                month = Integer.parseInt(temp[1]) - 1;
+                day   = Integer.parseInt(temp[0]);
 
-                displaySummary(date[0], date[1], date[2]);
-
-                //intent.putExtra(CalendarScreen.DATE, date);
-                //startActivity(intent);
+                displaySummary(year, month, day);
             }
 
             @Override
@@ -88,6 +88,13 @@ public class GraphActivity extends AppCompatActivity {
                 hideSummary();
             }
         });
+    }
+
+    public void openEntry(View view) {
+        Intent intent = new Intent(this, DateScreen.class);
+        int[] date = {year, month, day};
+        intent.putExtra(CalendarScreen.DATE, date);
+        startActivity(intent);
     }
 
     private void hideSummary() {
@@ -98,6 +105,7 @@ public class GraphActivity extends AppCompatActivity {
         goodThingsSummary.setVisibility(View.GONE);
         imageView.setImageDrawable(null);
         imageView.setVisibility(View.GONE);
+        button.setVisibility(View.GONE);
     }
 
     private void displaySummary(int year, int month, int day) {
@@ -106,19 +114,17 @@ public class GraphActivity extends AppCompatActivity {
             return;
         dateTitle.setVisibility(View.VISIBLE);
         dateTitle.setText(day + "/" + month + "/" + year);
-
         notesTitle.setVisibility(View.VISIBLE);
         notesSummary.setVisibility(View.VISIBLE);
         notesSummary.setText(rating.getNotes());
-
         imageView.setVisibility(View.VISIBLE);
         displayImage(rating.getImagePath());
-
         goodThingsTitle.setVisibility(View.VISIBLE);
         goodThingsSummary.setVisibility(View.VISIBLE);
         goodThingsSummary.setText("1. " + rating.getEntryOne() +
                 "\n2. " + rating.getEntryTwo() +
                 "\n3. " + rating.getEntryThree());
+        button.setVisibility(View.VISIBLE);
     }
 
     private void displayImage(String imagePath){
