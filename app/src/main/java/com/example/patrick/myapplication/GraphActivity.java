@@ -42,7 +42,6 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.graph_activity);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Graph");
-
         dateTitle = (TextView) findViewById(R.id.textView_summary_graph);
         notesTitle = (TextView) findViewById(R.id.textView_notes_graph_title);
         notesSummary = (TextView) findViewById(R.id.textView_notes_graph);
@@ -50,6 +49,7 @@ public class GraphActivity extends AppCompatActivity {
         goodThingsSummary = (TextView) findViewById(R.id.textView_good_things_graph);
         imageView = (ImageView) findViewById(R.id.imageView_graph);
 
+        dbh = new DataBaseHelper(this);
         final Intent intent = new Intent(this, DateScreen.class);
         hideSummary();
         //========================Draw graph=====================================
@@ -101,7 +101,6 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void displaySummary(int year, int month, int day) {
-        dbh = new DataBaseHelper(this);
         Rating rating = dbh.getRow(year, month, day);
         if(rating == null)
             return;
@@ -195,7 +194,6 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void setupLineChartData() {
-        dbh = new DataBaseHelper(this);
         ArrayList<Entry> entries = new ArrayList<>();
         labels = new ArrayList<>();
 
