@@ -6,9 +6,13 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -24,6 +28,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GraphActivity extends AppCompatActivity {
+    TextView dateTitle, notesTitle, notesSummary, goodThingsTitle, goodThingsSummary;
+    ImageView imageView;
+    DataBaseHelper dbh;
+
     LineChart lineChart;
     int height;
     ArrayList<String> labels;
@@ -34,10 +42,18 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.graph_activity);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Graph");
+
+        dateTitle = (TextView) findViewById(R.id.textView_summary_graph);
+        notesTitle = (TextView) findViewById(R.id.textView_notes_graph_title);
+        notesSummary = (TextView) findViewById(R.id.textView_notes_graph);
+        goodThingsTitle = (TextView) findViewById(R.id.textView_good_things_graph_title);
+        goodThingsSummary = (TextView) findViewById(R.id.textView_good_things_graph);
+        imageView = (ImageView) findViewById(R.id.imageView_graph);
+
         final Intent intent = new Intent(this, DateScreen.class);
+        hideSummary();
         //========================Draw graph=====================================
         drawLineGraph();
-
         //Used to detect the height of the linechart
         //The linechart must be drawn for the linear gradient applied to the graph
         lineChart.post(new Runnable() {
@@ -60,17 +76,57 @@ public class GraphActivity extends AppCompatActivity {
                 int[] date = {Integer.parseInt(temp[2]),
                               (Integer.parseInt(temp[1]) - 1),
                               Integer.parseInt(temp[0])};
-                intent.putExtra(CalendarScreen.DATE, date);
-                startActivity(intent);
+
+                displaySummary(date[0], date[1], date[2]);
+
+                //intent.putExtra(CalendarScreen.DATE, date);
+                //startActivity(intent);
             }
 
             @Override
             public void onNothingSelected() {
-
+                hideSummary();
             }
         });
+    }
 
-        //lineChart.setOnChartValueSelectedListener();
+    private void hideSummary() {
+        dateTitle.setVisibility(View.GONE);
+        notesTitle.setVisibility(View.GONE);
+        notesSummary.setVisibility(View.GONE);
+        goodThingsTitle.setVisibility(View.GONE);
+        goodThingsSummary.setVisibility(View.GONE);
+        imageView.setImageDrawable(null);
+        imageView.setVisibility(View.GONE);
+    }
+
+    private void displaySummary(int year, int month, int day) {
+        dbh = new DataBaseHelper(this);
+        Rating rating = dbh.getRow(year, month, day);
+        if(rating == null)
+            return;
+        dateTitle.setVisibility(View.VISIBLE);
+        dateTitle.setText(day + "/" + month + "/" + year);
+
+        notesTitle.setVisibility(View.VISIBLE);
+        notesSummary.setVisibility(View.VISIBLE);
+        notesSummary.setText(rating.getNotes());
+
+        imageView.setVisibility(View.VISIBLE);
+        displayImage(rating.getImagePath());
+
+        goodThingsTitle.setVisibility(View.VISIBLE);
+        goodThingsSummary.setVisibility(View.VISIBLE);
+        goodThingsSummary.setText("1. " + rating.getEntryOne() +
+                "\n2. " + rating.getEntryTwo() +
+                "\n3. " + rating.getEntryThree());
+    }
+
+    private void displayImage(String imagePath){
+        if(imagePath != null) {
+            Uri uri = Uri.parse(imagePath);
+            imageView.setImageURI(uri);
+        }
     }
 
     //Sets up the appearance
@@ -139,7 +195,7 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private void setupLineChartData() {
-        DataBaseHelper dbh = new DataBaseHelper(this);
+        dbh = new DataBaseHelper(this);
         ArrayList<Entry> entries = new ArrayList<>();
         labels = new ArrayList<>();
 

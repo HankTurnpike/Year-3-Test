@@ -25,7 +25,7 @@
         android:layout_below="@+id/chart">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent">
 
             <TextView
@@ -34,26 +34,61 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="30sp"
                 android:text="Summary"
-                android:id="@+id/textView_Summary"/>
+                android:id="@+id/textView_summary_graph"/>
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Notes"
-                android:layout_below="@+id/textView_Summary"
-                android:id="@+id/textView"/>
+                android:layout_below="@+id/textView_summary_graph"
+                android:id="@+id/textView_notes_graph_title"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_box"
                 android:minHeight="100dp"
-                android:minWidth="150dp"
-                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-                android:layout_alignTop="@+id/textView"
+                android:minWidth="175dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignRight="@+id/textView_Summary"
-                android:layout_alignEnd="@+id/textView_Summary"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignRight="@+id/textView_summary_graph"
+                android:layout_alignEnd="@+id/textView_summary_graph"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/textView_notes_graph_title"
+                android:id="@+id/textView_notes_graph"/>
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView_graph"
+                android:layout_toRightOf="@+id/textView_notes_graph"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/textView_summary_graph"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Good Things"
+                android:id="@+id/textView_good_things_graph_title"
+                android:layout_below="@+id/imageView_graph"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_box"
+                android:minHeight="100dp"
+                android:minWidth="175dp"
+                android:text="Medium Text"
+                android:id="@+id/textView_good_things_graph"
+                android:layout_below="@+id/textView_good_things_graph_title"
+                android:layout_alignRight="@+id/textView_good_things_graph_title"
+                android:layout_alignEnd="@+id/textView_good_things_graph_title"/>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
