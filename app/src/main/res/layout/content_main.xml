@@ -3,197 +3,118 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="false"
-    >
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main"
-    style="?android:attr/buttonBarStyle"
-    android:layout_marginTop="20dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:paddingTop="30dp"
-    android:id="@+id/linear1">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/database"
-        android:onClick="goToDatabaseScreen"
-        style="?android:attr/buttonBarButtonStyle"
-        android:background="@drawable/text_box"/>
-
-</LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linear1"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="10dp"
-        android:id="@+id/linearLayout">
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/rating"
-            android:id="@+id/slider_rating"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="4dp" />
-    </LinearLayout>
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:id="@+id/layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="com.example.patrick.myapplication.MainActivity"
+            tools:showIn="@layout/activity_main">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calendar"
+                android:id="@+id/calendarButton"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/note_switcher"
+                android:layout_alignEnd="@+id/note_switcher"
+                android:onClick="goToCalendar"/>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Graph"
+                android:id="@+id/graphButton"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/calendarButton"
+                android:layout_toStartOf="@+id/calendarButton"
+                android:onClick="goToGraph"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Notes"
-        android:id="@+id/textView"
-        android:paddingTop="40dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50sp"
+                android:text="@string/notes"
+                android:layout_marginRight="52dp"
+                android:layout_marginEnd="52dp"
+                android:layout_marginTop="70dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/title" />
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/notes"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:minHeight="50dp"
-        android:background="@drawable/text_box"
-        android:hint="@string/notedes"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="3 Good Things"
-        android:id="@+id/title2"
-        android:layout_below="@+id/notes"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="30dp"/>
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/good"
-        android:layout_below="@+id/title2"
-        android:layout_centerHorizontal="true"
-        android:minHeight="20dp"
-        android:background="@drawable/text_box"
-        android:hint="Something good that happened today."/>
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:maxHeight="175dp"
+                android:maxWidth="117dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/user_image"
+                android:padding="2dp"
+                android:background="#4fa5d5"
+                android:id="@+id/image"
+                android:layout_alignBottom="@+id/note_switcher"
+                android:layout_alignRight="@+id/title2"
+                android:layout_alignEnd="@+id/title2"
+                android:visibility="invisible"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText3"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="1."
-        android:layout_marginBottom="20dp"
-        android:layout_alignBottom="@+id/good"
-        android:layout_toLeftOf="@+id/good"
-        android:layout_toStartOf="@+id/good" />
+            <ViewSwitcher
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/note_switcher"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/title"
+                android:layout_alignLeft="@+id/title"
+                android:layout_alignStart="@+id/title" >
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/good2"
-        android:background="@drawable/text_box"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/good"
-        android:layout_alignLeft="@+id/good"
-        android:layout_alignStart="@+id/good" />
+                <EditText
+                    android:id="@+id/note_edit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/note_hint" >
+                </EditText>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText5"
-        android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="2."
-        android:layout_alignTop="@+id/good2"
-        android:layout_toLeftOf="@+id/good2"
-        android:layout_toStartOf="@+id/good2" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_box"
+                    android:layout_marginTop="41dp"
+                    android:minHeight="150dp"
+                    android:minWidth="150dp"
+                    android:id="@+id/notes"
+                    />
+            </ViewSwitcher>
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/good3"
-        android:background="@drawable/text_box"
-        android:layout_below="@+id/good2"
-        android:layout_toRightOf="@+id/editText5"
-        android:layout_toEndOf="@+id/editText5"
-        android:layout_marginTop="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/good_things"
+                android:layout_marginTop="30dp"
+                android:textSize="21sp"
+                android:layout_below="@+id/image"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/title2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/editText7"
-        android:text="3."
-        android:layout_alignTop="@+id/good3"
-        android:layout_toLeftOf="@+id/good3"
-        android:layout_toStartOf="@+id/good3" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_box"
+                android:layout_marginTop="27dp"
+                android:minHeight="100dp"
+                android:minWidth="150dp"
+                android:id="@+id/good_things"
+                android:layout_below="@+id/title2"
+                android:layout_alignRight="@+id/image"
+                android:layout_alignEnd="@+id/image" />
 
-    <!-- Image Entry -->
-    <Button
-        android:id="@+id/image_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Image"
-        android:onClick="getImage"
-        android:layout_alignTop="@+id/image_view_database"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp" />
-    <ImageView
-        android:id="@+id/image_view_database"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:layout_below="@+id/good3"
-        android:layout_marginTop="30dp"
-        android:padding="2dp"
-        android:background="#4fa5d5"
-        android:layout_alignLeft="@+id/linear1"
-        android:layout_alignStart="@+id/linear1"
-        android:contentDescription="User image" />
-
-    <!--Submit to database -->
-    <Button
-        android:id="@+id/insert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_insert"
-        android:layout_below="@id/image_view_database"
-        android:layout_marginTop="30dp"
-        android:onClick="insertRow"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
-        />
-
-    <SeekBar
-        android:layout_width="262dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true" />
-
-
-</RelativeLayout>
-</ScrollView>
+        </RelativeLayout>
+    </ScrollView>

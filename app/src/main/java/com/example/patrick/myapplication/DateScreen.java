@@ -21,7 +21,6 @@ public class DateScreen extends AppCompatActivity {
     private DataBaseHelper dbh;
     private String imagePath ="";
     private ImageView imageView;
-    public final static String EXTRA_MESSAGE = "com.example.patrick.CalendarScreen";
 
 
 
@@ -30,8 +29,7 @@ public class DateScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_date_screen);
 
-        Bundle extras = getIntent().getExtras();
-        int[] dateNums = extras.getIntArray("com.example.patrick.DATE");
+        int[] dateNums = getIntent().getIntArrayExtra("com.example.patrick.DATE");
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(dateNums[2]+"/"+dateNums[1]+"/"+dateNums[0]);
 
@@ -53,15 +51,20 @@ public class DateScreen extends AppCompatActivity {
             ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.note_switcher);
             switcher.showNext(); //or switcher.showPrevious();
             TextView notes = (TextView) switcher.findViewById(R.id.notes);
-            notes.setText(data.getNotes());
+            if (!data.getNotes().equals("")) {
+                notes.setText(data.getNotes());
+            }
+            else {
+                notes.setText("No notes for this day.");
+            }
             TextView goodThings= (TextView) findViewById(R.id.good_things);
             String goodText ="1. ";
             if(!data.getEntryOne().equals("")) {
                 goodText = goodText+data.getEntryOne();
                 if(!data.getEntryTwo().equals("")){
-                    goodText = "2. "+goodText+data.getEntryOne();
+                    goodText = goodText+"\n2. "+data.getEntryTwo();
                     if(!data.getEntryThree().equals("")){
-                        goodText = "3. "+goodText+data.getEntryTwo();
+                        goodText = goodText+"\n3. "+data.getEntryThree();
                     }
                 }
             }
@@ -92,8 +95,9 @@ public class DateScreen extends AppCompatActivity {
 
     }
     private void displayImage(){
-        if(imagePath != null) {
+        if(!imagePath.equals("")) {
             Uri uri = Uri.parse(imagePath);
+            imageView.setVisibility(View.VISIBLE);
             imageView.setImageURI(uri);
         }
     }

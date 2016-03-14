@@ -2,15 +2,22 @@ package com.example.patrick.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -19,57 +26,109 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class InputScreen extends AppCompatActivity {
+    public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
+    private SeekBar ratingSlider;
+    private int rating = 1;
+    private TextView text;
     private DataBaseHelper   dbh;
-    private EditText         editEntryOne, editEntryTwo, editEntryThree, editRating, editNotes,
-            editMonth, editDay;
+    private EditText         editEntryOne, editEntryTwo, editEntryThree, editNotes;
     private ImageView        imageView;
     private static final int REQUEST_IMAGE = 1;
     private String           imagePath = "";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
-
+        dbh = new DataBaseHelper(this);
+        String check = getIntent().getStringExtra("redo");
+        if(check==null && dbh.getRating(Calendar.getInstance())!=-1)
+            submitDate(findViewById(android.R.id.content));
+        ratingSlider = (SeekBar) findViewById(R.id.seekBar);
+        ratingSlider.setScaleY(1.25f);
+        ratingSlider.setScaleX(1.25f);
         dbh            = new DataBaseHelper(this);
-        editRating     = (EditText) findViewById(R.id.rating);
         editNotes      = (EditText) findViewById(R.id.notes);
-        editEntryOne   = (EditText) findViewById(R.id.entry_one);
-        editEntryTwo   = (EditText) findViewById(R.id.entry_two);
-        editEntryThree = (EditText) findViewById(R.id.entry_three);
+        editEntryOne   = (EditText) findViewById(R.id.good);
+        editEntryTwo   = (EditText) findViewById(R.id.good2);
+        editEntryThree = (EditText) findViewById(R.id.good3);
 
-        editMonth      = (EditText) findViewById(R.id.editText_month);
-        editDay        = (EditText) findViewById(R.id.editText_day);
 
         imageView      = (ImageView) findViewById(R.id.image_view_database);
         //Set fields for current day if in database
-        setContent();
+        text = (TextView) findViewById(R.id.slider_rating);
+        ratingSlider.setMax(90);
+        ratingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChanged;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress/10 +1;
+                text.setText("Rating: " + progressChanged);
+
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(InputScreen.this, "seek bar progress:" + progressChanged,
+                        Toast.LENGTH_SHORT).show();
+                rating = progressChanged;
+                Toast.makeText(InputScreen.this, "rating:" + rating,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle("");
     }
 
-    public void getImage(View view){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+    public void getImage(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             File image = createImageFile();
             imagePath = image.getAbsolutePath();
             // Continue only if the File was successfully created
-            if (image != null) {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(image));
-                startActivityForResult(intent, REQUEST_IMAGE);
-            }
-            else
-                imagePath = "";
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(image));
+            startActivityForResult(intent, REQUEST_IMAGE);
         }
-        //Open a file explorer
-    /*    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_IMAGE_GET);*/
     }
 
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
-            displayImage();
+            if(imagePath != null) {
+                Uri uri = Uri.parse(imagePath);
+                imageView.setImageURI(uri);
+                Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+                Bitmap thumbImg = ThumbnailUtils.extractThumbnail(bitmap, 100, 150);
+                imageView.setImageBitmap(thumbImg);
+            }
             //Gets the display name for the image, might be useful?
             //Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             //int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
@@ -82,7 +141,7 @@ public class InputScreen extends AppCompatActivity {
 
     public void insertRow(View view) {
         String text    = "Entry failed, your rating must be in the range 1 to 10!";
-        String rateStr = editRating.getText().toString().trim();
+        String rateStr = ""+rating;
         if(positiveInteger(rateStr)) { //check the rating is a positive integer
             int rating = Integer.parseInt(rateStr);
             if (rating > 0 && rating < 11) { //Test the range of the rating
@@ -93,12 +152,16 @@ public class InputScreen extends AppCompatActivity {
                 //Insert the data to database
                 //boolean success = dbh.insertToday(rating, notes, entryOne, entryTwo, entryThree,
                 //        imagePath);
-                int month = Integer.parseInt(editMonth.getText().toString());
-                int day   = Integer.parseInt(editDay.getText().toString());
+                Calendar temp = Calendar.getInstance();
+                int month = temp.get(Calendar.MONTH);
+                int day   = temp.get(Calendar.DAY_OF_MONTH);
+                int year = temp.get(Calendar.YEAR);
                 boolean success = dbh.insert(2016, month, day, rating, notes, entryOne, entryTwo,
                         entryThree, imagePath);
-                if (success)
+                if (success) {
                     text = "Entry successfully made ";
+                    submitDate(findViewById(android.R.id.content));
+                }
                 else
                     text = " Entry failed, memory may be full";
             }
@@ -114,29 +177,7 @@ public class InputScreen extends AppCompatActivity {
         return new File(dir, "MindDiary_" + fileName + ".jpg");
     }
 
-    // Queries the database
-    // Check for entry already made
-    private void setContent() {
-        Rating rating = dbh.getRow(Calendar.getInstance());
-        // If count is zero no row was returned
-        if(rating == null)
-            return;
-        //Get year, month, day
-        editRating.setText("" + rating.getRating());
-        editNotes.setText(rating.getNotes());
-        editEntryOne.setText(rating.getEntryOne());
-        editEntryTwo.setText(rating.getEntryTwo());
-        editEntryThree.setText(rating.getEntryThree());
-        imagePath = rating.getImagePath();
-        displayImage();
-    }
 
-    private void displayImage(){
-        if(imagePath != null) {
-            Uri uri = Uri.parse(imagePath);
-            imageView.setImageURI(uri);
-        }
-    }
 
     private void makeToast(String text) {
         Context context  = getApplicationContext();
@@ -154,13 +195,31 @@ public class InputScreen extends AppCompatActivity {
             tmp = tmp.replace("" + i,"");
         return tmp.length() == 0;
     }
-}
 
-/*
-text = "Rating:      " + rating     + "\n" +
-        "Date:        " + date       + "\n" +
-        "Entry one:   " + entryOne   + "\n" +
-        "Entry two:   " + entryTwo   + "\n" +
-        "Entry three: " + entryThree + "\n" +
-        "Image Path:  " + imagePath;
- */
+
+    public void goToCalendar (MenuItem item) {
+        Intent intent = new Intent(this, CalendarScreen.class);
+        startActivity(intent);
+    }
+    public void goToDatabaseScreen(View view) {
+        Intent intent = new Intent(this, GhettoInput.class);
+        startActivity(intent);
+    }
+    public void goToGraph(MenuItem item) {
+        Intent intent = new Intent(this, GraphActivity.class);
+        startActivity(intent);
+    }
+    public void goToDate (MenuItem item) {
+        Intent intent = new Intent(this, DateScreen.class);
+        Calendar calendar = Calendar.getInstance();
+        int[] temp = {calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)};
+        intent.putExtra("com.example.patrick.DATE",temp);
+        startActivity(intent);
+    }
+    public void submitDate(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+}
