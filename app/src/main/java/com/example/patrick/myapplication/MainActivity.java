@@ -2,7 +2,11 @@ package com.example.patrick.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +31,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
     private SeekBar ratingSlider;
-    private int rating = 0;
+    private int rating = 1;
     private TextView text;
     private DataBaseHelper   dbh;
     private EditText         editEntryOne, editEntryTwo, editEntryThree, editNotes;
@@ -41,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ratingSlider = (SeekBar) findViewById(R.id.seekBar);
-        ratingSlider.setScaleY(1.2f);
-        ratingSlider.setScaleX(1.2f);
+        ratingSlider.setScaleY(1.25f);
+        ratingSlider.setScaleX(1.25f);
         dbh            = new DataBaseHelper(this);
         editNotes      = (EditText) findViewById(R.id.notes);
         editEntryOne   = (EditText) findViewById(R.id.good);
@@ -53,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
         imageView      = (ImageView) findViewById(R.id.image_view_database);
         //Set fields for current day if in database
         text = (TextView) findViewById(R.id.slider_rating);
+        ratingSlider.setMax(90);
         ratingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressChanged = 0;
+            int progressChanged;
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressChanged = progress / 10;
+                progressChanged = progress/10 +1;
                 text.setText("Rating: " + progressChanged);
 
             }
@@ -115,17 +121,20 @@ public class MainActivity extends AppCompatActivity {
             File image = createImageFile();
             imagePath = image.getAbsolutePath();
             // Continue only if the File was successfully created
-            if (image != null) {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(image));
-                startActivityForResult(intent, REQUEST_IMAGE);
-            } else
-                imagePath = "";
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(image));
+            startActivityForResult(intent, REQUEST_IMAGE);
         }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
-            displayImage();
+            if(imagePath != null) {
+                Uri uri = Uri.parse(imagePath);
+                imageView.setImageURI(uri);
+                Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+                Bitmap thumbImg = ThumbnailUtils.extractThumbnail(bitmap, 100, 150);
+                imageView.setImageBitmap(thumbImg);
+            }
             //Gets the display name for the image, might be useful?
             //Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             //int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
@@ -150,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
                 //boolean success = dbh.insertToday(rating, notes, entryOne, entryTwo, entryThree,
                 //        imagePath);
                 Calendar temp = Calendar.getInstance();
-                int month = temp.get(temp.MONTH);
-                int day   = temp.get(temp.DAY_OF_MONTH);
-                int year = temp.get(temp.YEAR);
+                int month = temp.get(Calendar.MONTH);
+                int day   = temp.get(Calendar.DAY_OF_MONTH);
+                int year = temp.get(Calendar.YEAR);
                 boolean success = dbh.insert(2016, month, day, rating, notes, entryOne, entryTwo,
                         entryThree, imagePath);
                 if (success)
@@ -173,12 +182,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void displayImage(){
-        if(imagePath != null) {
-            Uri uri = Uri.parse(imagePath);
-            imageView.setImageURI(uri);
-        }
-    }
+
+
 
     private void makeToast(String text) {
         Context context  = getApplicationContext();
