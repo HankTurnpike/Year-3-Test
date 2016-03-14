@@ -9,9 +9,9 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:paddingLeft="8sp"
-        android:paddingRight="8sp"
-        android:layout_height="320sp" />
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_height="320dp" />
 
 
     <ScrollView
@@ -43,8 +43,8 @@
                 android:id="@+id/imageView_graph"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:maxWidth="117sp"
-                android:minWidth="117sp"
+                android:maxWidth="117dp"
+                android:minWidth="117dp"
                 android:adjustViewBounds="true"
                 android:layout_below="@+id/textView_summary_graph"
                 android:layout_alignParentRight="true"
