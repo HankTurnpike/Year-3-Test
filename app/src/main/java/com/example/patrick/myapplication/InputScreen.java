@@ -262,31 +262,28 @@ public class InputScreen extends AppCompatActivity {
             tmp = tmp.replace("" + i,"");
         return tmp.length() == 0;
     }
-
-
-    public void goToCalendar (MenuItem item) {
-        Intent intent = new Intent(this, CalendarScreen.class);
+    public void submitDate(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
         startActivity(intent);
+        finish();
     }
+
+
     public void goToDatabaseScreen(View view) {
         Intent intent = new Intent(this, GhettoInput.class);
+        startActivity(intent);
+    }
+    public void goToCalendar (MenuItem item) {
+        Intent intent = new Intent(this, CalendarScreen.class);
         startActivity(intent);
     }
     public void goToGraph(MenuItem item) {
         Intent intent = new Intent(this, GraphActivity.class);
         startActivity(intent);
     }
-    public void goToDate (MenuItem item) {
-        Intent intent = new Intent(this, DateScreen.class);
-        Calendar calendar = Calendar.getInstance();
-        int[] temp = {calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)};
-        intent.putExtra("com.example.patrick.DATE",temp);
-        startActivity(intent);
-    }
-    public void submitDate(View view) {
+    public void goToMain(MenuItem item) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
         startActivity(intent);
-        finish();
     }
 }

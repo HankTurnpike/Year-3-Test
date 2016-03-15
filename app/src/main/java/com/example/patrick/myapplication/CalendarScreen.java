@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -141,5 +143,23 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         Calendar temp = Calendar.getInstance();
         temp.set(date.getYear(),date.getMonth(),date.getDay());
         return(dbh.getRating(temp)!=-1);
+    }
+    public void goToCalendar (MenuItem item) {}
+    public void goToGraph(MenuItem item) {
+        Intent intent = new Intent(this, GraphActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public void goToMain(MenuItem item) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }
