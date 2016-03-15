@@ -1,16 +1,51 @@
 package com.example.patrick.myapplication;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,17 +66,49 @@ public class InputScreen extends AppCompatActivity {
     private int rating = 1;
     private TextView text;
     private DataBaseHelper   dbh;
-    private EditText         editEntryOne, editEntryTwo, editEntryThree, editNotes;
-    private ImageView        imageView;
+    private EditText editEntryOne, editEntryTwo, editEntryThree, editNotes;
+    private ImageView imageView;
     private static final int REQUEST_IMAGE = 1;
     private String           imagePath = "";
 
+    private PendingIntent pendingIntent;
 
+    public void startAlarm() {
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        long interval = 360000; //minute
+        //long interval = //AlarmManager.INTERVAL_DAY;
+
+     //   Calendar calendar = Calendar.getInstance();
+    //    calendar.setTimeInMillis(System.currentTimeMillis());
+    //    calendar.set(Calendar.HOUR, 15); //24 hour clock
+    //    calendar.set(Calendar.MINUTE, 0);
+    //    calendar.set(Calendar.SECOND, 0);
+    //    calendar.add(Calendar.DAY_OF_MONTH, -1);
+        //System.currentTimeMillis()
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval,
+                pendingIntent);
+        //noinspection ResourceType
+        Toast.makeText(this, "Alarm Set\n" +
+                " System time: " + System.currentTimeMillis() , Toast.LENGTH_LONG).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
+
+        //Setup Notifications
+        SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        int runs = preferences.getInt("NumberOfLaunches", 1);
+        if(runs < 4){
+            /* Retrieve a PendingIntent that will perform a broadcast */
+            Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+            pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+            startAlarm();
+            editor.putInt("NumberOfLaunches", ++runs).commit();
+        }
+
         dbh = new DataBaseHelper(this);
         String check = getIntent().getStringExtra("redo");
         if(check==null && dbh.getRating(Calendar.getInstance())!=-1)

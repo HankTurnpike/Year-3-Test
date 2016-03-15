@@ -8,26 +8,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Log;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // For our recurring task, we'll just display a message
-        //Toast.makeText(context, "I'm running", Toast.LENGTH_SHORT).show();
+        Log.d("alarm  :  " + context.getApplicationContext().getPackageResourcePath(), "   alarm");
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationManager mNM = (NotificationManager)context.getSystemService(Context
                 .NOTIFICATION_SERVICE);
-        Intent newIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, newIntent, 0);
+        Intent newIntent = new Intent(context.getApplicationContext(), GhettoInput.class);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, newIntent, 0);
 
         Notification mNotify = new Notification.Builder(context)
                 .setContentTitle("Mind Diary")
                 .setContentText("Would you like to make your daily entry?")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pIntent)
                 .setSound(sound)
+                .setAutoCancel(true)
                         //.addAction(0, "Load Website", pIntent)
                 .build();
 
