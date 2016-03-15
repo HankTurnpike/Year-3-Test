@@ -95,6 +95,7 @@
         android:layout_centerHorizontal="true"
         android:minHeight="20dp"
         android:background="@drawable/text_box"
+        android:singleLine="true"
         android:hint="Something good that happened today."/>
 
     <TextView
@@ -116,6 +117,7 @@
         android:layout_marginTop="20dp"
         android:layout_below="@+id/good"
         android:layout_alignLeft="@+id/good"
+        android:singleLine="true"
         android:layout_alignStart="@+id/good" />
 
     <TextView
@@ -137,6 +139,7 @@
         android:layout_below="@+id/good2"
         android:layout_toRightOf="@+id/editText5"
         android:layout_toEndOf="@+id/editText5"
+        android:singleLine="true"
         android:layout_marginTop="20dp" />
 
     <TextView
