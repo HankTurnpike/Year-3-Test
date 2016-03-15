@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,20 +47,19 @@ public class GraphActivity extends AppCompatActivity {
     int year, month, day;
 
     private void setAlarmNotification() {
-        Intent intent = new Intent(this, NotificationHelper.class);
+        Intent intent = new Intent(this, AlarmReceiver.class);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 32);
+        calendar.set(Calendar.HOUR_OF_DAY, 3);
+        calendar.set(Calendar.MINUTE, 8);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.AM_PM, Calendar.AM);
-
+        //calendar.set(Calendar.AM_PM, Calendar.AM);
+        Log.d("alarm", "");
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                1000 * 30, pendingIntent);
-
+                1000 * 60, pendingIntent);
         makeToast("Alarm Set");
     }
 
@@ -73,7 +73,7 @@ public class GraphActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         int runs = preferences.getInt("NumberOfLaunches", 1);
 
-        if(runs < 10){
+        if(runs < 1000){
             setAlarmNotification();
             editor.putInt("NumberOfLaunches", ++runs).commit();
         }
