@@ -1,6 +1,10 @@
 package com.example.patrick.myapplication;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -8,12 +12,14 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -39,10 +45,43 @@ public class GraphActivity extends AppCompatActivity {
     ArrayList<String> labels;
     int year, month, day;
 
+    private void setAlarmNotification() {
+        Intent intent = new Intent(this, NotificationHelper.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 32);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                1000 * 30, pendingIntent);
+
+        makeToast("Alarm Set");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graph_activity);
+
+        //Setup Notifications
+        SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        int runs = preferences.getInt("NumberOfLaunches", 1);
+
+        if(runs < 10){
+            setAlarmNotification();
+            editor.putInt("NumberOfLaunches", ++runs).commit();
+        }
+        else {
+
+        }
+
+
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Graph");
         dateTitle = (TextView) findViewById(R.id.textView_summary_graph);
@@ -257,5 +296,12 @@ public class GraphActivity extends AppCompatActivity {
 
         // refresh the graph, ensures that the graph is drawn
         lineChart.invalidate();
+    }
+
+    private void makeToast(String text) {
+        Context context  = getApplicationContext();
+        int     duration = Toast.LENGTH_LONG;
+        Toast   toast    = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }
