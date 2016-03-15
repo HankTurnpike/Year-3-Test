@@ -1,5 +1,6 @@
 package com.example.patrick.myapplication;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -100,5 +103,29 @@ public class DateScreen extends AppCompatActivity {
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageURI(uri);
         }
+    }
+    public void goToCalendar (MenuItem item) {
+        Intent intent = new Intent(this, CalendarScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public void goToGraph(MenuItem item) {
+        Intent intent = new Intent(this, GraphActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToMain(MenuItem item) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

@@ -16,6 +16,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -303,5 +305,24 @@ public class GraphActivity extends AppCompatActivity {
         int     duration = Toast.LENGTH_LONG;
         Toast   toast    = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public void goToCalendar (MenuItem item) {
+        Intent intent = new Intent(this, CalendarScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public void goToGraph(MenuItem item) {}
+    public void goToMain(MenuItem item) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

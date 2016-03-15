@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -101,12 +102,34 @@ public class MainActivity extends AppCompatActivity {
             imageView.setImageURI(uri);
         }
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
     public void goToCalendar (View view) {
         Intent intent = new Intent(this, CalendarScreen.class);
         startActivity(intent);
     }
     public void goToGraph(View view) {
         Intent intent = new Intent(this, GraphActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToCalendar (MenuItem item) {
+        Intent intent = new Intent(this, CalendarScreen.class);
+        startActivity(intent);
+    }
+    public void goToGraph(MenuItem item) {
+        Intent intent = new Intent(this, GraphActivity.class);
+        startActivity(intent);
+    }
+    public void goToMain(MenuItem item) {}
+    public void goToDate (MenuItem item) {
+        Intent intent = new Intent(this, DateScreen.class);
+        Calendar calendar = Calendar.getInstance();
+        int[] temp = {calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)};
+        intent.putExtra("com.example.patrick.DATE", temp);
         startActivity(intent);
     }
 }

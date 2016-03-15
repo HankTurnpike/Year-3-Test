@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- Permission to start Alarm on device reboot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -13,12 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Permission to start Alarm on device reboot -->
-        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
         <activity
             android:name=".InputScreen"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,32 +31,46 @@
             android:name=".CalendarScreen"
             android:label="@string/title_activity_display_message"
             android:parentActivityName=".MainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InputScreen" />
         </activity>
-        <activity android:name=".DateScreen">
+        <activity android:name=".DateScreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InputScreen" />
         </activity>
         <activity
             android:name=".GhettoInput"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_database_entry"
             android:parentActivityName=".InputScreen"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InputScreen" />
         </activity>
-        <activity android:name="com.example.patrick.myapplication.GraphActivity">
+        <activity android:name="com.example.patrick.myapplication.GraphActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".InputScreen" />
+        </activity>
 
 
 
