@@ -36,52 +36,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GraphActivity extends AppCompatActivity {
-    TextView dateTitle, notesTitle, notesSummary, goodThingsTitle, goodThingsSummary;
-    ImageView imageView;
-    Button button;
+    private TextView dateTitle, notesTitle, notesSummary, goodThingsTitle, goodThingsSummary;
+    private ImageView imageView;
+    private Button button;
 
-    DataBaseHelper dbh;
+    private DataBaseHelper dbh;
     LineChart lineChart;
-    int height;
-    ArrayList<String> labels;
-    int year, month, day;
-
-    private void setAlarmNotification() {
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 3);
-        calendar.set(Calendar.MINUTE, 8);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        //calendar.set(Calendar.AM_PM, Calendar.AM);
-        Log.d("alarm", "");
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                1000 * 60, pendingIntent);
-        makeToast("Alarm Set");
-    }
+    private int height;
+    private ArrayList<String> labels;
+    private int year, month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graph_activity);
-
-        //Setup Notifications
-        SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        int runs = preferences.getInt("NumberOfLaunches", 1);
-
-        if(runs < 1000){
-            setAlarmNotification();
-            editor.putInt("NumberOfLaunches", ++runs).commit();
-        }
-        else {
-
-        }
-
-
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Graph");
         dateTitle = (TextView) findViewById(R.id.textView_summary_graph);
