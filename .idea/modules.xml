@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Mind-Diary.iml" filepath="$PROJECT_DIR$/Mind-Diary.iml" />
       <module fileurl="file://$PROJECT_DIR$/Year-3-Test.iml" filepath="$PROJECT_DIR$/Year-3-Test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$USER_HOME$/Documents/AndroidStudio/MindDiary/app/app.iml" filepath="$USER_HOME$/Documents/AndroidStudio/MindDiary/app/app.iml" />
     </modules>
   </component>

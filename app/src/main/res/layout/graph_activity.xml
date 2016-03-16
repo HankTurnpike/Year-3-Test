@@ -121,7 +121,18 @@
         android:layout_height="wrap_content"
         android:text="Open Reminders"
         android:id="@+id/test_button"
+        android:onClick="goToReminders"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="goToReminders"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notifcation Settings"
+        android:id="@+id/notifcation_settings_bttn"
+        android:layout_above="@+id/chart"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="goToNotificationSettings"/>
 </RelativeLayout>
