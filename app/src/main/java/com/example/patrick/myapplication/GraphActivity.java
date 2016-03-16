@@ -43,7 +43,7 @@ public class GraphActivity extends AppCompatActivity {
     private Button button;
 
     private DataBaseHelper dbh;
-    LineChart lineChart;
+    private LineChart lineChart;
     private int height;
     private ArrayList<String> labels;
     private int year, month, day;

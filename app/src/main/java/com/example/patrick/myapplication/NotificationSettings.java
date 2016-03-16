@@ -20,16 +20,14 @@ import java.util.Calendar;
 
 public class NotificationSettings extends AppCompatActivity {
     private PendingIntent pendingIntent;
-    private ToggleButton toggle;
     private TextView timeTextView;
-    private String time;
     private TimePickerDialog.OnTimeSetListener timePick;
     private Calendar now;
 
     //SharedPreference field names
-    private String PREF_TOGGLE = "savedToggle";
-    private String PREF_HOUR   = "defaultHour";
-    private String PREF_MINUTE = "defaultMinute";
+    private final String PREF_TOGGLE = "savedToggle";
+    private final String PREF_HOUR   = "defaultHour";
+    private final String PREF_MINUTE = "defaultMinute";
 
     //Default time
     private final int DEFAULT_HOUR   = 17;
@@ -48,7 +46,7 @@ public class NotificationSettings extends AppCompatActivity {
         /* Retrieve a PendingIntent that will perform a broadcast */
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-        toggle = (ToggleButton) findViewById(R.id.toggleButton_daily_reminder);
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton_daily_reminder);
         boolean savedToggleOn = preferences.getBoolean(PREF_TOGGLE, false);
         toggle.setChecked(savedToggleOn);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -71,7 +69,7 @@ public class NotificationSettings extends AppCompatActivity {
 
         int hour = preferences.getInt(PREF_HOUR, DEFAULT_HOUR);
         int minute = preferences.getInt(PREF_MINUTE, DEFAULT_MINUTE);
-        time = "Reminder Time\n " + hour + ":" + minute;
+        String time = "Reminder Time\n " + hour + ":" + minute;
         timeTextView.setText(time);
         timePick = new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker view, int hour, int minute) {

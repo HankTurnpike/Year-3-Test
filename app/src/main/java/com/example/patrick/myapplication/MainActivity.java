@@ -19,8 +19,6 @@ import android.widget.ViewSwitcher;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    private RelativeLayout layout;
-    private DataBaseHelper dbh;
     private String imagePath ="";
     private ImageView imageView;
 
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(cal.get(Calendar.YEAR) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DAY_OF_MONTH));
 
-        dbh            = new DataBaseHelper(this);
+        DataBaseHelper dbh = new DataBaseHelper(this);
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
         int[] resIds = new int[len];
@@ -42,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
         Rating data = dbh.getRow(cal);
-        layout=(RelativeLayout)findViewById(R.id.layout);
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
         final RelativeLayout.LayoutParams params =
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -121,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     public void goToMain(MenuItem item) {}
     public void goToInput (View view) {
         Intent intent = new Intent(this, InputScreen.class);
-        Calendar calendar = Calendar.getInstance();
         intent.putExtra("redo", "true");
         startActivity(intent);
     }

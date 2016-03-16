@@ -12,7 +12,6 @@ import java.util.Calendar;
 
 public class CreateReminder extends AppCompatActivity {
     private TextView timeTextView;
-    private String time;
     private TimePickerDialog.OnTimeSetListener timePick;
     private Calendar now;
 
@@ -22,7 +21,7 @@ public class CreateReminder extends AppCompatActivity {
         setContentView(R.layout.activity_create_reminder);
         timeTextView = (TextView) findViewById(R.id.reminder_time);
         now = Calendar.getInstance();
-        time = "Hello";
+        String time = "Hello";
         timeTextView.setText(time);
 
         timePick = new TimePickerDialog.OnTimeSetListener() {

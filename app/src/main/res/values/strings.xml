@@ -8,13 +8,13 @@
     <!-- Database screen strings -->
     <string name="title_database_entry">Daily Entry</string>
     <string name="message_entry">Enter Three things</string>
-    <string name="hint_entry_one">Entry one...</string>
-    <string name="hint_entry_two">Entry two...</string>
-    <string name="hint_entry_three">Entry three...</string>
+    <string name="hint_entry_one">Entry one</string>
+    <string name="hint_entry_two">Entry two</string>
+    <string name="hint_entry_three">Entry three</string>
     <string name="title_notes">Notes:</string>
-    <string name="hint_notes">Enter notes...</string>
+    <string name="hint_notes">Enter notes</string>
     <string name="title_rating">Rating: </string>
-    <string name="hint_rating">Enter Rating...</string>
+    <string name="hint_rating">Enter Rating</string>
     <string name="button_insert">Insert</string>
     <string name="day">Today\'s Date</string>
     <string name="calendar">Calendar</string>
@@ -28,6 +28,7 @@
     <string name="cal">Calendar</string>
     <string name="notedes">Write anything about your day here.</string>
     <string name="main">Main</string>
+    <string name="select">Select Image</string>
 
     <array name="img_id_arr">
         <item>@drawable/rating_1</item>

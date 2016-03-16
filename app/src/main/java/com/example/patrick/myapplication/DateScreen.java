@@ -23,8 +23,6 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import java.util.Calendar;
 
 public class DateScreen extends AppCompatActivity {
-    private RelativeLayout layout;
-    private DataBaseHelper dbh;
     private String imagePath ="";
     private ImageView imageView;
 
@@ -39,7 +37,7 @@ public class DateScreen extends AppCompatActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(dateNums[2]+"/"+dateNums[1]+"/"+dateNums[0]);
 
-        dbh            = new DataBaseHelper(this);
+        DataBaseHelper dbh = new DataBaseHelper(this);
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
         int[] resIds = new int[len];
@@ -49,7 +47,7 @@ public class DateScreen extends AppCompatActivity {
         final Calendar cal = Calendar.getInstance();
         cal.set(dateNums[0],dateNums[1],dateNums[2]);
         Rating data = dbh.getRow(cal);
-        layout=(RelativeLayout)findViewById(R.id.layout);
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
         TextView notes = (TextView) findViewById(R.id.notes);
         findViewById(R.id.scroll_view).setOnTouchListener(new OnSwipeTouchListener(DateScreen.this) {
             public void onSwipeRight() {

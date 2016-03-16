@@ -1,8 +1,4 @@
 package com.example.patrick.myapplication;
-
-/**
- * Created by Patrick on 16/03/2016.
- */
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -10,7 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-public class OnSwipeTouchListener implements OnTouchListener {
+class OnSwipeTouchListener implements OnTouchListener {
 
     private final GestureDetector gestureDetector;
 
@@ -71,10 +67,10 @@ public class OnSwipeTouchListener implements OnTouchListener {
     public void onSwipeLeft() {
     }
 
-    public void onSwipeTop() {
+    private void onSwipeTop() {
     }
 
-    public void onSwipeBottom() {
+    private void onSwipeBottom() {
     }
 }
 

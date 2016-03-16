@@ -32,8 +32,9 @@ import java.util.Date;
 
 public class CalendarScreen extends AppCompatActivity implements OnDateSelectedListener {
     public final static String DATE = "com.example.patrick.DATE";
-    RelativeLayout layout;
+    private RelativeLayout layout;
     @Bind(R.id.calendarView)
+    private
     MaterialCalendarView calendarView;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     private DataBaseHelper dbh;
@@ -53,7 +54,6 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Calendar");
 
-        Intent intent = getIntent();
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
         int[] resIds = new int[len];
@@ -100,7 +100,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
 
     public class OneDayDecorator implements DayViewDecorator {
 
-        private CalendarDay date;
+        private final CalendarDay date;
         private Drawable d;
 
         public OneDayDecorator() {
@@ -126,9 +126,6 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
             view.addSpan(new ForegroundColorSpan(Color.WHITE));
 
         }
-        public  void setDate(Date date) {
-            this.date = CalendarDay.from(date);
-        }
     }
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         CalendarDay current = CalendarDay.from(Calendar.getInstance());
@@ -139,7 +136,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
             startActivity(intent);
         }
     }
-    public boolean dataExists(CalendarDay date){
+    private boolean dataExists(CalendarDay date){
         Calendar temp = Calendar.getInstance();
         temp.set(date.getYear(),date.getMonth(),date.getDay());
         return(dbh.getRating(temp)!=-1);

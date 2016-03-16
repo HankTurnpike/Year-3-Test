@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.Calendar;
 
-public class DataBaseHelper extends SQLiteOpenHelper {
+class DataBaseHelper extends SQLiteOpenHelper {
     private static final int    DB_VERSION    = 1;
     private static final String DB_NAME       = "Ratings.db";
     // Table

@@ -62,7 +62,6 @@ import java.util.Date;
 
 public class InputScreen extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
-    private SeekBar ratingSlider;
     private int rating = 1;
     private TextView text;
     private DataBaseHelper   dbh;
@@ -73,7 +72,7 @@ public class InputScreen extends AppCompatActivity {
 
     private PendingIntent pendingIntent;
 
-    public void startAlarm() {
+    private void startAlarm() {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         long interval = 60000; //minute
         //long interval = //AlarmManager.INTERVAL_DAY;
@@ -119,7 +118,7 @@ public class InputScreen extends AppCompatActivity {
         String check = getIntent().getStringExtra("redo");
         if(check==null && dbh.getRating(Calendar.getInstance())!=-1)
             submitDate(findViewById(android.R.id.content));
-        ratingSlider = (SeekBar) findViewById(R.id.seekBar);
+        SeekBar ratingSlider = (SeekBar) findViewById(R.id.seekBar);
         ratingSlider.setScaleY(1.25f);
         ratingSlider.setScaleX(1.25f);
         dbh            = new DataBaseHelper(this);
@@ -137,7 +136,7 @@ public class InputScreen extends AppCompatActivity {
             int progressChanged;
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressChanged = progress/10 +1;
+                progressChanged = progress / 10 + 1;
                 text.setText("Rating: " + progressChanged);
 
             }
@@ -229,7 +228,7 @@ public class InputScreen extends AppCompatActivity {
                 int month = temp.get(Calendar.MONTH);
                 int day   = temp.get(Calendar.DAY_OF_MONTH);
                 int year = temp.get(Calendar.YEAR);
-                boolean success = dbh.insert(2016, month, day, rating, notes, entryOne, entryTwo,
+                boolean success = dbh.insert(year, month, day, rating, notes, entryOne, entryTwo,
                         entryThree, imagePath);
                 if (success) {
                     text = "Entry successfully made ";
@@ -268,7 +267,7 @@ public class InputScreen extends AppCompatActivity {
             tmp = tmp.replace("" + i,"");
         return tmp.length() == 0;
     }
-    public void submitDate(View view) {
+    private void submitDate(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
         startActivity(intent);

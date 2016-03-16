@@ -16,14 +16,13 @@ import android.widget.Toast;
 public class RemindersOverview extends AppCompatActivity {
     private String [] versions = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honey",
             "Ice Cream", "Jerry Been", "KatKit", "Lolliotpop", "Nutella"};
-    private ListView listView;
     private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
-        listView = (ListView) findViewById(R.id.listview_Reminder);
+        ListView listView = (ListView) findViewById(R.id.listview_Reminder);
         //populateListView();
 
         //adapter = new ArrayAdapter<String>(this, R.layout.reminder_overview, R.id

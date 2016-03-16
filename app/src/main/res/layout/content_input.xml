@@ -155,13 +155,13 @@
 
     <!-- Image Entry -->
     <Button
+        style="?android:buttonBarButtonStyle"
         android:id="@+id/image_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Image"
+        android:text="@string/select"
         android:onClick="getImage"
         android:layout_alignTop="@+id/image_view_database"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="50dp" />
     <ImageView
@@ -178,6 +178,7 @@
 
     <!--Submit to database -->
     <Button
+        style="?android:buttonBarButtonStyle"
         android:id="@+id/insert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
