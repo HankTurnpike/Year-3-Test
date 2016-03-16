@@ -66,7 +66,6 @@ public class DateScreen extends AppCompatActivity {
                 CalendarDay date = CalendarDay.from(cal);
                 int[] temp = {date.getYear(), date.getMonth(), date.getDay() + 1};
                 intent.putExtra("com.example.patrick.DATE", temp);
-                Toast.makeText(DateScreen.this, "left", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 finish();
             }
