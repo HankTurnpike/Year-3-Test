@@ -22,7 +22,7 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New ToggleButton"
+        android:text="Helllo "
         android:id="@+id/toggleButton_daily_reminder"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -30,13 +30,22 @@
         android:layout_marginRight="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="right"
+        android:checked="false"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#b9b8b8"
+        android:layout_below="@+id/textview_daily_toggle"
+        android:layout_alignParentStart="true"></View>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:gravity="center|left"
+        android:gravity="center|start"
         android:text="Select time to be reminded:"
         android:id="@+id/textView_daily_time_reminder"
         android:layout_below="@+id/textview_daily_toggle"
@@ -48,4 +57,11 @@
         android:layout_alignRight="@+id/toggleButton_daily_reminder"
         android:layout_alignEnd="@+id/toggleButton_daily_reminder"
         android:onClick="selectDailyTime"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#b9b8b8"
+        android:layout_below="@+id/textView_daily_time_reminder"
+        android:layout_alignParentStart="true"></View>
+
 </RelativeLayout>

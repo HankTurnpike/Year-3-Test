@@ -30,8 +30,8 @@ public class NotificationSettings extends AppCompatActivity {
     private final String PREF_MINUTE = "defaultMinute";
 
     //Default time
-    private final int DEFAULT_HOUR   = 17;
-    private final int DEFAULT_MINUTE = 28;
+    private final int DEFAULT_HOUR   = 18;
+    private final int DEFAULT_MINUTE = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +86,6 @@ public class NotificationSettings extends AppCompatActivity {
         };
     }
 
-
-
     public void selectDailyTime(View view) {
         new TimePickerDialog(NotificationSettings.this, timePick, now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE), true).show();
@@ -106,8 +104,8 @@ public class NotificationSettings extends AppCompatActivity {
         Calendar current  = Calendar.getInstance();
         long before = calendar.getTimeInMillis();
         //Apply this if statement so the alarm for a notification isn't fired instantly
-        if(calendar.compareTo(current) <= 0)
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        //if(calendar.compareTo(current) <= 0)
+        //    calendar.add(Calendar.DAY_OF_MONTH, 1);
         trigger = calendar.getTimeInMillis();
         manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval,
                 pendingIntent);
