@@ -4,7 +4,6 @@
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
@@ -22,10 +21,10 @@
                 android:layout_height="wrap_content"
                 android:text="Calendar"
                 android:id="@+id/calendarButton"
+                android:onClick="goToCalendar"
                 android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/note_switcher"
-                android:layout_alignEnd="@+id/note_switcher"
-                android:onClick="goToCalendar"/>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -36,19 +35,25 @@
                 android:layout_toLeftOf="@+id/calendarButton"
                 android:layout_toStartOf="@+id/calendarButton"
                 android:onClick="goToGraph"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Input"
+                android:id="@+id/InputButton"
+                android:onClick="goToInput"
+                android:layout_below="@+id/calendarButton"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="50sp"
                 android:text="@string/notes"
-                android:layout_marginRight="52dp"
-                android:layout_marginEnd="52dp"
-                android:layout_marginTop="70dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/title" />
+                android:id="@+id/title"
+                android:layout_below="@+id/InputButton"
+                android:layout_alignLeft="@+id/graphButton"
+                android:layout_alignStart="@+id/graphButton" />
 
             <ImageView
                 android:layout_height="wrap_content"
@@ -60,38 +65,22 @@
                 android:padding="2dp"
                 android:background="#4fa5d5"
                 android:id="@+id/image"
-                android:layout_alignBottom="@+id/note_switcher"
+                android:layout_alignBottom="@+id/notes"
                 android:layout_alignRight="@+id/title2"
                 android:layout_alignEnd="@+id/title2"
                 android:visibility="invisible"
                 />
 
-            <ViewSwitcher
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/note_switcher"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/title"
-                android:layout_alignLeft="@+id/title"
-                android:layout_alignStart="@+id/title" >
-
-                <EditText
-                    android:id="@+id/note_edit"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/note_hint" >
-                </EditText>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/text_box"
-                    android:layout_marginTop="41dp"
                     android:minHeight="150dp"
                     android:minWidth="150dp"
                     android:id="@+id/notes"
-                    />
-            </ViewSwitcher>
+                    android:layout_below="@+id/title"
+                    android:layout_alignLeft="@+id/title"
+                    android:layout_alignStart="@+id/title" />
 
             <TextView
                 android:layout_width="wrap_content"

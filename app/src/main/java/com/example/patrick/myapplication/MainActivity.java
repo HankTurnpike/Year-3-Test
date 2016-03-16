@@ -16,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,9 +47,7 @@ public class MainActivity extends AppCompatActivity {
             final RelativeLayout.LayoutParams params =
                     new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
-            ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.note_switcher);
-            switcher.showNext(); //or switcher.showPrevious();
-            TextView notes = (TextView) switcher.findViewById(R.id.notes);
+            TextView notes = (TextView) findViewById(R.id.notes);
             if (!data.getNotes().equals("")) {
                 notes.setText(data.getNotes());
             }
@@ -125,11 +121,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void goToMain(MenuItem item) {}
-    public void goToDate (MenuItem item) {
-        Intent intent = new Intent(this, DateScreen.class);
+    public void goToInput (View view) {
+        Intent intent = new Intent(this, InputScreen.class);
         Calendar calendar = Calendar.getInstance();
-        int[] temp = {calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)};
-        intent.putExtra("com.example.patrick.DATE", temp);
+        intent.putExtra("redo", "true");
         startActivity(intent);
     }
 }

@@ -8,14 +8,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.Calendar;
 
@@ -43,17 +46,36 @@ public class DateScreen extends AppCompatActivity {
         for (int i = 0; i < len; i++)
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
-        Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance();
         cal.set(dateNums[0],dateNums[1],dateNums[2]);
         Rating data = dbh.getRow(cal);
         layout=(RelativeLayout)findViewById(R.id.layout);
+        TextView notes = (TextView) findViewById(R.id.notes);
+        findViewById(R.id.scroll_view).setOnTouchListener(new OnSwipeTouchListener(DateScreen.this) {
+            public void onSwipeRight() {
+                Intent intent = new Intent(getApplicationContext(), DateScreen.class);
+                CalendarDay date = CalendarDay.from(cal);
+                int[] temp = {date.getYear(), date.getMonth(), date.getDay() - 1};
+                intent.putExtra("com.example.patrick.DATE", temp);
+                startActivity(intent);
+                finish();
+            }
+
+            public void onSwipeLeft() {
+                Intent intent = new Intent(getApplicationContext(), DateScreen.class);
+                CalendarDay date = CalendarDay.from(cal);
+                int[] temp = {date.getYear(), date.getMonth(), date.getDay() + 1};
+                intent.putExtra("com.example.patrick.DATE", temp);
+                Toast.makeText(DateScreen.this, "left", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+                finish();
+            }
+
+        });
         if(data != null) {
             final RelativeLayout.LayoutParams params =
                     new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
-            ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.note_switcher);
-            switcher.showNext(); //or switcher.showPrevious();
-            TextView notes = (TextView) switcher.findViewById(R.id.notes);
             if (!data.getNotes().equals("")) {
                 notes.setText(data.getNotes());
             }
@@ -95,6 +117,19 @@ public class DateScreen extends AppCompatActivity {
             rating.setBackground(d);
             layout.addView(rating);
         }
+        else {
+            TextView goodThings= (TextView) findViewById(R.id.good_things);
+            goodThings.setVisibility(View.GONE);
+            TextView goodTitle = (TextView) findViewById(R.id.title2);
+            goodTitle.setVisibility(View.GONE);
+            TextView title = (TextView) findViewById(R.id.title);
+            title.setVisibility(View.GONE);
+            imageView = (ImageView) findViewById(R.id.image);
+            imageView.setVisibility(View.GONE);
+            notes.setText("No entry for this day.");
+            notes.setGravity(Gravity.CENTER);
+        }
+
 
     }
     private void displayImage(){
