@@ -296,12 +296,6 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //Testing
-    public void goToReminders (View view) {
-        Intent intent = new Intent(this, RemindersOverview.class);
-        startActivity(intent);
-    }
-
-    //Testing
     public void goToNotificationSettings (View view) {
         Intent intent = new Intent(this, NotificationSettings.class);
         startActivity(intent);
