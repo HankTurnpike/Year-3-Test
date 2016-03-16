@@ -77,9 +77,7 @@ public class InputScreen extends AppCompatActivity {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         long interval = 60000; //minute
         //long interval = //AlarmManager.INTERVAL_DAY;
-
         long trigger = System.currentTimeMillis();
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 18); //24 hour clock
@@ -88,11 +86,10 @@ public class InputScreen extends AppCompatActivity {
         //calendar.add(Calendar.DAY_OF_MONTH, -1);
         Calendar current  = Calendar.getInstance();
         long before = calendar.getTimeInMillis();
-        if(calendar.compareTo(current) <= 0)
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-
+        //Apply this if statement so the alarm for a notification isn't fired instantly
+        //if(calendar.compareTo(current) <= 0)
+        //    calendar.add(Calendar.DAY_OF_MONTH, 1);
         trigger = calendar.getTimeInMillis();
-
         manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval,
                 pendingIntent);
         //noinspection ResourceType
