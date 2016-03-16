@@ -75,21 +75,27 @@ public class InputScreen extends AppCompatActivity {
 
     public void startAlarm() {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        long interval = 360000; //minute
+        long interval = 60000; //minute
         //long interval = //AlarmManager.INTERVAL_DAY;
-
-     //   Calendar calendar = Calendar.getInstance();
-    //    calendar.setTimeInMillis(System.currentTimeMillis());
-    //    calendar.set(Calendar.HOUR, 15); //24 hour clock
-    //    calendar.set(Calendar.MINUTE, 0);
-    //    calendar.set(Calendar.SECOND, 0);
-    //    calendar.add(Calendar.DAY_OF_MONTH, -1);
-        //System.currentTimeMillis()
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval,
+        long trigger = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 18); //24 hour clock
+        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.SECOND, 0);
+        //calendar.add(Calendar.DAY_OF_MONTH, -1);
+        Calendar current  = Calendar.getInstance();
+        long before = calendar.getTimeInMillis();
+        //Apply this if statement so the alarm for a notification isn't fired instantly
+        //if(calendar.compareTo(current) <= 0)
+        //    calendar.add(Calendar.DAY_OF_MONTH, 1);
+        trigger = calendar.getTimeInMillis();
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval,
                 pendingIntent);
         //noinspection ResourceType
         Toast.makeText(this, "Alarm Set\n" +
-                " System time: " + System.currentTimeMillis() , Toast.LENGTH_LONG).show();
+                "System time: " + System.currentTimeMillis() + "\nTrigger: " + trigger +
+                "\nBefore: " + before, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -101,7 +107,7 @@ public class InputScreen extends AppCompatActivity {
         SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         int runs = preferences.getInt("NumberOfLaunches", 1);
-        if(runs < 4){
+        if(runs < 400){
             /* Retrieve a PendingIntent that will perform a broadcast */
             Intent alarmIntent = new Intent(this, AlarmReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
