@@ -61,56 +61,41 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class InputScreen extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
+    //Shared preferences names for initial start date of app
+    public static String PREF_YEAR  = "START_YEAR";
+    public static String PREF_MONTH = "START_MONTH";
+    public static String PREF_DAY   = "START_DAY";
+
     private int rating = 1;
     private TextView text;
-    private DataBaseHelper   dbh;
+    private DataBaseHelper dbh;
     private EditText editEntryOne, editEntryTwo, editEntryThree, editNotes;
     private ImageView imageView;
     private static final int REQUEST_IMAGE = 1;
-    private String           imagePath = "";
-
-    private PendingIntent pendingIntent;
-
-    private void startAlarm() {
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        long interval = 60000; //minute
-        //long interval = //AlarmManager.INTERVAL_DAY;
-        long trigger = System.currentTimeMillis();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 18); //24 hour clock
-        calendar.set(Calendar.MINUTE, 30);
-        calendar.set(Calendar.SECOND, 0);
-        //calendar.add(Calendar.DAY_OF_MONTH, -1);
-        Calendar current  = Calendar.getInstance();
-        long before = calendar.getTimeInMillis();
-        //Apply this if statement so the alarm for a notification isn't fired instantly
-        //if(calendar.compareTo(current) <= 0)
-        //    calendar.add(Calendar.DAY_OF_MONTH, 1);
-        trigger = calendar.getTimeInMillis();
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval,
-                pendingIntent);
-        //noinspection ResourceType
-        Toast.makeText(this, "Alarm Set\n" +
-                "System time: " + System.currentTimeMillis() + "\nTrigger: " + trigger +
-                "\nBefore: " + before, Toast.LENGTH_LONG).show();
-    }
+    private String imagePath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
 
-        //Setup Notifications
+        //Setup date for first run of application
         SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         int runs = preferences.getInt("NumberOfLaunches", 1);
-        if(runs < 400){
-            /* Retrieve a PendingIntent that will perform a broadcast */
-            Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-            pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-            startAlarm();
+        if(runs < 2){
+            //Set up start date in shared preferences, to limit when the calendar and graph
+            // start to calculate when data is added to them
+            Calendar now = Calendar.getInstance();
+
+            //Comment this out  and un-comment the three lines below
+            editor.putInt(PREF_YEAR, 2016).commit();
+            editor.putInt(PREF_MONTH, 0).commit();
+            editor.putInt(PREF_DAY, 1).commit();
+
+            //editor.putInt(PREF_YEAR, now.get(Calendar.YEAR)).commit();
+            //editor.putInt(PREF_MONTH, now.get(Calendar.MONTH)).commit();
+            //editor.putInt(PREF_DAY, now.get(Calendar.DAY_OF_MONTH)).commit();
             editor.putInt("NumberOfLaunches", ++runs).commit();
         }
 
@@ -186,13 +171,13 @@ public class InputScreen extends AppCompatActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             File image = createImageFile();
             imagePath = image.getAbsolutePath();
-            // Continue only if the File was successfully created
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(image));
             startActivityForResult(intent, REQUEST_IMAGE);
         }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Display image if File was successfully created
         if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
             if(imagePath != null) {
                 Uri uri = Uri.parse(imagePath);
@@ -201,11 +186,6 @@ public class InputScreen extends AppCompatActivity {
                 Bitmap thumbImg = ThumbnailUtils.extractThumbnail(bitmap, 100, 150);
                 imageView.setImageBitmap(thumbImg);
             }
-            //Gets the display name for the image, might be useful?
-            //Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-            //int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            //cursor.moveToFirst();
-            //String testPath = cursor.getString(nameIndex);
         }
         else
             makeToast("No image captured.\nMemory may be full.");

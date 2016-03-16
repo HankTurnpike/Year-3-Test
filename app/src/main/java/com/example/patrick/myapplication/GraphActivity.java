@@ -212,13 +212,12 @@ public class GraphActivity extends AppCompatActivity {
         ArrayList<Entry> entries = new ArrayList<>();
         labels = new ArrayList<>();
 
-        //***********************************************//
-        //                                               //
-        //                                               //
-        // Get start date of app from shared preferences //
-        //                                               //
-        //                                               //
-        //***********************************************//
+        // Get start date of app from shared preferences
+        SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        int installYear  = preferences.getInt(InputScreen.PREF_YEAR, 2016);
+        int installMonth = preferences.getInt(InputScreen.PREF_MONTH, 1);
+        int installDay   = preferences.getInt(InputScreen.PREF_DAY, 1);
 
         Calendar cal = Calendar.getInstance();
         //Get the current day, days after should not have a rating
@@ -227,8 +226,10 @@ public class GraphActivity extends AppCompatActivity {
         Calendar tomorrow = (Calendar) cal.clone();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.MONTH, 0);
+        //Set the initial install date for the app
+        cal.set(Calendar.YEAR, installYear);
+        cal.set(Calendar.MONTH, installMonth);
+        cal.set(Calendar.DAY_OF_MONTH, installDay);
         int i = 0; //Index to add a particular entry
         boolean hasData = false;
         while (!cal.equals(tomorrow)) {

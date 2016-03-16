@@ -1,11 +1,13 @@
 package com.example.patrick.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +36,6 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
     public final static String DATE = "com.example.patrick.DATE";
     private RelativeLayout layout;
     @Bind(R.id.calendarView)
-    private
     MaterialCalendarView calendarView;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     private DataBaseHelper dbh;
@@ -63,16 +64,12 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
 
         layout=(RelativeLayout)findViewById(R.id.second_row);
         final MaterialCalendarView calendarView = (MaterialCalendarView) layout.findViewById(R.id.calendarView);
-        //Calendar calendar = Calendar.getInstance();
-        //CalendarDay day2 = CalendarDay.from(calendar);
-
-        //***********************************************//
-        //                                               //
-        //                                               //
-        // Get start date of app from shared preferences //
-        //                                               //
-        //                                               //
-        //***********************************************//
+        // Get start date of app from shared preferences
+        SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        int installYear  = preferences.getInt(InputScreen.PREF_YEAR, 2016);
+        int installMonth = preferences.getInt(InputScreen.PREF_MONTH, 0);
+        int installDay   = preferences.getInt(InputScreen.PREF_DAY, 1);
 
         Calendar cal = Calendar.getInstance();
         //Get the current day, days after should not have a rating
@@ -81,8 +78,10 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         Calendar tomorrow = (Calendar) cal.clone();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.MONTH, 0);
+        //Set the initial install date for the app
+        cal.set(Calendar.YEAR, installYear);
+        cal.set(Calendar.MONTH, installMonth);
+        cal.set(Calendar.DAY_OF_MONTH, installDay);
 
         CalendarDay day;
         while (!cal.equals(tomorrow)) {
