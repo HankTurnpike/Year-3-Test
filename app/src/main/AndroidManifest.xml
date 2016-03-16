@@ -67,12 +67,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InputScreen" />
         </activity>
-        <activity android:name=".RemindersOverview"/>
-        <activity android:name=".CreateReminder"/>
         <activity android:name=".NotificationSettings"/>
-
-
-
 
         <receiver android:name="com.example.patrick.myapplication.AlarmReceiver">
             <intent-filter>
