@@ -123,11 +123,10 @@ public class DateScreen extends AppCompatActivity {
             TextView goodTitle = (TextView) findViewById(R.id.title2);
             goodTitle.setVisibility(View.GONE);
             TextView title = (TextView) findViewById(R.id.title);
-            title.setVisibility(View.GONE);
+            title.setText("No entry for this day.");
             imageView = (ImageView) findViewById(R.id.image);
             imageView.setVisibility(View.GONE);
-            notes.setText("No entry for this day.");
-            notes.setGravity(Gravity.CENTER);
+            notes.setVisibility(View.GONE);
         }
 
 
