@@ -67,6 +67,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InputScreen" />
         </activity>
+        <activity android:name=".RemindersOverview"></activity>
+        <activity android:name=".CreateReminder"></activity>
+        <activity android:name=".NotificationSettings"></activity>
 
 
 
