@@ -52,8 +52,8 @@
         <activity android:name="com.example.patrick.myapplication.GraphActivity">
         </activity>
         <activity android:name=".MainActivity"></activity>
-
-
+        <activity android:name=".RemindersOverview"></activity>
+        <activity android:name=".CreateReminder"></activity>
 
         <receiver android:name="com.example.patrick.myapplication.AlarmReceiver">
             <intent-filter>

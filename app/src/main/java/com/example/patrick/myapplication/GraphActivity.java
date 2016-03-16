@@ -293,4 +293,10 @@ public class GraphActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    //Testing
+    public void goToReminders (View view) {
+        Intent intent = new Intent(this, RemindersOverview.class);
+        startActivity(intent);
+    }
 }
