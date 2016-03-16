@@ -43,54 +43,52 @@ public class MainActivity extends AppCompatActivity {
         ar.recycle();
         Rating data = dbh.getRow(cal);
         layout=(RelativeLayout)findViewById(R.id.layout);
-        if(data != null) {
-            final RelativeLayout.LayoutParams params =
-                    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextView notes = (TextView) findViewById(R.id.notes);
-            if (!data.getNotes().equals("")) {
-                notes.setText(data.getNotes());
-            }
-            else {
-                notes.setText("No notes for this day.");
-            }
-                TextView goodThings = (TextView) findViewById(R.id.good_things);
-            String goodText ="1. ";
-            if(!data.getEntryOne().equals("")) {
-                goodText = goodText+data.getEntryOne();
-                if(!data.getEntryTwo().equals("")){
-                    goodText = goodText+"\n2. "+data.getEntryTwo();
-                    if(!data.getEntryThree().equals("")){
-                        goodText = goodText+"\n3. "+data.getEntryThree();
-                    }
+        final RelativeLayout.LayoutParams params =
+                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextView notes = (TextView) findViewById(R.id.notes);
+        if (!data.getNotes().equals("")) {
+            notes.setText(data.getNotes());
+        }
+        else {
+            notes.setText("No notes for this day.");
+        }
+            TextView goodThings = (TextView) findViewById(R.id.good_things);
+        String goodText ="1. ";
+        if(!data.getEntryOne().equals("")) {
+            goodText = goodText+data.getEntryOne();
+            if(!data.getEntryTwo().equals("")){
+                goodText = goodText+"\n2. "+data.getEntryTwo();
+                if(!data.getEntryThree().equals("")){
+                    goodText = goodText+"\n3. "+data.getEntryThree();
                 }
             }
-            else {
-                goodThings.setVisibility(View.GONE);
-                TextView goodTitle = (TextView) findViewById(R.id.title2);
-                goodTitle.setVisibility(View.GONE);
-            }
-            goodThings.setText(goodText);
-            imageView = (ImageView) findViewById(R.id.image);
-            imagePath = data.getImagePath();
-            displayImage();
-
-            params.setMargins(0, 0, 0, 0);
-            TextView rating = new TextView(this);
-            rating.setLayoutParams(params);
-            rating.setTextSize(66);
-            rating.setText("" + data.getRating());
-            rating.setWidth(300);
-            rating.setHeight(300);
-            rating.setTextColor(Color.parseColor("#FFFFFF"));
-            rating.setGravity(17);
-
-            Drawable d = ContextCompat.getDrawable(this, resIds[data.getRating() - 1]);
-            rating.setBackground(d);
-            layout.addView(rating);
         }
+        else {
+            goodThings.setVisibility(View.GONE);
+            TextView goodTitle = (TextView) findViewById(R.id.title2);
+            goodTitle.setVisibility(View.GONE);
+        }
+        goodThings.setText(goodText);
+        imageView = (ImageView) findViewById(R.id.image);
+        imagePath = data.getImagePath();
+        displayImage();
 
+        params.setMargins(0, 0, 0, 0);
+        TextView rating = new TextView(this);
+        rating.setLayoutParams(params);
+        rating.setTextSize(66);
+        rating.setText("" + data.getRating());
+        rating.setWidth(300);
+        rating.setHeight(300);
+        rating.setTextColor(Color.parseColor("#FFFFFF"));
+        rating.setGravity(17);
+
+        Drawable d = ContextCompat.getDrawable(this, resIds[data.getRating() - 1]);
+        rating.setBackground(d);
+        layout.addView(rating);
     }
+
     private void displayImage(){
         if(!imagePath.equals("")) {
             Uri uri = Uri.parse(imagePath);
