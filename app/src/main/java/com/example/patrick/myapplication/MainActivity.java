@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(cal.get(Calendar.YEAR) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DAY_OF_MONTH));
-
         DataBaseHelper dbh = new DataBaseHelper(this);
+        //Get array of rating drawable locations.
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
         int[] resIds = new int[len];
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextView notes = (TextView) findViewById(R.id.notes);
+        //Set up the UI according to what data is available for the date.
         if (!data.getNotes().equals("")) {
             notes.setText(data.getNotes());
         }
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         }
             TextView goodThings = (TextView) findViewById(R.id.good_things);
         String goodText ="1. ";
+        //Display whatever amount of good things the user submitted
+        //and format them.
         if(!data.getEntryOne().equals("")) {
             goodText = goodText+data.getEntryOne();
             if(!data.getEntryTwo().equals("")){
@@ -63,15 +66,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else {
+            //Otherwise hide the box and title.
             goodThings.setVisibility(View.GONE);
             TextView goodTitle = (TextView) findViewById(R.id.title2);
             goodTitle.setVisibility(View.GONE);
         }
         goodThings.setText(goodText);
+        //Get the image path from the database and display it
         imageView = (ImageView) findViewById(R.id.image);
         imagePath = data.getImagePath();
         displayImage();
-
+        //Set up parameters for the rating bubble and display it
         params.setMargins(0, 0, 0, 0);
         TextView rating = new TextView(this);
         rating.setLayoutParams(params);
@@ -81,19 +86,22 @@ public class MainActivity extends AppCompatActivity {
         rating.setHeight(300);
         rating.setTextColor(Color.parseColor("#FFFFFF"));
         rating.setGravity(17);
-
+        //Show the rating bubble with it's corresponding colour
         Drawable d = ContextCompat.getDrawable(this, resIds[data.getRating() - 1]);
         rating.setBackground(d);
         layout.addView(rating);
     }
 
     private void displayImage(){
+    //If the user entered an image, display it
         if(!imagePath.equals("")) {
             Uri uri = Uri.parse(imagePath);
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageURI(uri);
         }
     }
+
+    //Menu
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
