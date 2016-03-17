@@ -32,22 +32,26 @@ public class DateScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_date_screen);
-
+        //Get date supplied by intent.
         int[] dateNums = getIntent().getIntArrayExtra("com.example.patrick.DATE");
         final Calendar cal = Calendar.getInstance();
         cal.set(dateNums[0],dateNums[1],dateNums[2]);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR));
         dbh            = new DataBaseHelper(this);
+        //Get array of rating drawable locations.
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
         int[] resIds = new int[len];
         for (int i = 0; i < len; i++)
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
+
         Rating data = dbh.getRow(cal);
         layout=(RelativeLayout)findViewById(R.id.layout);
         TextView notes = (TextView) findViewById(R.id.notes);
+        //Set up the OnSwipeTouchListener so that when the user swipes
+        //left or rate, they move between days as a result.
         findViewById(R.id.scroll_view).setOnTouchListener(new OnSwipeTouchListener(DateScreen.this) {
             public void onSwipeRight() {
                 Intent intent = new Intent(getApplicationContext(), DateScreen.class);
@@ -68,6 +72,7 @@ public class DateScreen extends AppCompatActivity {
             }
 
         });
+        //Set up the UI according to what data is available for the date.
         if(data != null) {
             final RelativeLayout.LayoutParams params =
                     new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -79,6 +84,8 @@ public class DateScreen extends AppCompatActivity {
                 notes.setText("No notes for this day.");
             }
             TextView goodThings= (TextView) findViewById(R.id.good_things);
+            //Display whatever amount of good things the user submitted
+            //and format them.
             String goodText ="1. ";
             if(!data.getEntryOne().equals("")) {
                 goodText = goodText+data.getEntryOne();
@@ -90,15 +97,17 @@ public class DateScreen extends AppCompatActivity {
                 }
             }
             else {
+                //Otherwise hide the box and title.
                 goodThings.setVisibility(View.GONE);
                 TextView goodTitle = (TextView) findViewById(R.id.title2);
                 goodTitle.setVisibility(View.GONE);
             }
             goodThings.setText(goodText);
+            //Get the image path from the database and display it
             imageView = (ImageView) findViewById(R.id.image);
             imagePath = data.getImagePath();
             displayImage();
-
+            //Set up parameters for the rating bubble and display it
             params.setMargins(0, 0, 0, 0);
             TextView rating = new TextView(this);
             rating.setLayoutParams(params);
@@ -113,6 +122,8 @@ public class DateScreen extends AppCompatActivity {
             rating.setBackground(d);
             layout.addView(rating);
         }
+        //If no data exists, hide all elements apart from a title
+        //saying that there is "No entry for this day"
         else {
             TextView goodThings= (TextView) findViewById(R.id.good_things);
             goodThings.setVisibility(View.GONE);
@@ -126,12 +137,14 @@ public class DateScreen extends AppCompatActivity {
         }
     }
     private void displayImage(){
+        //If the user entered an image, display it
         if(!imagePath.equals("")) {
             Uri uri = Uri.parse(imagePath);
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageURI(uri);
         }
     }
+    //Menu
     public void goToCalendar (MenuItem item) {
         Intent intent = new Intent(this, CalendarScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
