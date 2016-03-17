@@ -27,8 +27,9 @@
     <string name="rating">Rating: 1</string>
     <string name="cal">Calendar</string>
     <string name="notedes">Write anything about your day here.</string>
-    <string name="main">Main</string>
+    <string name="main">Daily Entry</string>
     <string name="select">Select Image</string>
+    <string name="notification_settings">Settings</string>
 
     <array name="img_id_arr">
         <item>@drawable/rating_1</item>

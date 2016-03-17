@@ -93,12 +93,9 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
             }
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
-
-
-}
+    }
 
     public class OneDayDecorator implements DayViewDecorator {
-
         private final CalendarDay date;
         private Drawable d;
 
@@ -148,7 +145,17 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         finish();
     }
     public void goToMain(MenuItem item) {
-        Intent intent = new Intent(this, MainActivity.class);
+        if (dbh.getRating(Calendar.getInstance()) != -1) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+            startActivity(intent);
+            finish();
+        }
+        else
+            Toast.makeText(CalendarScreen.this, "No input for today", Toast.LENGTH_LONG).show();
+    }
+    public void goToSettings(MenuItem item) {
+        Intent intent = new Intent(this, NotificationSettings.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);
         finish();

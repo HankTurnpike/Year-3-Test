@@ -9,6 +9,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -38,6 +41,11 @@ public class NotificationSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle("Settings");
+
         timeTextView = (TextView) findViewById(R.id.textView_daily_time_reminder);
         now = Calendar.getInstance();
         //=====shared preferences
@@ -140,5 +148,34 @@ public class NotificationSettings extends AppCompatActivity {
         else
             format += " pm";
         return format;
+    }
+
+    public void goToCalendar (MenuItem item) {
+        Intent intent = new Intent(this, CalendarScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public void goToGraph(MenuItem item) {
+        Intent intent = new Intent(this, GraphActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public void goToMain(MenuItem item) {
+        if (new DataBaseHelper(this).getRating(Calendar.getInstance()) != -1) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+            startActivity(intent);
+            finish();
+        }
+        else
+            Toast.makeText(this, "No input for today", Toast.LENGTH_LONG).show();
+    }
+    public void goToSettings(MenuItem item) {}
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

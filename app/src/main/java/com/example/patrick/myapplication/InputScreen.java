@@ -86,13 +86,11 @@ public class InputScreen extends AppCompatActivity {
         if(runs < 2){
             //Set up start date in shared preferences, to limit when the calendar and graph
             // start to calculate when data is added to them
-            Calendar now = Calendar.getInstance();
-
-            //Comment this out  and un-comment the three lines below
+            //Comment out these three line and un-comment the four lines below.
             editor.putInt(PREF_YEAR, 2016).commit();
             editor.putInt(PREF_MONTH, 0).commit();
             editor.putInt(PREF_DAY, 1).commit();
-
+            //Calendar now = Calendar.getInstance();
             //editor.putInt(PREF_YEAR, now.get(Calendar.YEAR)).commit();
             //editor.putInt(PREF_MONTH, now.get(Calendar.MONTH)).commit();
             //editor.putInt(PREF_DAY, now.get(Calendar.DAY_OF_MONTH)).commit();
@@ -111,8 +109,6 @@ public class InputScreen extends AppCompatActivity {
         editEntryOne   = (EditText) findViewById(R.id.good);
         editEntryTwo   = (EditText) findViewById(R.id.good2);
         editEntryThree = (EditText) findViewById(R.id.good3);
-
-
         imageView      = (ImageView) findViewById(R.id.image_view_database);
         //Set fields for current day if in database
         text = (TextView) findViewById(R.id.slider_rating);
@@ -130,8 +126,6 @@ public class InputScreen extends AppCompatActivity {
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(InputScreen.this, "seek bar progress:" + progressChanged,
-                        Toast.LENGTH_SHORT).show();
                 rating = progressChanged;
                 Toast.makeText(InputScreen.this, "rating:" + rating,
                         Toast.LENGTH_SHORT).show();
@@ -141,7 +135,7 @@ public class InputScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("Create Entry");
     }
 
     @Override
@@ -162,9 +156,7 @@ public class InputScreen extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-
     }
     public void getImage(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -188,37 +180,29 @@ public class InputScreen extends AppCompatActivity {
             }
         }
         else
-            makeToast("No image captured.\nMemory may be full.");
+            Toast.makeText(this, "No image captured.\nMemory may be full.", Toast.LENGTH_SHORT).show();
     }
 
     public void insertRow(View view) {
         String text    = "Entry failed, your rating must be in the range 1 to 10!";
         String rateStr = ""+rating;
-        if(positiveInteger(rateStr)) { //check the rating is a positive integer
-            int rating = Integer.parseInt(rateStr);
-            if (rating > 0 && rating < 11) { //Test the range of the rating
-                String entryOne   = editEntryOne.getText().toString().trim();
-                String entryTwo   = editEntryTwo.getText().toString().trim();
-                String entryThree = editEntryThree.getText().toString().trim();
-                String notes      = editNotes.getText().toString().trim();
-                //Insert the data to database
-                //boolean success = dbh.insertToday(rating, notes, entryOne, entryTwo, entryThree,
-                //        imagePath);
-                Calendar temp = Calendar.getInstance();
-                int month = temp.get(Calendar.MONTH);
-                int day   = temp.get(Calendar.DAY_OF_MONTH);
-                int year = temp.get(Calendar.YEAR);
-                boolean success = dbh.insert(year, month, day, rating, notes, entryOne, entryTwo,
-                        entryThree, imagePath);
-                if (success) {
-                    text = "Entry successfully made ";
-                    submitDate(findViewById(android.R.id.content));
-                }
-                else
-                    text = " Entry failed, memory may be full";
+        int rating = Integer.parseInt(rateStr);
+        if (rating > 0 && rating < 11) { //Test the range of the rating
+            String entryOne   = editEntryOne.getText().toString().trim();
+            String entryTwo   = editEntryTwo.getText().toString().trim();
+            String entryThree = editEntryThree.getText().toString().trim();
+            String notes = editNotes.getText().toString().trim();
+            //Insert the data to database
+            boolean success = dbh.insertToday(rating, notes, entryOne, entryTwo, entryThree,
+                    imagePath);
+            if (success) {
+                text = "Entry successfully made ";
+                submitDate(findViewById(android.R.id.content));
             }
+            else
+                text = " Entry failed, memory may be full";
         }
-        makeToast(text);
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
     private File createImageFile() {
@@ -229,24 +213,6 @@ public class InputScreen extends AppCompatActivity {
         return new File(dir, "MindDiary_" + fileName + ".jpg");
     }
 
-
-
-    private void makeToast(String text) {
-        Context context  = getApplicationContext();
-        int     duration = Toast.LENGTH_LONG;
-        Toast   toast    = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-    private boolean positiveInteger(String num){
-        num = num.trim();
-        if(num.length() == 0)
-            return false;
-        String tmp = num;
-        for(int i = 0; i < 10; i++)
-            tmp = tmp.replace("" + i,"");
-        return tmp.length() == 0;
-    }
     private void submitDate(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
@@ -259,6 +225,7 @@ public class InputScreen extends AppCompatActivity {
         Intent intent = new Intent(this, GhettoInput.class);
         startActivity(intent);
     }
+    //Menu
     public void goToCalendar (MenuItem item) {
         Intent intent = new Intent(this, CalendarScreen.class);
         startActivity(intent);
@@ -268,7 +235,15 @@ public class InputScreen extends AppCompatActivity {
         startActivity(intent);
     }
     public void goToMain(MenuItem item) {
-        Intent intent = new Intent(this, MainActivity.class);
+        if (dbh.getRating(Calendar.getInstance()) != -1){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else
+            Toast.makeText(this, "No input for today", Toast.LENGTH_LONG).show();
+    }
+    public void goToSettings(MenuItem item) {
+        Intent intent = new Intent(this, NotificationSettings.class);
         startActivity(intent);
     }
 }

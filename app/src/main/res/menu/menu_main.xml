@@ -23,4 +23,11 @@
         android:onClick="goToMain"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/notification_settings"
+        android:onClick="goToSettings"
+        app:showAsAction="never"
+        />
 </menu>

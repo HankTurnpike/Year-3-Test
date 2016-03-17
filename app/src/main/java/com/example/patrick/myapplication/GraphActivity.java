@@ -281,7 +281,17 @@ public class GraphActivity extends AppCompatActivity {
     }
     public void goToGraph(MenuItem item) {}
     public void goToMain(MenuItem item) {
-        Intent intent = new Intent(this, MainActivity.class);
+        if (dbh.getRating(Calendar.getInstance()) != -1) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+            startActivity(intent);
+            finish();
+        }
+        else
+            Toast.makeText(this, "No input for today", Toast.LENGTH_LONG).show();
+    }
+    public void goToSettings(MenuItem item) {
+        Intent intent = new Intent(this, NotificationSettings.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);
         finish();
@@ -290,11 +300,5 @@ public class GraphActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    //Testing
-    public void goToNotificationSettings (View view) {
-        Intent intent = new Intent(this, NotificationSettings.class);
-        startActivity(intent);
     }
 }

@@ -67,7 +67,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InputScreen" />
         </activity>
-        <activity android:name=".NotificationSettings"/>
+        <activity android:name=".NotificationSettings"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+        </activity>
 
         <receiver android:name="com.example.patrick.myapplication.AlarmReceiver">
             <intent-filter>

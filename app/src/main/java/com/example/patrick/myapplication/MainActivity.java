@@ -117,6 +117,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void goToMain(MenuItem item) {}
+    public void goToSettings(MenuItem item) {
+        Intent intent = new Intent(this, NotificationSettings.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
     public void goToInput (View view) {
         Intent intent = new Intent(this, InputScreen.class);
         intent.putExtra("redo", "true");

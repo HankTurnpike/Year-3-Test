@@ -117,13 +117,4 @@
         </RelativeLayout>
     </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notifcation Settings"
-        android:id="@+id/notifcation_settings_bttn"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="goToNotificationSettings"/>
-
 </RelativeLayout>
