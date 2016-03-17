@@ -119,13 +119,13 @@ public class GraphActivity extends AppCompatActivity {
         button.setVisibility(View.GONE);
     }
 
-    //Displays summarry beneath graph for a particular value selected
+    //Displays summary beneath graph for a particular value selected
     private void displaySummary(int year, int month, int day) {
         Rating rating = dbh.getRow(year, month, day);
         if(rating == null)
             return;
         dateTitle.setVisibility(View.VISIBLE);
-        dateTitle.setText(day + "/" + month + "/" + year);
+        dateTitle.setText(day + "/" + (month+1) + "/" + year);
         notesTitle.setVisibility(View.VISIBLE);
         notesSummary.setVisibility(View.VISIBLE);
         notesSummary.setText(rating.getNotes());
@@ -238,8 +238,7 @@ public class GraphActivity extends AppCompatActivity {
         boolean hasData = false;
         while (!cal.equals(tomorrow)) {
             int rating = dbh.getRating(cal);
-            String date = "" + cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) +
-                    1) + "/" + cal.get(Calendar.YEAR);
+            String date = "" + cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH)+1) + "/" + cal.get(Calendar.YEAR);
             if (rating != -1) {
                 entries.add(new Entry(rating, i));
                 labels.add(date);
