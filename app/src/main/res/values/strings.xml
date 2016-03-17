@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Mind Diary</string>
     <string name="action_settings">Settings</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>

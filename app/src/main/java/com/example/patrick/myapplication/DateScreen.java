@@ -26,8 +26,6 @@ public class DateScreen extends AppCompatActivity {
     private String imagePath ="";
     private ImageView imageView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,8 +123,6 @@ public class DateScreen extends AppCompatActivity {
             imageView.setVisibility(View.GONE);
             notes.setVisibility(View.GONE);
         }
-
-
     }
     private void displayImage(){
         if(!imagePath.equals("")) {
@@ -150,6 +146,12 @@ public class DateScreen extends AppCompatActivity {
 
     public void goToMain(MenuItem item) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
+    }
+    public void goToSettings(MenuItem item) {
+        Intent intent = new Intent(this, NotificationSettings.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);
         finish();
