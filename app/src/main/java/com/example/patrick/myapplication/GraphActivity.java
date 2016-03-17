@@ -180,7 +180,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.invalidate();
     }
 
-    //Sets up the the styling for the linechart
+    //Sets up the styling for the linechart
     private void setupLineChart() {
         lineChart = (LineChart) findViewById(R.id.chart);
         // disable the description
@@ -272,6 +272,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.invalidate();
     }
 
+    //Menu
     public void goToCalendar (MenuItem item) {
         Intent intent = new Intent(this, CalendarScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
