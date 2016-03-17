@@ -23,6 +23,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import java.util.Calendar;
 
 public class DateScreen extends AppCompatActivity {
+    private RelativeLayout layout;
+    private DataBaseHelper dbh;
     private String imagePath ="";
     private ImageView imageView;
 
@@ -34,20 +36,19 @@ public class DateScreen extends AppCompatActivity {
         setContentView(R.layout.content_date_screen);
 
         int[] dateNums = getIntent().getIntArrayExtra("com.example.patrick.DATE");
+        final Calendar cal = Calendar.getInstance();
+        cal.set(dateNums[0],dateNums[1],dateNums[2]);
         //noinspection ConstantConditions
-        getSupportActionBar().setTitle(dateNums[2]+"/"+dateNums[1]+"/"+dateNums[0]);
-
-        DataBaseHelper dbh = new DataBaseHelper(this);
+        getSupportActionBar().setTitle(cal.get(Calendar.DAY_OF_MONTH)+"/"+cal.get(Calendar.MONTH)+"/"+cal.get(Calendar.YEAR));
+        dbh            = new DataBaseHelper(this);
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
         int[] resIds = new int[len];
         for (int i = 0; i < len; i++)
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
-        final Calendar cal = Calendar.getInstance();
-        cal.set(dateNums[0],dateNums[1],dateNums[2]);
         Rating data = dbh.getRow(cal);
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
+        layout=(RelativeLayout)findViewById(R.id.layout);
         TextView notes = (TextView) findViewById(R.id.notes);
         findViewById(R.id.scroll_view).setOnTouchListener(new OnSwipeTouchListener(DateScreen.this) {
             public void onSwipeRight() {
@@ -158,5 +159,11 @@ public class DateScreen extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+    public void goToSettings(MenuItem item) {
+        Intent intent = new Intent(this, NotificationSettings.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
     }
 }
