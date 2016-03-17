@@ -28,8 +28,6 @@ public class DateScreen extends AppCompatActivity {
     private String imagePath ="";
     private ImageView imageView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,8 +135,6 @@ public class DateScreen extends AppCompatActivity {
             imageView.setVisibility(View.GONE);
             notes.setVisibility(View.GONE);
         }
-
-
     }
     private void displayImage(){
         //If the user entered an image, display it
@@ -168,15 +164,15 @@ public class DateScreen extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
     public void goToSettings(MenuItem item) {
         Intent intent = new Intent(this, NotificationSettings.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);
         finish();
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

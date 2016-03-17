@@ -66,7 +66,8 @@ public class InputScreen extends AppCompatActivity {
     public static String PREF_MONTH = "START_MONTH";
     public static String PREF_DAY   = "START_DAY";
 
-    private int rating = 1;
+    private int rating;
+    private SeekBar ratingSlider;
     private TextView text;
     private DataBaseHelper dbh;
     private EditText editEntryOne, editEntryTwo, editEntryThree, editNotes;
@@ -101,7 +102,7 @@ public class InputScreen extends AppCompatActivity {
         String check = getIntent().getStringExtra("redo");
         if(check==null && dbh.getRating(Calendar.getInstance())!=-1)
             submitDate(findViewById(android.R.id.content));
-        SeekBar ratingSlider = (SeekBar) findViewById(R.id.seekBar);
+        ratingSlider = (SeekBar) findViewById(R.id.seekBar);
         ratingSlider.setScaleY(1.25f);
         ratingSlider.setScaleX(1.25f);
         dbh            = new DataBaseHelper(this);
@@ -113,13 +114,13 @@ public class InputScreen extends AppCompatActivity {
         //Set fields for current day if in database
         text = (TextView) findViewById(R.id.slider_rating);
         ratingSlider.setMax(90);
+        setContent();
         ratingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChanged;
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChanged = progress / 10 + 1;
                 text.setText("Rating: " + progressChanged);
-
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -171,16 +172,19 @@ public class InputScreen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Display image if File was successfully created
         if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
-            if(imagePath != null) {
-                Uri uri = Uri.parse(imagePath);
-                imageView.setImageURI(uri);
-                Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-                Bitmap thumbImg = ThumbnailUtils.extractThumbnail(bitmap, 100, 150);
-                imageView.setImageBitmap(thumbImg);
-            }
+            if(imagePath != null)
+                displayImage();
         }
         else
             Toast.makeText(this, "No image captured.\nMemory may be full.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void displayImage() {
+        Uri uri = Uri.parse(imagePath);
+        imageView.setImageURI(uri);
+        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        Bitmap thumbImg = ThumbnailUtils.extractThumbnail(bitmap, 100, 150);
+        imageView.setImageBitmap(thumbImg);
     }
 
     public void insertRow(View view) {
@@ -220,6 +224,25 @@ public class InputScreen extends AppCompatActivity {
         finish();
     }
 
+    // Queries the database
+    // Check for entry already made
+    private void setContent() {
+        Rating r = dbh.getRow(Calendar.getInstance());
+        // If count is zero no row was returned
+        if(r == null)
+            return;
+        //Get year, month, day
+        rating = r.getRating();
+        ratingSlider.setProgress(rating * 10);
+        text.setText("Rating: " + rating);
+        editNotes.setText(r.getNotes());
+        editEntryOne.setText(r.getEntryOne());
+        editEntryTwo.setText(r.getEntryTwo());
+        editEntryThree.setText(r.getEntryThree());
+        imagePath = r.getImagePath();
+        if(new File(imagePath).exists())
+            displayImage();
+    }
 
     public void goToDatabaseScreen(View view) {
         Intent intent = new Intent(this, GhettoInput.class);
