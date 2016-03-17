@@ -32,7 +32,7 @@ public class InputScreen extends AppCompatActivity {
     public static String PREF_MONTH = "START_MONTH";
     public static String PREF_DAY   = "START_DAY";
 
-    private int rating;
+    private int rating = 1;
     private SeekBar ratingSlider;
     private TextView text;
     private DataBaseHelper dbh;
@@ -82,10 +82,9 @@ public class InputScreen extends AppCompatActivity {
         ratingSlider.setMax(90);
         setContent();
         ratingSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressChanged;
-
+            int progressChanged = rating;
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressChanged = progress / 10 + 1;
+                progressChanged = (progress / 10) + 1;
                 text.setText("Rating: " + progressChanged);
             }
 
