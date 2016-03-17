@@ -26,8 +26,6 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -35,8 +33,7 @@ import java.util.Date;
 public class CalendarScreen extends AppCompatActivity implements OnDateSelectedListener {
     public final static String DATE = "com.example.patrick.DATE";
     private RelativeLayout layout;
-    @Bind(R.id.calendarView)
-    MaterialCalendarView calendarView;
+    private MaterialCalendarView calendarView;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     private DataBaseHelper dbh;
     //TextView textView;
@@ -46,15 +43,15 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        ButterKnife.bind(this);
-
-        dbh = new DataBaseHelper(this);
-        calendarView.setOnDateChangedListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Calendar");
-
+        //Set up the database and calendarView
+        dbh = new DataBaseHelper(this);
+        calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+        calendarView.setOnDateChangedListener(this);
+        //Get array of rating drawable locations.
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
         int len = ar.length();
         int[] resIds = new int[len];
@@ -62,8 +59,6 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
 
-        layout=(RelativeLayout)findViewById(R.id.second_row);
-        final MaterialCalendarView calendarView = (MaterialCalendarView) layout.findViewById(R.id.calendarView);
         // Get start date of app from shared preferences
         SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
@@ -84,6 +79,8 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         cal.set(Calendar.DAY_OF_MONTH, installDay);
 
         CalendarDay day;
+        //Search through all days since user started using the app
+        //and decorate any day that has rating data.
         while (!cal.equals(tomorrow)) {
             int rating = dbh.getRating(cal);
             if(rating != -1) {
@@ -95,7 +92,8 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         }
     }
 
-
+    //This method is called when the user taps a date on the calendar
+    //If there is data for that day, the relevant DateScreen for that day is opened
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         CalendarDay current = CalendarDay.from(Calendar.getInstance());
         if((current.equals(date)||current.isAfter(date))&&dataExists(date)) {
@@ -105,11 +103,14 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
             startActivity(intent);
         }
     }
+    //This checks if the day in question has any user data
     private boolean dataExists(CalendarDay date){
         Calendar temp = Calendar.getInstance();
         temp.set(date.getYear(),date.getMonth(),date.getDay());
         return(dbh.getRating(temp)!=-1);
     }
+
+    //Menu
     public void goToCalendar (MenuItem item) {}
     public void goToGraph(MenuItem item) {
         Intent intent = new Intent(this, GraphActivity.class);
