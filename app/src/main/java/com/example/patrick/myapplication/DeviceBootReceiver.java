@@ -41,8 +41,8 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             //calendar.add(Calendar.DAY_OF_MONTH, -1);
             Calendar current  = Calendar.getInstance();
             //Apply this if statement so the alarm for a notification isn't fired instantly
-            if(calendar.compareTo(current) <= 0)
-                calendar.add(Calendar.DAY_OF_MONTH, 1);
+            //if(calendar.compareTo(current) <= 0)
+            //    calendar.add(Calendar.DAY_OF_MONTH, 1);
             trigger = calendar.getTimeInMillis();
             manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval, pendingIntent);
         }

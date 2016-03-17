@@ -114,13 +114,14 @@ public class NotificationSettings extends AppCompatActivity {
         trigger = calendar.getTimeInMillis();
         manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval, pendingIntent);
         //noinspection ResourceType
-        Toast.makeText(this, "Alarm Set for " + formatTime(hour, minute), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Daily Reminder Set for " + formatTime(hour, minute), Toast.LENGTH_LONG).show();
     }
 
     //Turns off the alarm and in turn notifications
     private void cancelAlarm() {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pendingIntent);
+        Toast.makeText(this, "Daily Reminders are now off", Toast.LENGTH_LONG).show();
     }
 
 
