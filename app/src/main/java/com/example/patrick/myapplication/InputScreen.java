@@ -67,7 +67,7 @@ public class InputScreen extends AppCompatActivity {
         dbh = new DataBaseHelper(this);
         String check = getIntent().getStringExtra("redo");
         if(check==null && dbh.getRating(Calendar.getInstance())!=-1)
-            submitDate(findViewById(android.R.id.content));
+            goToMain();
         ratingSlider = (SeekBar) findViewById(R.id.seekBar);
         ratingSlider.setScaleY(1.25f);
         ratingSlider.setScaleX(1.25f);
@@ -167,7 +167,7 @@ public class InputScreen extends AppCompatActivity {
                     imagePath);
             if (success) {
                 text = "Entry successfully made ";
-                submitDate(findViewById(android.R.id.content));
+                goToMain();
             }
             else
                 text = " Entry failed, memory may be full";
@@ -182,8 +182,8 @@ public class InputScreen extends AppCompatActivity {
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         return new File(dir, "MindDiary_" + fileName + ".jpg");
     }
-
-    private void submitDate(View view) {
+    //Move to main screen, removing ability to go back at the same time.
+    private void goToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
         startActivity(intent);
