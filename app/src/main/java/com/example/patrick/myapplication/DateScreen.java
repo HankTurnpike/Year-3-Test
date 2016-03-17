@@ -162,10 +162,4 @@ public class DateScreen extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    public void goToSettings(MenuItem item) {
-        Intent intent = new Intent(this, NotificationSettings.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
-        startActivity(intent);
-        finish();
-    }
 }
