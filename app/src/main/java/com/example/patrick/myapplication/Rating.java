@@ -9,14 +9,18 @@ Dates (represented by year, month and day) are guaranteed to be valid, by the Ca
  */
 
 public class Rating {
+    //Represents the date the entry was made
     private final int year;
     private final int month;
-    private final int day; //Represents the date the entry was made
-    private final int rating;           //The rating entered by the user
-    private final String  notes;
+    private final int day;
+    //The rating entered by the user
+    private final int rating;
+    //Notes and entries made by the user
+    private final String notes;
     private final String entryOne;
     private final String entryTwo;
     private final String entryThree;
+    //Path to image take by user
     private final String imagePath;
 
     Rating(int year0, int month0, int day0, int rating0, String notes0, String entryOne0, String

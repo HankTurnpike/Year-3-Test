@@ -5,23 +5,46 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-public class DeviceBootReceiver extends BroadcastReceiver {
-    //Change this so alarms are preserved on device (re)boot
+import java.util.Calendar;
 
+//This class receives when the device has been booted/turned on
+//It is used to prevent alarms/notifications from being disabled on device shutdown.
+public class DeviceBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            /* Setting the alarm here */
+            SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean alarmEnabled = preferences.getBoolean(NotificationSettings.PREF_TOGGLE, false);
+            //Prevent notifications from being re-enabled, if they were set to disabled.
+            if(!alarmEnabled)
+                return;
+
+            int hour   = preferences.getInt(NotificationSettings.PREF_HOUR, 18);
+            int minute = preferences.getInt(NotificationSettings.PREF_MINUTE, 30);
+
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 
             AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            int interval = 8000;
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-
-            Toast.makeText(context, "Alarm Set", Toast.LENGTH_SHORT).show();
+            long interval = 60000; //minute
+            //long interval = //AlarmManager.INTERVAL_DAY;
+            long trigger = System.currentTimeMillis();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, hour); //24 hour clock
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
+            //calendar.add(Calendar.DAY_OF_MONTH, -1);
+            Calendar current  = Calendar.getInstance();
+            //Apply this if statement so the alarm for a notification isn't fired instantly
+            if(calendar.compareTo(current) <= 0)
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+            trigger = calendar.getTimeInMillis();
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval, pendingIntent);
         }
     }
 }

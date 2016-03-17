@@ -77,14 +77,14 @@ public class GraphActivity extends AppCompatActivity {
         });
 
         //Listen for clicks on the graph, launches a Date screen activity for the particular entry
+        // display the summary for the value selected
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry entry, int dataSetIndex, Highlight highlight) {
                 //Get the label to calculate what page to display
                 int labelIndex = highlight.getXIndex();
                 String[] temp = labels.get(labelIndex).split("/");
-                //Reverse the order of the date to year, month, day and parse
-                // to integer
+                //Parse the temp array into the date (year, month, day)
                 year  = Integer.parseInt(temp[2]);
                 month = Integer.parseInt(temp[1]) - 1;
                 day   = Integer.parseInt(temp[0]);
@@ -99,6 +99,7 @@ public class GraphActivity extends AppCompatActivity {
         });
     }
 
+    //This opens the full entry for the particular day selected
     public void openEntry(View view) {
         Intent intent = new Intent(this, DateScreen.class);
         int[] date = {year, month, day};
@@ -106,6 +107,7 @@ public class GraphActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Hides the summary beneath the graph
     private void hideSummary() {
         dateTitle.setVisibility(View.GONE);
         notesTitle.setVisibility(View.GONE);
@@ -117,6 +119,7 @@ public class GraphActivity extends AppCompatActivity {
         button.setVisibility(View.GONE);
     }
 
+    //Displays summarry beneath graph for a particular value selected
     private void displaySummary(int year, int month, int day) {
         Rating rating = dbh.getRow(year, month, day);
         if(rating == null)
@@ -208,6 +211,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setHighlightPerTapEnabled(true);
     }
 
+    //Reads in the data for each day with an entry from the database
     private void setupLineChartData() {
         ArrayList<Entry> entries = new ArrayList<>();
         labels = new ArrayList<>();
@@ -267,13 +271,6 @@ public class GraphActivity extends AppCompatActivity {
 
         // refresh the graph, ensures that the graph is drawn
         lineChart.invalidate();
-    }
-
-    private void makeToast(String text) {
-        Context context  = getApplicationContext();
-        int     duration = Toast.LENGTH_LONG;
-        Toast   toast    = Toast.makeText(context, text, duration);
-        toast.show();
     }
 
     public void goToCalendar (MenuItem item) {

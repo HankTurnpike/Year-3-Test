@@ -17,6 +17,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class NotificationSettings extends AppCompatActivity {
     private PendingIntent pendingIntent;
@@ -25,9 +26,9 @@ public class NotificationSettings extends AppCompatActivity {
     private Calendar now;
 
     //SharedPreference field names
-    private final String PREF_TOGGLE = "savedToggle";
-    private final String PREF_HOUR   = "defaultHour";
-    private final String PREF_MINUTE = "defaultMinute";
+    public static final String PREF_TOGGLE = "savedToggle";
+    public static final String PREF_HOUR   = "defaultHour";
+    public static final String PREF_MINUTE = "defaultMinute";
 
     //Default time
     private final int DEFAULT_HOUR   = 18;
@@ -39,7 +40,7 @@ public class NotificationSettings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         timeTextView = (TextView) findViewById(R.id.textView_daily_time_reminder);
         now = Calendar.getInstance();
-        //=====shared preferneces
+        //=====shared preferences
         final SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
 
@@ -47,6 +48,7 @@ public class NotificationSettings extends AppCompatActivity {
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
         ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton_daily_reminder);
+        //Restore the state of the toggle
         boolean savedToggleOn = preferences.getBoolean(PREF_TOGGLE, false);
         toggle.setChecked(savedToggleOn);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -67,13 +69,14 @@ public class NotificationSettings extends AppCompatActivity {
             }
         });
 
-        int hour = preferences.getInt(PREF_HOUR, DEFAULT_HOUR);
-        int minute = preferences.getInt(PREF_MINUTE, DEFAULT_MINUTE);
-        String time = "Reminder Time\n " + hour + ":" + minute;
+        //Restore the users reminder settings for time
+        int h = preferences.getInt(PREF_HOUR, DEFAULT_HOUR);
+        int m = preferences.getInt(PREF_MINUTE, DEFAULT_MINUTE);
+        String time = "Reminder Time\n " + formatTime(h, m);
         timeTextView.setText(time);
         timePick = new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker view, int hour, int minute) {
-                timeTextView.setText("Reminder Time\n" + hour + ":" + minute);
+                timeTextView.setText("Reminder Time\n" + formatTime(hour, minute));
                 //Store the time in shared preferences
                 editor.putInt(PREF_HOUR, hour).commit();
                 editor.putInt(PREF_MINUTE, minute).commit();
@@ -86,10 +89,13 @@ public class NotificationSettings extends AppCompatActivity {
         };
     }
 
+    //Used to select a time
     public void selectDailyTime(View view) {
         new TimePickerDialog(NotificationSettings.this, timePick, now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE), true).show();
     }
+
+    //Starts a repeating alarm for the specified time, from the time-picker
     private void startAlarm(int hour, int minute) {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         long interval = 60000; //minute
@@ -102,21 +108,36 @@ public class NotificationSettings extends AppCompatActivity {
         calendar.set(Calendar.SECOND, 0);
         //calendar.add(Calendar.DAY_OF_MONTH, -1);
         Calendar current  = Calendar.getInstance();
-        long before = calendar.getTimeInMillis();
         //Apply this if statement so the alarm for a notification isn't fired instantly
-        //if(calendar.compareTo(current) <= 0)
-        //    calendar.add(Calendar.DAY_OF_MONTH, 1);
+        if(calendar.compareTo(current) <= 0)
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
         trigger = calendar.getTimeInMillis();
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval,
-                pendingIntent);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval, pendingIntent);
         //noinspection ResourceType
-        Toast.makeText(this, "Alarm Set\n" +
-                "System time: " + System.currentTimeMillis() + "\nTrigger: " + trigger +
-                "\nBefore: " + before, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Alarm Set for " + formatTime(hour, minute), Toast.LENGTH_LONG).show();
     }
 
+    //Turns off the alarm and in turn notifications
     private void cancelAlarm() {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pendingIntent);
+    }
+
+
+    //Formats the time into the format HH:mm, eg. 02:07 am/pm
+    private String formatTime(int hour, int minute) {
+        //Format the time
+        String format = "";
+        if(hour < 10)
+            format = "0";
+        format += hour + ":";
+        if(minute < 10)
+            format += "0";
+        format += minute;
+        if(hour < 12)
+            format += " am";
+        else
+            format += " pm";
+        return format;
     }
 }

@@ -12,12 +12,13 @@ import android.util.Log;
 
 import java.util.Calendar;
 
+//Class receives scheduled alarms made by the application in order
+// to give the user a daily notification.
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         DataBaseHelper dbh = new DataBaseHelper(context);
-        Log.d("alarm  :  " + context.getApplicationContext().getPackageResourcePath(), "   alarm");
         //fire the notification only if no entry was made
         if(dbh.getRating(Calendar.getInstance()) == -1)  {
             Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -41,43 +42,3 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 }
-/*
-    public static void alarmNotification(Context context){
-        //Get alarm manager service
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        //Create pending intent for receiver
-        Intent intent = new Intent(context, NotificationHelper.class);
-        PendingIntent pendingIntentReceiver = PendingIntent.getBroadcast(context, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-    }
-
-
-    @SuppressLint("NewApi")
-    public static void alarmNotification1(Context context) {
-        //Create notification
-        Notification.Builder notification =
-                new Notification.Builder(
-                        context.getApplicationContext())
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Mind Diary")
-                        .setContentText("You have not yet made your daily entry"
-                                + "\nWould you like to make one, now?")
-                        .setAutoCancel(true);
-
-        Intent intent = new Intent(context, InputScreen.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pendingIntent);
-
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notification.build());
-
-        //Schedule notification
-
-    }
-}
-*/
