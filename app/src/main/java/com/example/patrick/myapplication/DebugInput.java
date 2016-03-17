@@ -17,7 +17,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class GhettoInput extends AppCompatActivity {
+/**
+ * Input page used for putting date data in given locations.
+ * For debug/demo only.
+ */
+
+public class DebugInput extends AppCompatActivity {
     private DataBaseHelper   dbh;
     private EditText         editEntryOne, editEntryTwo, editEntryThree, editRating, editNotes,
             editMonth, editDay;
@@ -28,7 +33,7 @@ public class GhettoInput extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ghetto);
+        setContentView(R.layout.activity_debug_input);
 
         dbh            = new DataBaseHelper(this);
         editRating     = (EditText) findViewById(R.id.rating);

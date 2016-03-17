@@ -95,34 +95,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         }
     }
 
-    public class OneDayDecorator implements DayViewDecorator {
-        private final CalendarDay date;
-        private Drawable d;
 
-        public OneDayDecorator() {
-            date = CalendarDay.today();
-        }
-
-        public OneDayDecorator(CalendarDay day, Drawable d) {
-            date = day;
-            this.d = d;
-        }
-
-        @Override
-        public boolean shouldDecorate(CalendarDay day) {
-            return date != null && day.equals(date);
-        }
-
-        @Override
-        public void decorate(DayViewFacade view) {
-
-            view.addSpan(new StyleSpan(Typeface.BOLD));
-            view.addSpan(new RelativeSizeSpan(1.2f));
-            view.setSelectionDrawable(d);
-            view.addSpan(new ForegroundColorSpan(Color.WHITE));
-
-        }
-    }
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         CalendarDay current = CalendarDay.from(Calendar.getInstance());
         if((current.equals(date)||current.isAfter(date))&&dataExists(date)) {

@@ -46,7 +46,7 @@
                 android:value=".InputScreen" />
         </activity>
         <activity
-            android:name=".GhettoInput"
+            android:name=".DebugInput"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_database_entry"
             android:parentActivityName=".InputScreen"
