@@ -40,5 +40,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .build();
             mNM.notify(1, notification);
         }
+        dbh.close();
     }
 }
