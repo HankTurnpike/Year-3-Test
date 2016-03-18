@@ -36,7 +36,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setContentIntent(pIntent)
                     .setSound(sound)
                     .setAutoCancel(true)
-                            //.addAction(0, "Load Website", pIntent)
                     .build();
             mNM.notify(1, notification);
         }
