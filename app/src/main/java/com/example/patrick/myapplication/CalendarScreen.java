@@ -63,8 +63,8 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         int installYear  = preferences.getInt(InputScreen.PREF_YEAR, 2016);
-        int installMonth = preferences.getInt(InputScreen.PREF_MONTH, 0);
-        int installDay   = preferences.getInt(InputScreen.PREF_DAY, 1);
+        int installMonth = preferences.getInt(InputScreen.PREF_MONTH, 2);
+        int installDay   = preferences.getInt(InputScreen.PREF_DAY, 18);
 
         Calendar cal = Calendar.getInstance();
         //Get the current day, days after should not have a rating
@@ -97,6 +97,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         CalendarDay current = CalendarDay.from(Calendar.getInstance());
         if((current.equals(date)||current.isAfter(date))&&dataExists(date)) {
+            dbh.close();
             Intent intent = new Intent(this, DateScreen.class);
             int[] temp = {date.getYear(), date.getMonth(), date.getDay()};
             intent.putExtra(DATE, temp);
@@ -113,6 +114,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
     //Menu
     public void goToCalendar (MenuItem item) {}
     public void goToGraph(MenuItem item) {
+        dbh.close();
         Intent intent = new Intent(this, GraphActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);
@@ -120,6 +122,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
     }
     public void goToMain(MenuItem item) {
         if (dbh.getRating(Calendar.getInstance()) != -1) {
+            dbh.close();
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
             startActivity(intent);
@@ -129,6 +132,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
             Toast.makeText(CalendarScreen.this, "No input for today", Toast.LENGTH_LONG).show();
     }
     public void goToSettings(MenuItem item) {
+        dbh.close();
         Intent intent = new Intent(this, NotificationSettings.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);

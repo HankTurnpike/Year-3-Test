@@ -48,12 +48,14 @@ public class DateScreen extends AppCompatActivity {
         ar.recycle();
 
         Rating data = dbh.getRow(cal);
+        dbh.close();
         layout=(RelativeLayout)findViewById(R.id.layout);
         TextView notes = (TextView) findViewById(R.id.notes);
         //Set up the OnSwipeTouchListener so that when the user swipes
         //left or rate, they move between days as a result.
         findViewById(R.id.scroll_view).setOnTouchListener(new OnSwipeTouchListener(DateScreen.this) {
             public void onSwipeRight() {
+                dbh.close();
                 Intent intent = new Intent(getApplicationContext(), DateScreen.class);
                 CalendarDay date = CalendarDay.from(cal);
                 int[] temp = {date.getYear(), date.getMonth(), date.getDay() - 1};
@@ -63,6 +65,7 @@ public class DateScreen extends AppCompatActivity {
             }
 
             public void onSwipeLeft() {
+                dbh.close();
                 Intent intent = new Intent(getApplicationContext(), DateScreen.class);
                 CalendarDay date = CalendarDay.from(cal);
                 int[] temp = {date.getYear(), date.getMonth(), date.getDay() + 1};

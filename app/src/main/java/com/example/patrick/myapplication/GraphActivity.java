@@ -218,10 +218,9 @@ public class GraphActivity extends AppCompatActivity {
 
         // Get start date of app from shared preferences
         SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
         int installYear  = preferences.getInt(InputScreen.PREF_YEAR, 2016);
-        int installMonth = preferences.getInt(InputScreen.PREF_MONTH, 1);
-        int installDay   = preferences.getInt(InputScreen.PREF_DAY, 1);
+        int installMonth = preferences.getInt(InputScreen.PREF_MONTH, 2);
+        int installDay   = preferences.getInt(InputScreen.PREF_DAY, 18);
 
         Calendar cal = Calendar.getInstance();
         //Get the current day, days after should not have a rating
@@ -274,6 +273,7 @@ public class GraphActivity extends AppCompatActivity {
 
     //Menu
     public void goToCalendar (MenuItem item) {
+        dbh.close();
         Intent intent = new Intent(this, CalendarScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);
@@ -282,6 +282,7 @@ public class GraphActivity extends AppCompatActivity {
     public void goToGraph(MenuItem item) {}
     public void goToMain(MenuItem item) {
         if (dbh.getRating(Calendar.getInstance()) != -1) {
+            dbh.close();
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
             startActivity(intent);
@@ -291,6 +292,7 @@ public class GraphActivity extends AppCompatActivity {
             Toast.makeText(this, "No input for today", Toast.LENGTH_LONG).show();
     }
     public void goToSettings(MenuItem item) {
+        dbh.close();
         Intent intent = new Intent(this, NotificationSettings.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);

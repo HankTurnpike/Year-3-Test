@@ -107,7 +107,9 @@ public class NotificationSettings extends AppCompatActivity {
     private void startAlarm(int hour, int minute) {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         long interval = 60000; //minute
-        //long interval = //AlarmManager.INTERVAL_DAY;
+        //Un-comment the line above and comment out the line below to quickly see
+        // that notifications are repeating.
+        //long interval = AlarmManager.INTERVAL_DAY;
         long trigger = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -163,7 +165,9 @@ public class NotificationSettings extends AppCompatActivity {
         finish();
     }
     public void goToMain(MenuItem item) {
-        if (new DataBaseHelper(this).getRating(Calendar.getInstance()) != -1) {
+        DataBaseHelper dbh = new DataBaseHelper(this);
+        if (dbh.getRating(Calendar.getInstance()) != -1) {
+            dbh.close();
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
             startActivity(intent);

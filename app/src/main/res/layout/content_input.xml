@@ -21,33 +21,14 @@
     android:layout_marginTop="20dp"
     >
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:paddingTop="30dp"
-    android:id="@+id/linear1">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/database"
-        android:onClick="goToDatabaseScreen"
-        style="?android:attr/buttonBarButtonStyle"
-        android:background="@drawable/text_box"/>
-
-</LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linear1"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:paddingTop="10dp"
+        android:paddingTop="30dp"
         android:id="@+id/linearLayout">
         <TextView
             android:layout_width="wrap_content"
@@ -74,6 +55,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/notes"
         android:layout_below="@+id/textView"
+        android:textSize="16sp"
         android:layout_centerHorizontal="true"
         android:minHeight="50dp"
         android:background="@drawable/text_box"
@@ -96,6 +78,7 @@
         android:minHeight="20dp"
         android:background="@drawable/text_box"
         android:singleLine="true"
+        android:textSize="16sp"
         android:hint="Something good that happened today."/>
 
     <TextView
@@ -118,7 +101,9 @@
         android:layout_below="@+id/good"
         android:layout_alignLeft="@+id/good"
         android:singleLine="true"
-        android:layout_alignStart="@+id/good" />
+        android:layout_alignStart="@+id/good"
+        android:textSize="16sp"
+        android:hint="Another good thing."/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -140,7 +125,9 @@
         android:layout_toRightOf="@+id/editText5"
         android:layout_toEndOf="@+id/editText5"
         android:singleLine="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:hint="Another good thing."/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -154,27 +141,26 @@
         android:layout_toStartOf="@+id/good3" />
 
     <!-- Image Entry -->
-    <Button
+    <ImageButton
         style="?android:buttonBarButtonStyle"
         android:id="@+id/image_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select"
         android:onClick="getImage"
-        android:layout_alignTop="@+id/image_view_database"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp" />
+        android:src="@drawable/camera_icon"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"/>
     <ImageView
         android:id="@+id/image_view_database"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/good3"
-        android:layout_marginTop="30dp"
         android:padding="2dp"
         android:background="#4fa5d5"
-        android:layout_alignLeft="@+id/linear1"
-        android:layout_alignStart="@+id/linear1"
-        android:contentDescription="User image" />
+        android:contentDescription="User image"
+        android:layout_below="@+id/good3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"/>
 
     <!--Submit to database -->
     <Button
@@ -183,13 +169,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_insert"
-        android:layout_below="@id/image_view_database"
-        android:layout_marginTop="30dp"
         android:onClick="insertRow"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
 
     <SeekBar
         android:layout_width="262dp"
@@ -197,7 +179,5 @@
         android:id="@+id/seekBar"
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true" />
-
-
 </RelativeLayout>
 </ScrollView>

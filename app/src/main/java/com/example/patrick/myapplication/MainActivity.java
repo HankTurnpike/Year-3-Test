@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             resIds[i] = ar.getResourceId(i, 0);
         ar.recycle();
         Rating data = dbh.getRow(cal);
+        dbh.close();
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
         final RelativeLayout.LayoutParams params =
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,

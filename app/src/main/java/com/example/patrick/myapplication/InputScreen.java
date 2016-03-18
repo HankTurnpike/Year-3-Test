@@ -55,8 +55,8 @@ public class InputScreen extends AppCompatActivity {
             // start to calculate when data is added to them
             //Comment out these three line and un-comment the four lines below.
             editor.putInt(PREF_YEAR, 2016).commit();
-            editor.putInt(PREF_MONTH, 0).commit();
-            editor.putInt(PREF_DAY, 1).commit();
+            editor.putInt(PREF_MONTH, 2).commit();
+            editor.putInt(PREF_DAY, 18).commit();
             //Calendar now = Calendar.getInstance();
             //editor.putInt(PREF_YEAR, now.get(Calendar.YEAR)).commit();
             //editor.putInt(PREF_MONTH, now.get(Calendar.MONTH)).commit();
@@ -77,6 +77,7 @@ public class InputScreen extends AppCompatActivity {
         editEntryTwo   = (EditText) findViewById(R.id.good2);
         editEntryThree = (EditText) findViewById(R.id.good3);
         imageView      = (ImageView) findViewById(R.id.image_view_database);
+        imageView.setVisibility(View.GONE);
         //Set fields for current day if in database
         text = (TextView) findViewById(R.id.slider_rating);
         ratingSlider.setMax(90);
@@ -145,11 +146,14 @@ public class InputScreen extends AppCompatActivity {
     }
 
     private void displayImage() {
-        Uri uri = Uri.parse(imagePath);
-        imageView.setImageURI(uri);
-        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        Bitmap thumbImg = ThumbnailUtils.extractThumbnail(bitmap, 100, 150);
-        imageView.setImageBitmap(thumbImg);
+        if(new File(imagePath).exists()) {
+            imageView.setVisibility(View.VISIBLE);
+            Uri uri = Uri.parse(imagePath);
+            imageView.setImageURI(uri);
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            Bitmap thumbImg = ThumbnailUtils.extractThumbnail(bitmap, 100, 150);
+            imageView.setImageBitmap(thumbImg);
+        }
     }
 
     public void insertRow(View view) {
@@ -166,6 +170,7 @@ public class InputScreen extends AppCompatActivity {
                     imagePath);
             if (success) {
                 text = "Entry successfully made ";
+                dbh.close();
                 goToMain();
             }
             else
@@ -224,6 +229,7 @@ public class InputScreen extends AppCompatActivity {
     }
     public void goToMain(MenuItem item) {
         if (dbh.getRating(Calendar.getInstance()) != -1){
+            dbh.close();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
