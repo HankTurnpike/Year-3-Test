@@ -73,12 +73,12 @@ class DataBaseHelper extends SQLiteOpenHelper {
         if (getRow(year, month, day) == null)
             //If not insert the entry
             return db.insert(TABLE_RATINGS, null, contentValues) != -1;
-        //There is an entry, so update it
+            //There is an entry, so update it
         else {
             //Make sure to update the correct entry
             String condition = YEAR  + " == " + year  + " AND " +
-                               MONTH + " == " + month + " AND " +
-                               DAY   + " == " + day;
+                    MONTH + " == " + month + " AND " +
+                    DAY   + " == " + day;
             return db.update(TABLE_RATINGS, contentValues, condition, null) > 0;
         }
     }
@@ -97,10 +97,10 @@ class DataBaseHelper extends SQLiteOpenHelper {
     //Get all data associated to a particular daily entry
     public Rating getRow(int year, int month, int day) {
         String select = "SELECT " + RATING + "," + NOTES + "," + ENTRY_ONE + "," + ENTRY_TWO + "," +
-                                    ENTRY_THREE  + "," + IMAGE_PATH + " FROM " + TABLE_RATINGS +
-                        " WHERE " + YEAR   + " == " + year  + " AND " +
-                                    MONTH  + " == " + month + " AND " +
-                                    DAY    + " == " + day;
+                ENTRY_THREE  + "," + IMAGE_PATH + " FROM " + TABLE_RATINGS +
+                " WHERE " + YEAR   + " == " + year  + " AND " +
+                MONTH  + " == " + month + " AND " +
+                DAY    + " == " + day;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor     = db.rawQuery(select, null); //Run select statement on database
         // If count is zero no row was returned
@@ -130,9 +130,9 @@ class DataBaseHelper extends SQLiteOpenHelper {
     */
     public int getRating(Calendar date) {
         String select = "SELECT " + RATING + " FROM " + TABLE_RATINGS +
-                        " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
-                                   MONTH + " == " + date.get(Calendar.MONTH) + " AND " +
-                                   DAY   + " == " + date.get(Calendar.DAY_OF_MONTH);
+                " WHERE "+ YEAR  + " == " + date.get(Calendar.YEAR)  + " AND " +
+                MONTH + " == " + date.get(Calendar.MONTH) + " AND " +
+                DAY   + " == " + date.get(Calendar.DAY_OF_MONTH);
         SQLiteDatabase db = this.getReadableDatabase(); //Get access to the database
         Cursor cursor     = db.rawQuery(select, null);  //Run the select statement on the database
         // If count is zero no row was returned
@@ -142,6 +142,23 @@ class DataBaseHelper extends SQLiteOpenHelper {
         int rating = cursor.getInt(0);
         cursor.close(); //Close the cursor, prevents memory leak
         return rating;
+    }
+
+    public boolean delete(int year, int month, int day) {
+        //Delete condition
+        String condition = YEAR  + " == " + year  + " AND " +
+                MONTH + " == " + month + " AND " +
+                DAY   + " == " + day;
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_RATINGS, condition, null)>0;
+    }
+
+    public boolean delete(Calendar cal) {
+        //Get the date
+        int year   = cal.get(Calendar.YEAR);
+        int month  = cal.get(Calendar.MONTH);
+        int day    = cal.get(Calendar.DAY_OF_MONTH);
+        return delete(year, month, day);
     }
 
     @Override

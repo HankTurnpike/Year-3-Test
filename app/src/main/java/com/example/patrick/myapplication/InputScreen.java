@@ -55,8 +55,8 @@ public class InputScreen extends AppCompatActivity {
             // start to calculate when data is added to them
             //Comment out these three line and un-comment the four lines below.
             editor.putInt(PREF_YEAR, 2016).commit();
-            editor.putInt(PREF_MONTH, 2).commit();
-            editor.putInt(PREF_DAY, 18).commit();
+            editor.putInt(PREF_MONTH, 0).commit();
+            editor.putInt(PREF_DAY, 1).commit();
             //Calendar now = Calendar.getInstance();
             //editor.putInt(PREF_YEAR, now.get(Calendar.YEAR)).commit();
             //editor.putInt(PREF_MONTH, now.get(Calendar.MONTH)).commit();
@@ -214,7 +214,7 @@ public class InputScreen extends AppCompatActivity {
             displayImage();
     }
 
-    public void goToDatabaseScreen(View view) {
+    public void goToDebug(View view) {
         Intent intent = new Intent(this, DebugInput.class);
         startActivity(intent);
     }

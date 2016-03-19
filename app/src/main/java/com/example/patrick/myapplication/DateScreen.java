@@ -1,5 +1,7 @@
 package com.example.patrick.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -27,13 +29,14 @@ public class DateScreen extends AppCompatActivity {
     private DataBaseHelper dbh;
     private String imagePath ="";
     private ImageView imageView;
+    private int[] dateNums;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_date_screen);
         //Get date supplied by intent.
-        int[] dateNums = getIntent().getIntArrayExtra("com.example.patrick.DATE");
+        dateNums = getIntent().getIntArrayExtra("com.example.patrick.DATE");
         final Calendar cal = Calendar.getInstance();
         cal.set(dateNums[0],dateNums[1],dateNums[2]);
         //noinspection ConstantConditions
@@ -73,7 +76,6 @@ public class DateScreen extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-
         });
         //Set up the UI according to what data is available for the date.
         if(data != null) {
@@ -177,5 +179,33 @@ public class DateScreen extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    void toast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    public void deleteEntry(View view) {
+        //Sets up alert message to make sure the user wants to delete the entry
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final String date = dateNums[2] + "/" + (dateNums[1]+1) + "/" + dateNums[0];
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            //OK selected, remove entry and go back to the calendar
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                dbh.delete(dateNums[0], dateNums[1], dateNums[2]);
+                toast("Entry Deleted for " + date);
+                dbh.close();
+                goToCalendar(null);
+            }
+        });
+        //Cancel selected, do nothing
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {}
+        });
+        //Set title, message and then display the dialog
+        builder.setTitle("Remove entry for " + date + "?");
+        builder.setMessage("This action cannot be undone!");
+        builder.create().show();
     }
 }
