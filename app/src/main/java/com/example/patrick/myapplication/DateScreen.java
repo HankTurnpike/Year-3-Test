@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -139,6 +140,8 @@ public class DateScreen extends AppCompatActivity {
             imageView = (ImageView) findViewById(R.id.image);
             imageView.setVisibility(View.GONE);
             notes.setVisibility(View.GONE);
+            ImageButton del = (ImageButton)findViewById(R.id.button_delete);
+            del.setVisibility(View.GONE);
         }
     }
     private void displayImage(){
