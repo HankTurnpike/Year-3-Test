@@ -54,6 +54,7 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.graph_activity);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Graph");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dateTitle = (TextView) findViewById(R.id.textView_summary_graph);
         notesTitle = (TextView) findViewById(R.id.textView_notes_graph_title);
         notesSummary = (TextView) findViewById(R.id.textView_notes_graph);

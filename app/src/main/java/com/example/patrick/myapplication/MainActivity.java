@@ -18,6 +18,7 @@ import android.widget.ViewSwitcher;
 
 import java.util.Calendar;
 
+@SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity {
     private String imagePath ="";
     private ImageView imageView;
@@ -29,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
         Calendar cal = Calendar.getInstance();
-        //noinspection ConstantConditions
         getSupportActionBar().setTitle(cal.get(Calendar.YEAR) + "/" + (cal.get(Calendar.MONTH)+1) +
                 "/" + cal.get(Calendar.DAY_OF_MONTH));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         DataBaseHelper dbh = new DataBaseHelper(this);
         //Get array of rating drawable locations.
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
@@ -129,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
     public void goToMain(MenuItem item) {}
     public void goToSettings(MenuItem item) {
         Intent intent = new Intent(this, NotificationSettings.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // To clean up all activities
         startActivity(intent);
-        finish();
     }
     public void goToInput (View view) {
         Intent intent = new Intent(this, InputScreen.class);

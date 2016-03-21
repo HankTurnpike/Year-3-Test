@@ -45,6 +45,7 @@ public class NotificationSettings extends AppCompatActivity {
         //setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle("Settings");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         timeTextView = (TextView) findViewById(R.id.textView_daily_time_reminder);
         now = Calendar.getInstance();

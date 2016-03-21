@@ -30,6 +30,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.util.Calendar;
 import java.util.Date;
 
+@SuppressWarnings("ConstantConditions")
 public class CalendarScreen extends AppCompatActivity implements OnDateSelectedListener {
     public final static String DATE = "com.example.patrick.DATE";
     private RelativeLayout layout;
@@ -45,8 +46,9 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         setContentView(R.layout.activity_calendar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
         getSupportActionBar().setTitle("Calendar");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //Set up the database and calendarView
         dbh = new DataBaseHelper(this);
         calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
