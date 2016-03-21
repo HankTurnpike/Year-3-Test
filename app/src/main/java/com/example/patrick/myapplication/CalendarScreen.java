@@ -50,6 +50,9 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
         //Set up the database and calendarView
         dbh = new DataBaseHelper(this);
         calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+
+
+
         calendarView.setOnDateChangedListener(this);
         //Get array of rating drawable locations.
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);

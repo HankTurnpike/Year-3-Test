@@ -1,6 +1,7 @@
 package com.example.patrick.myapplication;
 
 import android.app.AlertDialog;
+import android.app.TaskStackBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -199,7 +200,10 @@ public class DateScreen extends AppCompatActivity {
                 dbh.delete(dateNums[0], dateNums[1], dateNums[2]);
                 toast("Entry Deleted for " + date);
                 dbh.close();
-                goToCalendar(null);
+                Intent intent = new Intent(DateScreen.this, CalendarScreen.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
         //Cancel selected, do nothing
