@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:layout_height="320dp"
-        android:layout_below="@+id/test_button"/>
+        android:layout_height="320dp" />
 
 
     <ScrollView
@@ -38,8 +37,9 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 android:text="27/1/2016"
+                android:textColor="#FFFF"
                 android:textAlignment="center"
-                android:background="#dfbf9f"/>
+                android:background="#5774b6"/>
 
             <ImageView
                 android:id="@+id/imageView_graph"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="60dp"
                 android:maxHeight="60dp"
-                android:background="#EFE4B0"
+                android:background="@drawable/box"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/textView_notes_graph_title"
                 android:layout_alignParentLeft="true"
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="60dp"
                 android:maxHeight="60dp"
-                android:background="#EFE4B0"
+                android:background="@drawable/box"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/textView_good_things_graph_title"
                 android:layout_alignParentLeft="true"
