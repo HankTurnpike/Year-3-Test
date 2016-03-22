@@ -84,19 +84,21 @@ public class DebugInput extends AppCompatActivity {
             makeToast("No image captured.\nMemory may be full.");
     }
 
-    public void insert(View view) {
+    public void insertRandom(View view) {
         //Get the current date
         Calendar c     = Calendar.getInstance();
         Calendar clone = (Calendar) c.clone();
         c.set(Calendar.YEAR, 2016);
         c.set(Calendar.MONTH, 0);
         c.set(Calendar.DAY_OF_MONTH, 1);
+
+        int i = 0;
         while(!c.equals(clone)) {
             dbh.insert(
                     c.get(Calendar.YEAR),
                     c.get(Calendar.MONTH),
                     c.get(Calendar.DAY_OF_MONTH),
-                    10,
+                    random(),
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                             "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                             "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
@@ -109,10 +111,11 @@ public class DebugInput extends AppCompatActivity {
                     "On the other hand, we denounce with righteous indignation and dislike",
                     imagePath);
             c.add(Calendar.DAY_OF_MONTH, 1);
+            editEntryOne.setText("" + i++);
         }
     }
 
-    private int random() {
+    private static int random() {
         return (int)Math.floor(Math.random() * 10) + 1;
     }
 
