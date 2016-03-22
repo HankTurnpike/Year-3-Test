@@ -94,15 +94,13 @@ public class InputScreen extends AppCompatActivity {
 
             public void onStopTrackingTouch(SeekBar seekBar) {
                 rating = progressChanged;
-                Toast.makeText(InputScreen.this, "rating:" + rating,
-                        Toast.LENGTH_SHORT).show();
             }
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
-        getSupportActionBar().setTitle("Create Entry");
+        getSupportActionBar().setTitle("Create Entry?");
     }
 
     @Override

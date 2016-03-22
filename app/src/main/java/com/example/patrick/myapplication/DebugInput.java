@@ -84,6 +84,38 @@ public class DebugInput extends AppCompatActivity {
             makeToast("No image captured.\nMemory may be full.");
     }
 
+    public void insert(View view) {
+        //Get the current date
+        Calendar c     = Calendar.getInstance();
+        Calendar clone = (Calendar) c.clone();
+        c.set(Calendar.YEAR, 2016);
+        c.set(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        while(!c.equals(clone)) {
+            dbh.insert(
+                    c.get(Calendar.YEAR),
+                    c.get(Calendar.MONTH),
+                    c.get(Calendar.DAY_OF_MONTH),
+                    10,
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                            "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu " +
+                            "fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in " +
+                            "culpa qui officia deserunt mollit anim id est laborum.",
+                    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem",
+                    "At vero eos et accusamus et iusto odio dignissimos ducimus " +
+                            "qui blanditiis praesentium ,",
+                    "On the other hand, we denounce with righteous indignation and dislike",
+                    imagePath);
+            c.add(Calendar.DAY_OF_MONTH, 1);
+        }
+    }
+
+    private int random() {
+        return (int)Math.floor(Math.random() * 10) + 1;
+    }
+
     public void insertRow(View view) {
         String text    = "Entry failed, your rating must be in the range 1 to 10!";
         String rateStr = editRating.getText().toString().trim();
