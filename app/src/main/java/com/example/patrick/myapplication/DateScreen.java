@@ -27,7 +27,6 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import java.util.Calendar;
 
 public class DateScreen extends AppCompatActivity {
-    private RelativeLayout layout;
     private DataBaseHelper dbh;
     private String imagePath ="";
     private ImageView imageView;
@@ -41,7 +40,6 @@ public class DateScreen extends AppCompatActivity {
         dateNums = getIntent().getIntArrayExtra("com.example.patrick.DATE");
         final Calendar cal = Calendar.getInstance();
         cal.set(dateNums[0],dateNums[1],dateNums[2]);
-        //noinspection ConstantConditions
         getSupportActionBar().setTitle(cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR));
         dbh            = new DataBaseHelper(this);
         //Get array of rating drawable locations.
@@ -54,7 +52,7 @@ public class DateScreen extends AppCompatActivity {
 
         Rating data = dbh.getRow(cal);
         dbh.close();
-        layout=(RelativeLayout)findViewById(R.id.layout);
+        RelativeLayout layout=(RelativeLayout)findViewById(R.id.layout);
         TextView notes = (TextView) findViewById(R.id.notes);
         //Set up the OnSwipeTouchListener so that when the user swipes
         //left or rate, they move between days as a result.

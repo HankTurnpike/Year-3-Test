@@ -33,9 +33,6 @@ import java.util.Date;
 @SuppressWarnings("ConstantConditions")
 public class CalendarScreen extends AppCompatActivity implements OnDateSelectedListener {
     public final static String DATE = "com.example.patrick.DATE";
-    private RelativeLayout layout;
-    private MaterialCalendarView calendarView;
-    private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     private DataBaseHelper dbh;
     //TextView textView;
 
@@ -51,10 +48,7 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
 
         //Set up the database and calendarView
         dbh = new DataBaseHelper(this);
-        calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
-
-
-
+        MaterialCalendarView calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
         calendarView.setOnDateChangedListener(this);
         //Get array of rating drawable locations.
         TypedArray ar = this.getResources().obtainTypedArray(R.array.img_id_arr);
@@ -66,7 +60,6 @@ public class CalendarScreen extends AppCompatActivity implements OnDateSelectedL
 
         // Get start date of app from shared preferences
         SharedPreferences preferences   = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
         int installYear  = preferences.getInt(InputScreen.PREF_YEAR, 2016);
         int installMonth = preferences.getInt(InputScreen.PREF_MONTH, 2);
         int installDay   = preferences.getInt(InputScreen.PREF_DAY, 18);

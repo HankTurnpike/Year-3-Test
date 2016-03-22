@@ -76,7 +76,8 @@ class DataBaseHelper extends SQLiteOpenHelper {
             //There is an entry, so update it
         else {
             //Make sure to update the correct entry
-            String condition = YEAR  + " == " + year  + " AND " +
+            String condition =
+                    YEAR  + " == " + year  + " AND " +
                     MONTH + " == " + month + " AND " +
                     DAY   + " == " + day;
             return db.update(TABLE_RATINGS, contentValues, condition, null) > 0;
@@ -155,9 +156,9 @@ class DataBaseHelper extends SQLiteOpenHelper {
 
     public boolean delete(Calendar cal) {
         //Get the date
-        int year   = cal.get(Calendar.YEAR);
-        int month  = cal.get(Calendar.MONTH);
-        int day    = cal.get(Calendar.DAY_OF_MONTH);
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day   = cal.get(Calendar.DAY_OF_MONTH);
         return delete(year, month, day);
     }
 

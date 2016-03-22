@@ -124,7 +124,6 @@ public class NotificationSettings extends AppCompatActivity {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         trigger = calendar.getTimeInMillis();
         manager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, interval, pendingIntent);
-        //noinspection ResourceType
         Toast.makeText(this, "Daily Reminder Set for " + formatTime(hour, minute), Toast.LENGTH_LONG).show();
     }
 
